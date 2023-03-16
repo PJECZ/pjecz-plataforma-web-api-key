@@ -34,4 +34,4 @@ add_pagination(app)
 @app.get("/")
 async def root():
     """Mensaje de Bienvenida"""
-    return {"message": "Bienvenido a la Plataforma Web API Key."}
+    return {"message": "Bienvenido a PJECZ Plataforma Web API Key."}

@@ -16,12 +16,13 @@ from ..usuarios.schemas import UsuarioInDB
 from .crud import get_entradas_salidas, get_entrada_salida
 from .schemas import EntradaSalidaOut, OneEntradaSalidaOut
 
-entradas_salidas = APIRouter(prefix="/v3/entradas_salidas", tags=["categoria"])
+entradas_salidas = APIRouter(prefix="/v3/entradas_salidas", tags=["usuarios"])
 
 
 @entradas_salidas.get("", response_model=CustomPage[EntradaSalidaOut])
 async def listado_entradas_salidas(
     usuario_id: int = None,
+    usuario_email: str = None,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -29,7 +30,7 @@ async def listado_entradas_salidas(
     if current_user.permissions.get("ENTRADAS SALIDAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_entradas_salidas(db=db, usuario_id=usuario_id)
+        resultados = get_entradas_salidas(db=db, usuario_id=usuario_id, usuario_email=usuario_email)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

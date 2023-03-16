@@ -16,13 +16,15 @@ from ..usuarios.schemas import UsuarioInDB
 from .crud import get_usuarios_roles, get_usuario_rol
 from .schemas import UsuarioRolOut, OneUsuarioRolOut
 
-usuarios_roles = APIRouter(prefix="/v3/usuarios_roles", tags=["categoria"])
+usuarios_roles = APIRouter(prefix="/v3/usuarios_roles", tags=["usuarios"])
 
 
 @usuarios_roles.get("", response_model=CustomPage[UsuarioRolOut])
 async def listado_usuarios_roles(
     rol_id: int = None,
+    rol_nombre: str = None,
     usuario_id: int = None,
+    usuario_email: str = None,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -30,7 +32,7 @@ async def listado_usuarios_roles(
     if current_user.permissions.get("USUARIOS ROLES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_usuarios_roles(db=db, rol_id=rol_id, usuario_id=usuario_id)
+        resultados = get_usuarios_roles(db=db, rol_id=rol_id, rol_nombre=rol_nombre, usuario_id=usuario_id, usuario_email=usuario_email)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

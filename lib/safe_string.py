@@ -35,15 +35,19 @@ def safe_curp(input_str):
     return final
 
 
-def safe_email(input_str):
+def safe_email(input_str, search_fragment=False):
     """Safe email"""
     if not isinstance(input_str, str) or input_str.strip() == "":
         raise ValueError("Email es incorrecto")
-    new_string = input_str.strip().lower()
+    final = input_str.strip().lower()
+    if search_fragment:
+        if re.match(r"^[\w.-]*@*[\w.-]*\.*\w*$", final) is None:
+            return None
+        return final
     regexp = re.compile(EMAIL_REGEXP)
-    if regexp.match(new_string) is None:
+    if regexp.match(final) is None:
         raise ValueError("Email es incorrecto")
-    return new_string
+    return final
 
 
 def safe_string(input_str, max_len=250):

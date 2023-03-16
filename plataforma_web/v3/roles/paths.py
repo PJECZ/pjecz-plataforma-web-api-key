@@ -13,10 +13,10 @@ from ...core.permisos.models import Permiso
 from ..usuarios.authentications import get_current_active_user
 from ..usuarios.schemas import UsuarioInDB
 
-from .crud import get_roles, get_rol
+from .crud import get_roles, get_rol_by_nombre
 from .schemas import RolOut, OneRolOut
 
-roles = APIRouter(prefix="/v3/roles", tags=["categoria"])
+roles = APIRouter(prefix="/v3/roles", tags=["usuarios"])
 
 
 @roles.get("", response_model=CustomPage[RolOut])
@@ -34,9 +34,9 @@ async def listado_roles(
     return paginate(resultados)
 
 
-@roles.get("/{rol_id}", response_model=OneRolOut)
+@roles.get("/{nombre}", response_model=OneRolOut)
 async def detalle_rol(
-    rol_id: int,
+    nombre: str,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -44,7 +44,7 @@ async def detalle_rol(
     if current_user.permissions.get("ROLES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        rol = get_rol(db=db, rol_id=rol_id)
+        rol = get_rol_by_nombre(db=db, nombre=nombre)
     except MyAnyError as error:
         return OneRolOut(success=False, message=str(error))
     return OneRolOut.from_orm(rol)

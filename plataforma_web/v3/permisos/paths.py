@@ -16,13 +16,15 @@ from ..usuarios.schemas import UsuarioInDB
 from .crud import get_permisos, get_permiso
 from .schemas import PermisoOut, OnePermisoOut
 
-permisos = APIRouter(prefix="/v3/permisos", tags=["categoria"])
+permisos = APIRouter(prefix="/v3/permisos", tags=["usuarios"])
 
 
 @permisos.get("", response_model=CustomPage[PermisoOut])
 async def listado_permisos(
     modulo_id: int = None,
+    modulo_nombre: str = None,
     rol_id: int = None,
+    rol_nombre: str = None,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -30,7 +32,7 @@ async def listado_permisos(
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_permisos(db=db, modulo_id=modulo_id, rol_id=rol_id)
+        resultados = get_permisos(db=db, modulo_id=modulo_id, modulo_nombre=modulo_nombre, rol_id=rol_id, rol_nombre=rol_nombre)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

@@ -16,12 +16,13 @@ from ..usuarios.schemas import UsuarioInDB
 from .crud import get_bitacoras, get_bitacora
 from .schemas import BitacoraOut, OneBitacoraOut
 
-bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["categoria"])
+bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
 
 
 @bitacoras.get("", response_model=CustomPage[BitacoraOut])
 async def listado_bitacoras(
     usuario_id: int = None,
+    usuario_email: str = None,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -29,7 +30,7 @@ async def listado_bitacoras(
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_bitacoras(db=db, usuario_id=usuario_id)
+        resultados = get_bitacoras(db=db, usuario_id=usuario_id, usuario_email=usuario_email)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

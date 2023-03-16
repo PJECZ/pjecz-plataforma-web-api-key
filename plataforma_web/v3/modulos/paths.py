@@ -13,10 +13,10 @@ from ...core.permisos.models import Permiso
 from ..usuarios.authentications import get_current_active_user
 from ..usuarios.schemas import UsuarioInDB
 
-from .crud import get_modulos, get_modulo
+from .crud import get_modulos, get_modulo_by_nombre
 from .schemas import ModuloOut, OneModuloOut
 
-modulos = APIRouter(prefix="/v3/modulos", tags=["categoria"])
+modulos = APIRouter(prefix="/v3/modulos", tags=["usuarios"])
 
 
 @modulos.get("", response_model=CustomPage[ModuloOut])
@@ -34,9 +34,9 @@ async def listado_modulos(
     return paginate(resultados)
 
 
-@modulos.get("/{modulo_id}", response_model=OneModuloOut)
+@modulos.get("/{nombre}", response_model=OneModuloOut)
 async def detalle_modulo(
-    modulo_id: int,
+    nombre: str,
     current_user: UsuarioInDB = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -44,7 +44,7 @@ async def detalle_modulo(
     if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        modulo = get_modulo(db=db, modulo_id=modulo_id)
+        modulo = get_modulo_by_nombre(db=db, nombre=nombre)
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
     return OneModuloOut.from_orm(modulo)
