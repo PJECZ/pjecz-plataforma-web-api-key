@@ -1,13 +1,14 @@
 """
 Autentificaciones
 """
+from typing import Annotated
 from datetime import datetime
 import re
 from typing import Optional
 
 from hashids import Hashids
-from fastapi.security.api_key import APIKeyHeader
 from fastapi import HTTPException, Depends
+from fastapi.security.api_key import APIKeyHeader
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 from unidecode import unidecode
@@ -76,9 +77,7 @@ def authenticate_user(
 
     # Validar el api_key
     if usuario.api_key != api_key:
-        raise MyAuthenticationError(
-            "No es igual la api_key al dato en la base de datos"
-        )
+        raise MyAuthenticationError("No es igual la api_key al dato en la base de datos")
 
     # Validar el email
     if api_key_email != Hashids(salt=usuario.email, min_length=8).encode(1):
@@ -106,9 +105,10 @@ async def get_current_active_user(
     try:
         usuario = authenticate_user(api_key, db)
     except MyAuthenticationError as error:
-        raise HTTPException(
-            status_code=HTTP_403_FORBIDDEN, detail=str(error)
-        ) from error
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail=str(error)) from error
 
     # Entregar
     return usuario
+
+
+CurrentUser = Annotated[UsuarioInDB, Depends(get_current_active_user)]

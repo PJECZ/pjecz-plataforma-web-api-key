@@ -1,9 +1,11 @@
 """
 Settings
 """
-import os
-
 from functools import lru_cache
+import os
+from typing import Annotated
+
+from fastapi import Depends
 from google.cloud import secretmanager
 from pydantic import BaseSettings
 
@@ -54,3 +56,6 @@ class Settings(BaseSettings):
 def get_settings():
     """Get Settings"""
     return Settings()
+
+
+CurrentSettings = Annotated[Settings, Depends(get_settings)]

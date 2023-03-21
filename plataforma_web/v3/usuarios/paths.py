@@ -1,17 +1,15 @@
 """
 Usuarios v3, rutas (paths)
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy.orm import Session
 
-from lib.database import get_db
+from lib.database import DatabaseSession
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import get_current_active_user
-from ..usuarios.schemas import UsuarioInDB
+from ..usuarios.authentications import CurrentUser
 
 from .crud import get_usuarios, get_usuario_by_email
 from .schemas import UsuarioOut, OneUsuarioOut
@@ -21,12 +19,12 @@ usuarios = APIRouter(prefix="/v3/usuarios", tags=["usuarios"])
 
 @usuarios.get("", response_model=CustomPage[UsuarioOut])
 async def listado_usuarios(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     email: str = None,
     nombres: str = None,
     apellido_paterno: str = None,
     apellido_materno: str = None,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Listado de usuarios"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
@@ -40,9 +38,9 @@ async def listado_usuarios(
 
 @usuarios.get("/{email}", response_model=OneUsuarioOut)
 async def detalle_usuario(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     email: str,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Detalle de una usuarios a partir de su id"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:

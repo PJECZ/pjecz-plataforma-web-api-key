@@ -1,29 +1,28 @@
 """
 Database
 """
+from typing import Annotated
+
 from fastapi import Depends
-
-from sqlalchemy import create_engine
+from sqlalchemy import Engine, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
-from config.settings import Settings, get_settings
+from config.settings import CurrentSettings
 
 Base = declarative_base()
 
 
-def get_engine(settings: Settings = Depends(get_settings)):
+def get_engine(settings: CurrentSettings) -> Engine:
     """Database engine"""
 
     # Create engine
-    engine = create_engine(
-        f"postgresql+psycopg2://{settings.db_user}:{settings.db_pass}@{settings.db_host}:{settings.db_port}/{settings.db_name}"
-    )
+    engine = create_engine(f"postgresql+psycopg2://{settings.db_user}:{settings.db_pass}@{settings.db_host}:{settings.db_port}/{settings.db_name}")
 
     return engine
 
 
-def get_db(settings: Settings = Depends(get_settings)):
+def get_db(settings: CurrentSettings) -> Session:
     """Database session"""
 
     # Create engine
@@ -37,3 +36,6 @@ def get_db(settings: Settings = Depends(get_settings)):
         yield db
     finally:
         db.close()
+
+
+DatabaseSession = Annotated[Session, Depends(get_db)]

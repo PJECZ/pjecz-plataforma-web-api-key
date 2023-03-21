@@ -1,17 +1,15 @@
 """
 Permisos v3, rutas (paths)
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy.orm import Session
 
-from lib.database import get_db
+from lib.database import DatabaseSession
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import get_current_active_user
-from ..usuarios.schemas import UsuarioInDB
+from ..usuarios.authentications import CurrentUser
 
 from .crud import get_permisos, get_permiso
 from .schemas import PermisoOut, OnePermisoOut
@@ -21,12 +19,12 @@ permisos = APIRouter(prefix="/v3/permisos", tags=["usuarios"])
 
 @permisos.get("", response_model=CustomPage[PermisoOut])
 async def listado_permisos(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     modulo_id: int = None,
     modulo_nombre: str = None,
     rol_id: int = None,
     rol_nombre: str = None,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Listado de permisos"""
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
@@ -40,9 +38,9 @@ async def listado_permisos(
 
 @permisos.get("/{permiso_id}", response_model=OnePermisoOut)
 async def detalle_permiso(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     permiso_id: int,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Detalle de una permisos a partir de su id"""
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:

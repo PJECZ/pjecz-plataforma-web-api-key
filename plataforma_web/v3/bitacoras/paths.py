@@ -1,17 +1,15 @@
 """
 Bitacoras v3, rutas (paths)
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy.orm import Session
 
-from lib.database import get_db
+from lib.database import DatabaseSession
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import get_current_active_user
-from ..usuarios.schemas import UsuarioInDB
+from ..usuarios.authentications import CurrentUser
 
 from .crud import get_bitacoras, get_bitacora
 from .schemas import BitacoraOut, OneBitacoraOut
@@ -21,10 +19,10 @@ bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
 
 @bitacoras.get("", response_model=CustomPage[BitacoraOut])
 async def listado_bitacoras(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     usuario_id: int = None,
     usuario_email: str = None,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Listado de bitacoras"""
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
@@ -38,9 +36,9 @@ async def listado_bitacoras(
 
 @bitacoras.get("/{bitacora_id}", response_model=OneBitacoraOut)
 async def detalle_bitacora(
+    current_user: CurrentUser,
+    db: DatabaseSession,
     bitacora_id: int,
-    current_user: UsuarioInDB = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
 ):
     """Detalle de una bitacoras a partir de su id"""
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:

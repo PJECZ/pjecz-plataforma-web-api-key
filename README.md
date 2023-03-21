@@ -151,11 +151,15 @@ Clone el repositorio
     git clone https://github.com/PJECZ/pjecz-plataforma-web-api-key.git
     cd pjecz-plataforma-web-api-key
 
-Instale el entorno virtual con **Python 3.10** y los paquetes necesarios
+Instale el entorno virtual con **Python 3.11** y los paquetes necesarios
 
+    python3.11 -m venv .venv
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install wheel
     poetry install
 
-## FastAPI
+## Arrancar local para desarrollo
 
 Ejecute `arrancar` que contiene el comando y parametros para arrancar el servicio
 
@@ -165,10 +169,10 @@ Ejecute `arrancar` que contiene el comando y parametros para arrancar el servici
 
 Relice estos pasos para subir a Google Cloud App Engine
 
-1. Crear el archivo `requirements.txt`
+Crear el archivo `requirements.txt`
 
-   poetry export -f requirements.txt --output requirements.txt --without-hashes
+    poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-2. Y subir a Google Cloud
+Y subir a Google Cloud
 
-   gcloud app deploy
+    gcloud app deploy

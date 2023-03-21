@@ -1,5 +1,5 @@
 """
-NDS Admin API
+PJECZ Plataforma Web API Key
 """
 from fastapi import FastAPI
 from fastapi_pagination import add_pagination
