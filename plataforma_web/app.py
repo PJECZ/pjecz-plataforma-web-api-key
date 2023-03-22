@@ -2,6 +2,7 @@
 PJECZ Plataforma Web API Key
 """
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
 from .v3.bitacoras.paths import bitacoras
@@ -12,10 +13,26 @@ from .v3.roles.paths import roles
 from .v3.usuarios.paths import usuarios
 from .v3.usuarios_roles.paths import usuarios_roles
 
+ORIGINS = [
+    "http://localhost:5000",
+    "http://localhost:8002",
+    "http://127.0.0.1:5000",
+    "http://127.0.0.1:8002",
+]
+
 # FastAPI
 app = FastAPI(
     title="PJECZ Plataforma Web API Key",
     description="API con autentificación para realizar operaciones con la base de datos de Plataforma Web.",
+)
+
+# CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGINS,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Rutas
