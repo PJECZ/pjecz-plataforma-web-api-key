@@ -1,0 +1,27 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Materias
+GET {{baseUrl}}/materias
+X-Api-Key: {{api_key}}
+
+### Materia Familiar
+GET {{baseUrl}}/materias/3
+X-Api-Key: {{api_key}}
+
+### Materias-Tipos de Juicios
+GET {{baseUrl}}/materias_tipos_juicios
+X-Api-Key: {{api_key}}
+
+### Materias-Tipos de Juicios de la materia Familiar
+GET {{baseUrl}}/materias_tipos_juicios
+    ?materia_id=3
+X-Api-Key: {{api_key}}
+
+### Materias-Tipos de Juicios Civil Hipotecario
+GET {{baseUrl}}/materias_tipos_juicios/60
+X-Api-Key: {{api_key}}
