@@ -14,7 +14,7 @@
       "",
       "",
       "class ${2:EsquemaOut}(BaseModel):",
-      "\t\"\"\" Esquema para entregar ${3:comentario} \"\"\"",
+      "\t\"\"\" Esquema para entregar ${3:plural} \"\"\"",
       "",
       "\tid: int | None",
       "\trelacion_id: int | None",
@@ -32,7 +32,7 @@
       "",
       "",
       "class One${2:EsquemaOut}(${2:EsquemaOut}, OneBaseOut):",
-      "\t\"\"\" Esquema para entregar un ${4:comentario} \"\"\"",
+      "\t\"\"\" Esquema para entregar un ${4:singular} \"\"\"",
       ""
     ],
     "description": "Contenido para schemas.py"
