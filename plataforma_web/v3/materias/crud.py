@@ -11,7 +11,7 @@ from ...core.materias.models import Materia
 
 def get_materias(db: Session) -> Any:
     """Consultar las materias activas"""
-    return db.query(Materia).filter_by(estatus="A").order_by(Materia.id)
+    return db.query(Materia).filter_by(estatus="A").order_by(Materia.nombre)
 
 
 def get_materia(db: Session, materia_id: int) -> Materia:

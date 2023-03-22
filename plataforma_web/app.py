@@ -5,8 +5,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
+from .v3.autoridades.paths import autoridades
 from .v3.bitacoras.paths import bitacoras
+from .v3.distritos.paths import distritos
 from .v3.entradas_salidas.paths import entradas_salidas
+from .v3.materias.paths import materias
+from .v3.materias_tipos_juicios.paths import materias_tipos_juicios
 from .v3.modulos.paths import modulos
 from .v3.permisos.paths import permisos
 from .v3.roles.paths import roles
@@ -36,8 +40,12 @@ app.add_middleware(
 )
 
 # Rutas
+app.include_router(autoridades)
 app.include_router(bitacoras)
+app.include_router(distritos)
 app.include_router(entradas_salidas)
+app.include_router(materias)
+app.include_router(materias_tipos_juicios)
 app.include_router(modulos)
 app.include_router(permisos)
 app.include_router(roles)

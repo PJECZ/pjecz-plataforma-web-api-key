@@ -93,7 +93,7 @@
       "\treturn paginate(resultados)",
       "",
       "",
-      "@${2:plural}.get(\"/{{$3:singular}_id}\", response_model=One${4:EsquemaOut})",
+      "@${2:plural}.get(\"/{${3:singular}_id}\", response_model=One${4:EsquemaOut})",
       "async def detalle_${3:singular}(",
       "\tcurrent_user: CurrentUser,",
       "\tdb: DatabaseSession,",

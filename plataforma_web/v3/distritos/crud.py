@@ -14,15 +14,15 @@ def get_distritos(
     db: Session,
     filtro_boleano: bool = False,
 ) -> Any:
-    """ Consultar los distritos activos """
+    """Consultar los distritos activos"""
     consulta = db.query(Distrito)
     if filtro_boleano is not None:
         consulta = consulta.filter_by(filtro_boleano=filtro_boleano)
-    return consulta.filter_by(estatus="A").order_by(Distrito.id)
+    return consulta.filter_by(estatus="A").order_by(Distrito.clave)
 
 
 def get_distrito(db: Session, distrito_id: int) -> Distrito:
-    """ Consultar un distrito por su id """
+    """Consultar un distrito por su id"""
     distrito = db.query(Distrito).get(distrito_id)
     if distrito is None:
         raise MyNotExistsError("No existe ese distrito")
@@ -32,7 +32,7 @@ def get_distrito(db: Session, distrito_id: int) -> Distrito:
 
 
 def get_distrito_with_clave(db: Session, clave: str) -> Distrito:
-    """ Consultar un distrito por su clave """
+    """Consultar un distrito por su clave"""
     try:
         clave = safe_clave(clave)
     except ValueError as error:

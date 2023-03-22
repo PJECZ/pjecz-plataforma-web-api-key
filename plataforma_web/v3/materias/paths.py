@@ -32,7 +32,7 @@ async def listado_materias(
     return paginate(resultados)
 
 
-@materias.get("/{{materia:singular}_id}", response_model=OneMateriaOut)
+@materias.get("/{materia_id}", response_model=OneMateriaOut)
 async def detalle_materia(
     current_user: CurrentUser,
     db: DatabaseSession,
