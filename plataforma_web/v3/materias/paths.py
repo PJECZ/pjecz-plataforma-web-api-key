@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_materias, get_materia
 from .schemas import MateriaOut, OneMateriaOut
 
-materias = APIRouter(prefix="/v3/materias", tags=["categoria"])
+materias = APIRouter(prefix="/v3/materias", tags=["autoridades"])
 
 
 @materias.get("", response_model=CustomPage[MateriaOut])

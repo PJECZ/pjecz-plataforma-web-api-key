@@ -14,6 +14,7 @@ con las siguientes variables:
 - DB_NAME
 - DB_USER
 - DB_PASS
+- SALT
 
 Para producción vaya a Google Secret Manager en
 https://console.cloud.google.com/security/secret-manager
@@ -24,6 +25,7 @@ y cree como secretos las siguientes variable de entorno
 - pjecz_plataforma_web_api_db_name
 - pjecz_plataforma_web_api_db_pass
 - pjecz_plataforma_web_api_db_user
+- pjecz_plataforma_web_api_salt
 
 Y en el archivo app.yaml agregue las siguientes variables de entorno
 
@@ -71,6 +73,7 @@ class Settings(BaseSettings):
     db_name: str = get_secret("db_name")
     db_pass: str = get_secret("db_pass")
     db_user: str = get_secret("db_user")
+    salt: str = get_secret("salt")
     tz: str = "America/Mexico_City"
 
     class Config:

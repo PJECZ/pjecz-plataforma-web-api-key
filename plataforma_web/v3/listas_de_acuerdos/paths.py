@@ -16,7 +16,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_listas_de_acuerdos, get_lista_de_acuerdo
 from .schemas import ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 
-listas_de_acuerdos = APIRouter(prefix="/v3/listas_de_acuerdos", tags=["categoria"])
+listas_de_acuerdos = APIRouter(prefix="/v3/listas_de_acuerdos", tags=["listas de acuerdos"])
 
 
 @listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])

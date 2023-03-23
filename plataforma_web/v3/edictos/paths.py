@@ -16,7 +16,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_edictos, get_edicto
 from .schemas import EdictoOut, OneEdictoOut
 
-edictos = APIRouter(prefix="/v3/edictos", tags=["categoria"])
+edictos = APIRouter(prefix="/v3/edictos", tags=["edictos"])
 
 
 @edictos.get("", response_model=CustomPage[EdictoOut])

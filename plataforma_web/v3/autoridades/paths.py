@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_autoridades, get_autoridad_with_clave
 from .schemas import AutoridadOut, OneAutoridadOut
 
-autoridades = APIRouter(prefix="/v3/autoridades", tags=["categoria"])
+autoridades = APIRouter(prefix="/v3/autoridades", tags=["autoridades"])
 
 
 @autoridades.get("", response_model=CustomPage[AutoridadOut])

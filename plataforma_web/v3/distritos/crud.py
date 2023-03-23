@@ -12,12 +12,18 @@ from ...core.distritos.models import Distrito
 
 def get_distritos(
     db: Session,
-    filtro_boleano: bool = False,
+    es_distrito_judicial: bool = None,
+    es_distrito: bool = None,
+    es_jurisdiccional: bool = None,
 ) -> Any:
     """Consultar los distritos activos"""
     consulta = db.query(Distrito)
-    if filtro_boleano is not None:
-        consulta = consulta.filter_by(filtro_boleano=filtro_boleano)
+    if es_distrito_judicial is not None:
+        consulta = consulta.filter_by(es_distrito_judicial=es_distrito_judicial)
+    if es_distrito is not None:
+        consulta = consulta.filter_by(es_distrito=es_distrito)
+    if es_jurisdiccional is not None:
+        consulta = consulta.filter_by(es_jurisdiccional=es_jurisdiccional)
     return consulta.filter_by(estatus="A").order_by(Distrito.clave)
 
 
