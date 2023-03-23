@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     db_name: str = get_secret("db_name")
     db_pass: str = get_secret("db_pass")
     db_user: str = get_secret("db_user")
+    origins: str = get_secret("origins")
     salt: str = get_secret("salt")
     tz: str = "America/Mexico_City"
 
