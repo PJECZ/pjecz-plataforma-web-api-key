@@ -73,6 +73,9 @@ Verifique que este en True
     DB_USER=
     DB_PASS=
 
+    # CORS origins
+    ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
+
     # Salt sirve para cifrar el ID con HashID
     SALT=
 
@@ -103,6 +106,7 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo "   DB_NAME: ${DB_NAME}"
         echo "   DB_USER: ${DB_USER}"
         echo "   DB_PASS: ${DB_PASS}"
+        echo "   ORIGINS: ${ORIGINS}"
         echo "   SALT: ${SALT}"
         echo "   TZ: ${TZ}"
         echo

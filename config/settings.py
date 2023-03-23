@@ -14,23 +14,25 @@ con las siguientes variables:
 - DB_NAME
 - DB_USER
 - DB_PASS
+- ORIGINS
 - SALT
 
 Para producción vaya a Google Secret Manager en
 https://console.cloud.google.com/security/secret-manager
 y cree como secretos las siguientes variable de entorno
 
-- pjecz_plataforma_web_api_db_host
-- pjecz_plataforma_web_api_db_port
-- pjecz_plataforma_web_api_db_name
-- pjecz_plataforma_web_api_db_pass
-- pjecz_plataforma_web_api_db_user
-- pjecz_plataforma_web_api_salt
+- pjecz_plataforma_web_api_key_db_host
+- pjecz_plataforma_web_api_key_db_port
+- pjecz_plataforma_web_api_key_db_name
+- pjecz_plataforma_web_api_key_db_user
+- pjecz_plataforma_web_api_key_db_pass
+- pjecz_plataforma_web_api_key_origins
+- pjecz_plataforma_web_api_key_salt
 
 Y en el archivo app.yaml agregue las siguientes variables de entorno
 
 - PROJECT_ID: justicia-digital-gob-mx
-- SERVICE_PREFIX: pjecz_plataforma_web_api
+- SERVICE_PREFIX: pjecz_plataforma_web_api_key
 """
 from functools import lru_cache
 import os
