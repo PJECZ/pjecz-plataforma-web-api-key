@@ -52,8 +52,21 @@ class Autoridad(Base, UniversalMixin):
     es_defensoria = Column(Boolean, nullable=False, default=False)
     es_jurisdiccional = Column(Boolean(), nullable=False, default=False)
     es_notaria = Column(Boolean(), nullable=False, default=False)
-    organo_jurisdiccional = Column(Enum(*ORGANOS_JURISDICCIONALES, name="tipos_organos_jurisdiccionales", native_enum=False), index=True, nullable=False)
-    audiencia_categoria = Column(Enum(*AUDIENCIAS_CATEGORIAS, name="tipos_audiencias_categorias", native_enum=False), index=True, nullable=False)
+    organo_jurisdiccional = Column(
+        Enum(*ORGANOS_JURISDICCIONALES, name="tipos_organos_jurisdiccionales", native_enum=False),
+        index=True,
+        nullable=False,
+    )
+    audiencia_categoria = Column(
+        Enum(*AUDIENCIAS_CATEGORIAS, name="tipos_audiencias_categorias", native_enum=False),
+        index=True,
+        nullable=False,
+    )
+
+    # Hijos
+    edictos = relationship("Edicto", back_populates="autoridad")
+    listas_de_acuerdos = relationship("ListaDeAcuerdo", back_populates="autoridad")
+    sentencias = relationship("Sentencia", back_populates="autoridad")
 
     @property
     def distrito_clave(self):

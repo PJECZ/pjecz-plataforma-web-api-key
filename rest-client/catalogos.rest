@@ -1,0 +1,59 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Distritos
+GET {{baseUrl}}/distritos
+X-Api-Key: {{api_key}}
+
+### Distritos es_distrito_judicial
+GET {{baseUrl}}/distritos
+    ?es_distrito_judicial=true
+X-Api-Key: {{api_key}}
+
+### Distritos es_distrito
+GET {{baseUrl}}/distritos
+    ?es_distrito=true
+X-Api-Key: {{api_key}}
+
+### Distritos es_jurisdiccional
+GET {{baseUrl}}/distritos
+    ?es_jurisdiccional=true
+X-Api-Key: {{api_key}}
+
+### Distrito Torreon
+GET {{baseUrl}}/distritos/dtrc
+X-Api-Key: {{api_key}}
+
+### Autoridades
+GET {{baseUrl}}/autoridades
+X-Api-Key: {{api_key}}
+
+### Autoridades CEMASC
+GET {{baseUrl}}/autoridades
+    ?es_cemasc=true
+X-Api-Key: {{api_key}}
+
+### Autoridades Defensorias
+GET {{baseUrl}}/autoridades
+    ?es_defensoria=true
+X-Api-Key: {{api_key}}
+
+### Autoridades Jurisdiccionales
+GET {{baseUrl}}/autoridades
+    ?es_jurisdiccional=true
+X-Api-Key: {{api_key}}
+
+### Autoridades Jurisdiccionales sin Notarias
+GET {{baseUrl}}/autoridades
+    ?es_jurisdiccional=true
+    &es_notaria=false
+X-Api-Key: {{api_key}}
+
+### Autoridades Notarias
+GET {{baseUrl}}/autoridades
+    ?es_notaria=true
+X-Api-Key: {{api_key}}

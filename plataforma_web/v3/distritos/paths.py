@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_distritos, get_distrito_with_clave
 from .schemas import DistritoOut, OneDistritoOut
 
-distritos = APIRouter(prefix="/v3/distritos", tags=["categoria"])
+distritos = APIRouter(prefix="/v3/distritos", tags=["autoridades"])
 
 
 @distritos.get("", response_model=CustomPage[DistritoOut])
@@ -26,7 +26,7 @@ async def listado_distritos(
     es_jurisdiccional: bool = None,
 ):
     """Listado de distritos"""
-    if current_user.permissions.get("DISTRITO", 0) < Permiso.VER:
+    if current_user.permissions.get("DISTRITOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_distritos(
@@ -47,7 +47,7 @@ async def detalle_distrito(
     clave: str,
 ):
     """Detalle de una distrito a partir de su clave"""
-    if current_user.permissions.get("DISTRITO", 0) < Permiso.VER:
+    if current_user.permissions.get("DISTRITOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         distrito = get_distrito_with_clave(db=db, clave=clave)
