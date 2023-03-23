@@ -1,7 +1,7 @@
 runtime: python311
 instance_class: F1
 service: plataforma-web-api-key
-entrypoint: gunicorn -w 2 -k uvicorn.workers.UvicornWorker plataforma_web.app:app
+entrypoint: gunicorn -w 2 -k uvicorn.workers.UvicornWorker plataforma_web.app:create_app
 env_variables:
   PROJECT_ID: justicia-digital-gob-mx
   SERVICE_PREFIX: pjecz_plataforma_web_api_key
