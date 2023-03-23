@@ -24,6 +24,9 @@ class MateriaTipoJuicio(Base, UniversalMixin):
     # Columnas
     descripcion = Column(String(256), nullable=False)
 
+    # Hijos
+    sentencias = relationship("Sentencia", back_populates="materia_tipo_juicio")
+
     @property
     def materia_nombre(self):
         """Nombre de la materia"""

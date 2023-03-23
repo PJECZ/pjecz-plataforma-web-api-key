@@ -12,5 +12,4 @@
 __pycache__/
 
 /poetry.lock
-/requirements.txt
 /.venv/
