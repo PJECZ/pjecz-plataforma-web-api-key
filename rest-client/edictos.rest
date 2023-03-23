@@ -1,0 +1,32 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Edictos
+GET {{baseUrl}}/edictos
+X-Api-Key: {{api_key}}
+
+### Edictos de la autoridad 37
+GET {{baseUrl}}/edictos
+    ?autoridad_id=37
+X-Api-Key: {{api_key}}
+
+### Edictos del SLT-J2-CIV
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{api_key}}
+
+### Edictos del SLT-J2-CIV del 2021
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+    &anio=2021
+X-Api-Key: {{api_key}}
+
+### Edictos del SLT-J2-CIV del 2021-04-26
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+    &fecha=2021-04-26
+X-Api-Key: {{api_key}}
