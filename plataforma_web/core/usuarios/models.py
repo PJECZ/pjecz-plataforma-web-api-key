@@ -74,10 +74,7 @@ class Usuario(Base, UniversalMixin):
                 for permiso in usuario_rol.rol.permisos:
                     if permiso.estatus == "A":
                         etiqueta = permiso.modulo.nombre
-                        if (
-                            etiqueta not in self.permisos_consultados
-                            or permiso.nivel > self.permisos_consultados[etiqueta]
-                        ):
+                        if etiqueta not in self.permisos_consultados or permiso.nivel > self.permisos_consultados[etiqueta]:
                             self.permisos_consultados[etiqueta] = permiso.nivel
         return self.permisos_consultados
 
