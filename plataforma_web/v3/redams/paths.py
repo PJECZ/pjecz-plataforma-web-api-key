@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_redams, get_redam
 from .schemas import RedamOut, OneRedamOut
 
-redams = APIRouter(prefix="/v3/redams", tags=["categoria"])
+redams = APIRouter(prefix="/v3/redams", tags=["redam"])
 
 
 @redams.get("", response_model=CustomPage[RedamOut])
@@ -26,7 +26,7 @@ async def listado_redams(
     nombre: str = None,
     expediente: str = None,
 ):
-    """Listado de redams"""
+    """Listado de Deudores Alimentarios Morosos"""
     if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -48,7 +48,7 @@ async def detalle_redam(
     db: DatabaseSession,
     redam_id: int,
 ):
-    """Detalle de una redam a partir de su id"""
+    """Detalle de un Deudor Alimentario Moroso a partir de su id"""
     if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
