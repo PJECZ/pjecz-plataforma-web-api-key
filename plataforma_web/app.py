@@ -17,6 +17,7 @@ from .v3.materias.paths import materias
 from .v3.materias_tipos_juicios.paths import materias_tipos_juicios
 from .v3.modulos.paths import modulos
 from .v3.permisos.paths import permisos
+from .v3.redams.paths import redams
 from .v3.roles.paths import roles
 from .v3.sentencias.paths import sentencias
 from .v3.usuarios.paths import usuarios
@@ -53,6 +54,7 @@ def create_app() -> FastAPI:
     app.include_router(materias_tipos_juicios)
     app.include_router(modulos)
     app.include_router(permisos)
+    app.include_router(redams)
     app.include_router(roles)
     app.include_router(sentencias)
     app.include_router(usuarios)

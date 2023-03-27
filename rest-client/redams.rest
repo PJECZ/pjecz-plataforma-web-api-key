@@ -1,0 +1,30 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Redams
+GET {{baseUrl}}/redams
+X-Api-Key: {{api_key}}
+
+### Redams con nombre Luis
+GET {{baseUrl}}/redams
+    ?nombre=Luis
+X-Api-Key: {{api_key}}
+
+### Redams con expediente 1195/2018
+GET {{baseUrl}}/redams
+    ?expediente=1195/2018
+X-Api-Key: {{api_key}}
+
+### Redams del TRC-J1-FAM
+GET {{baseUrl}}/redams
+    ?autoridad_clave=TRC-J1-FAM
+X-Api-Key: {{api_key}}
+
+### Redams del distrito DTRC
+GET {{baseUrl}}/redams
+    ?distrito_clave=DTRC
+X-Api-Key: {{api_key}}
