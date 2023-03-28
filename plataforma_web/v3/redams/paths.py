@@ -23,6 +23,8 @@ async def listado_redams(
     db: DatabaseSession,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    distrito_id: int = None,
+    distrito_clave: str = None,
     nombre: str = None,
     expediente: str = None,
 ):
@@ -34,6 +36,8 @@ async def listado_redams(
             db=db,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
+            distrito_id=distrito_id,
+            distrito_clave=distrito_clave,
             nombre=nombre,
             expediente=expediente,
         )

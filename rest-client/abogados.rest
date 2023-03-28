@@ -1,0 +1,27 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Abogados
+GET {{baseUrl}}/abogados
+X-Api-Key: {{api_key}}
+
+### Abogados con nombre Garza
+GET {{baseUrl}}/abogados
+    ?nombre=Garza
+X-Api-Key: {{api_key}}
+
+### Abogados con nombre Garza registrados desde 2020
+GET {{baseUrl}}/abogados
+    ?nombre=Garza
+    &anio_desde=2020
+X-Api-Key: {{api_key}}
+
+### Abogados registrados entre 2020 y 2021
+GET {{baseUrl}}/abogados
+    ?anio_desde=2020
+    &anio_hasta=2021
+X-Api-Key: {{api_key}}

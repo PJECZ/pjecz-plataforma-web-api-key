@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_materias_tipos_juicios, get_materia_tipo_juicio
 from .schemas import MateriaTipoJuicioOut, OneMateriaTipoJuicioOut
 
-materias_tipos_juicios = APIRouter(prefix="/v3/materias_tipos_juicios", tags=["sentencias"])
+materias_tipos_juicios = APIRouter(prefix="/v3/materias_tipos_juicios", tags=["autoridades"])
 
 
 @materias_tipos_juicios.get("", response_model=CustomPage[MateriaTipoJuicioOut])

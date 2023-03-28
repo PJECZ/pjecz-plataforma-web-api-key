@@ -9,7 +9,7 @@ from lib.schemas_base import OneBaseOut
 
 
 class RedamOut(BaseModel):
-    """Esquema para entregar redams"""
+    """Esquema para entregar deudores alimentarios morosos"""
 
     id: int | None
     distrito_id: int | None
@@ -32,4 +32,4 @@ class RedamOut(BaseModel):
 
 
 class OneRedamOut(RedamOut, OneBaseOut):
-    """Esquema para entregar un redam"""
+    """Esquema para entregar un deudor alimentario moroso"""
