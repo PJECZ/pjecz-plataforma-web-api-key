@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_abogados, get_abogado
 from .schemas import AbogadoOut, OneAbogadoOut
 
-abogados = APIRouter(prefix="/v3/abogados", tags=["categoria"])
+abogados = APIRouter(prefix="/v3/abogados", tags=["abogados"])
 
 
 @abogados.get("", response_model=CustomPage[AbogadoOut])

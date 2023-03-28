@@ -6,7 +6,7 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.database import DatabaseSession
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_list import CustomList, custom_list_success_false
 
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
@@ -17,7 +17,7 @@ from .schemas import ModuloOut, OneModuloOut
 modulos = APIRouter(prefix="/v3/modulos", tags=["usuarios"])
 
 
-@modulos.get("", response_model=CustomPage[ModuloOut])
+@modulos.get("", response_model=CustomList[ModuloOut])
 async def listado_modulos(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -28,7 +28,7 @@ async def listado_modulos(
     try:
         resultados = get_modulos(db=db)
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return custom_list_success_false(error)
     return paginate(resultados)
 
 
