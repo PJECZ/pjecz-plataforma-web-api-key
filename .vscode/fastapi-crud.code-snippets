@@ -7,6 +7,46 @@
       "${1:Modulos} v3, CRUD (create, read, update, and delete)",
       "\"\"\"",
       "from typing import Any",
+      "",
+      "from sqlalchemy.orm import Session",
+      "",
+      "from lib.exceptions import MyIsDeletedError, MyNotExistsError",
+      "",
+      "from ...core.${2:plural}.models import ${3:Clase}",
+      "",
+      "",
+      "def get_${2:plural}(",
+      "\tdb: Session,",
+      "\tfiltro_boleano: bool = False,",
+      ") -> Any:",
+      "\t\"\"\" Consultar los ${4:plural} activos \"\"\"",
+      "\tconsulta = db.query(${3:Clase})",
+      "\tif filtro_boleano is not None:",
+      "\t\tconsulta = consulta.filter_by(filtro_boleano=filtro_boleano)",
+      "\treturn consulta.filter_by(estatus=\"A\").order_by(${3:Clase}.id)",
+      "",
+      "",
+      "def get_${5:singular}(db: Session, ${5:singular}_id: int) -> ${3:Clase}:",
+      "\t\"\"\" Consultar un ${6:singular} por su id \"\"\"",
+      "\t${5:singular} = db.query(${3:Clase}).get(${5:singular}_id)",
+      "\tif ${5:singular} is None:",
+      "\t\traise MyNotExistsError(\"No existe ese ${6:singular}\")",
+      "\tif ${5:singular}.estatus != \"A\":",
+      "\t\traise MyIsDeletedError(\"No es activo ese ${6:singular}, está eliminado\")",
+      "\treturn ${5:singular}",
+      ""
+    ],
+    "description": "Contenido para crud.py con id"
+  },
+  "FastAPI crud clave": {
+    "scope": "python",
+    "prefix": "fcrudclave",
+    "body": [
+      "\"\"\"",
+      "${1:Modulos} v3, CRUD (create, read, update, and delete)",
+      "\"\"\"",
+      "from typing import Any",
+      "",
       "from sqlalchemy.orm import Session",
       "",
       "from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError",
@@ -50,6 +90,6 @@
       "\treturn ${5:singular}",
       ""
     ],
-    "description": "Contenido para crud.py"
+    "description": "Contenido para crud.py con id y clave"
   }
 }
