@@ -24,9 +24,9 @@ GET {{baseUrl}}/redams
     ?expediente=1195/2018
 X-Api-Key: {{api_key}}
 
-### Redams del TRC-J1-FAM
+### Redams del MNC-J3-FAM
 GET {{baseUrl}}/redams
-    ?autoridad_clave=TRC-J1-FAM
+    ?autoridad_clave=MNC-J3-FAM
 X-Api-Key: {{api_key}}
 
 ### Redams del distrito DTRC
