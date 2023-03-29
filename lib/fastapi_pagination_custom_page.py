@@ -43,6 +43,19 @@ class CustomPage(AbstractPage[T], Generic[T]):
         if not isinstance(params, cls.__params_type__):
             raise TypeError(f"Params must be {cls.__params_type__}")
 
+        # If total is zero, set message to "No se encontraron resultados"
+        if total == 0:
+            return cls(
+                success=False,
+                message="No se encontraron resultados",
+                result=PageResult(
+                    total=0,
+                    items=[],
+                    limit=0,
+                    offset=0,
+                ),
+            )
+
         return cls(
             result=PageResult(
                 total=total,
