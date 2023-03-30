@@ -24,6 +24,7 @@ from .v3.roles.paths import roles
 from .v3.sentencias.paths import sentencias
 from .v3.usuarios.paths import usuarios
 from .v3.usuarios_roles.paths import usuarios_roles
+from .v3.ubicaciones_expedientes.paths import ubicaciones_expedientes
 
 
 def create_app() -> FastAPI:
@@ -63,6 +64,7 @@ def create_app() -> FastAPI:
     app.include_router(sentencias)
     app.include_router(usuarios)
     app.include_router(usuarios_roles)
+    app.include_router(ubicaciones_expedientes)
 
     # Paginación
     add_pagination(app)
