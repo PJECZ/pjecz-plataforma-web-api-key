@@ -12,7 +12,7 @@ from ...core.peritos_tipos.models import PeritoTipo
 
 def get_peritos_tipos(db: Session) -> Any:
     """Consultar los tipos de peritos activos"""
-    return db.query(PeritoTipo).filter_by(estatus="A").order_by(PeritoTipo.id)
+    return db.query(PeritoTipo).filter_by(estatus="A").order_by(PeritoTipo.nombre)
 
 
 def get_perito_tipo(db: Session, perito_tipo_id: int) -> PeritoTipo:
