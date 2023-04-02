@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_ubicaciones_expedientes, get_ubicacion_expediente
 from .schemas import UbicacionExpedienteOut, OneUbicacionExpedienteOut
 
-ubicaciones_expedientes = APIRouter(prefix="/v3/ubicaciones_expedientes", tags=["categoria"])
+ubicaciones_expedientes = APIRouter(prefix="/v3/ubicaciones_expedientes", tags=["ubicaciones de expedientes"])
 
 
 @ubicaciones_expedientes.get("", response_model=CustomPage[UbicacionExpedienteOut])
