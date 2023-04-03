@@ -30,3 +30,12 @@ GET {{baseUrl}}/edictos
     ?autoridad_clave=SLT-J2-CIV
     &fecha=2021-04-26
 X-Api-Key: {{api_key}}
+
+### Edictos del distrito DMNC
+GET {{baseUrl}}/edictos
+    ?distrito_clave=DMNC
+X-Api-Key: {{api_key}}
+
+### Edicto con id 49367
+GET {{baseUrl}}/edictos/49367
+X-Api-Key: {{api_key}}

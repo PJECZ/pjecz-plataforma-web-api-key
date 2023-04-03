@@ -64,6 +64,7 @@ class Autoridad(Base, UniversalMixin):
     )
 
     # Hijos
+    audiencias = relationship("Audiencia", back_populates="autoridad")
     edictos = relationship("Edicto", back_populates="autoridad")
     glosas = relationship("Glosa", back_populates="autoridad")
     listas_de_acuerdos = relationship("ListaDeAcuerdo", back_populates="autoridad")

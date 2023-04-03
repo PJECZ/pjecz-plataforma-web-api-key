@@ -38,10 +38,9 @@ def get_glosas(
     if fecha is not None:
         consulta = consulta.filter(Glosa.fecha == fecha)
     elif anio is not None:
-        if 1900 <= anio <= date.today().year:
-            consulta = consulta.filter(Glosa.fecha >= date(anio, 1, 1)).filter(Glosa.fecha <= date(anio, 12, 31))
-        else:
-            raise MyNotValidParamError("El año no es válido")
+        desde = date(year=anio, month=1, day=1)
+        hasta = date(year=anio, month=12, day=31)
+        consulta = consulta.filter(Glosa.fecha >= desde).filter(Glosa.fecha <= hasta)
     return consulta.filter_by(estatus="A").order_by(Glosa.id)
 
 

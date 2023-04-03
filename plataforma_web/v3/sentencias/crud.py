@@ -6,7 +6,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
@@ -42,10 +42,9 @@ def get_sentencias(
     if fecha is not None:
         consulta = consulta.filter(Sentencia.fecha == fecha)
     elif anio is not None:
-        if 1900 <= anio <= date.today().year:
-            consulta = consulta.filter(Sentencia.fecha >= date(anio, 1, 1)).filter(Sentencia.fecha <= date(anio, 12, 31))
-        else:
-            raise MyNotValidParamError("El año no es válido")
+        desde = date(year=anio, month=1, day=1)
+        hasta = date(year=anio, month=12, day=31)
+        consulta = consulta.filter(Sentencia.fecha >= desde).filter(Sentencia.fecha <= hasta)
     if materia_tipo_juicio_id is not None:
         materia_tipo_juicio = get_materia_tipo_juicio(db, materia_tipo_juicio_id)
         consulta = consulta.filter_by(materia_tipo_juicio_id=materia_tipo_juicio.id)

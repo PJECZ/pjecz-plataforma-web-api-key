@@ -30,3 +30,7 @@ GET {{baseUrl}}/sentencias
     ?autoridad_clave=SLT-J2-CIV
     &fecha=2021-05-31
 X-Api-Key: {{api_key}}
+
+### Sentencia con id 21388
+GET {{baseUrl}}/sentencias/21388
+X-Api-Key: {{api_key}}
