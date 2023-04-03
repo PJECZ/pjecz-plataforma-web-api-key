@@ -13,6 +13,7 @@ from .v3.bitacoras.paths import bitacoras
 from .v3.distritos.paths import distritos
 from .v3.edictos.paths import edictos
 from .v3.entradas_salidas.paths import entradas_salidas
+from .v3.epocas.paths import epocas
 from .v3.glosas.paths import glosas
 from .v3.listas_de_acuerdos.paths import listas_de_acuerdos
 from .v3.materias.paths import materias
@@ -25,6 +26,7 @@ from .v3.redams.paths import redams
 from .v3.repsvm_agresores.paths import repsvm_agresores
 from .v3.roles.paths import roles
 from .v3.sentencias.paths import sentencias
+from .v3.tesis_jurisprudencias.paths import tesis_jurisprudencias
 from .v3.usuarios.paths import usuarios
 from .v3.usuarios_roles.paths import usuarios_roles
 from .v3.ubicaciones_expedientes.paths import ubicaciones_expedientes
@@ -56,6 +58,7 @@ def create_app() -> FastAPI:
     app.include_router(distritos)
     app.include_router(edictos)
     app.include_router(entradas_salidas)
+    app.include_router(epocas)
     app.include_router(glosas)
     app.include_router(listas_de_acuerdos)
     app.include_router(materias)
@@ -68,6 +71,7 @@ def create_app() -> FastAPI:
     app.include_router(repsvm_agresores)
     app.include_router(roles)
     app.include_router(sentencias)
+    app.include_router(tesis_jurisprudencias)
     app.include_router(usuarios)
     app.include_router(usuarios_roles)
     app.include_router(ubicaciones_expedientes)
