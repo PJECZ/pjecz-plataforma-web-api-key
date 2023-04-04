@@ -46,7 +46,7 @@ async def listado_tesis_jurisprudencias(
     return paginate(resultados)
 
 
-@tesis_jurisprudencias.get("/{tesisjurisprudencia_id}", response_model=OneTesisJurisprudenciaOut)
+@tesis_jurisprudencias.get("/{tesis_jurisprudencia_id}", response_model=OneTesisJurisprudenciaOut)
 async def detalle_tesisjurisprudencia(
     current_user: CurrentUser,
     db: DatabaseSession,

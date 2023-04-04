@@ -37,7 +37,7 @@ class TesisJurisprudencia(Base, UniversalMixin):
     )
 
     # Nombre de la tabla
-    __tablename__ = "tesuis_jurisprudencias"
+    __tablename__ = "tesis_jurisprudencias"
 
     # Clave primaria
     id = Column(Integer, primary_key=True)
