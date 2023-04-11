@@ -91,9 +91,9 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
 
     if command -v figlet &> /dev/null
     then
-        figlet PJECZ Plataforma Web API Key
+        figlet Plataforma Web API Key
     else
-        echo "== PJECZ Plataforma Web API Key"
+        echo "== Plataforma Web API Key"
     fi
     echo
 
@@ -126,7 +126,7 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo "   PYTHONPATH: ${PYTHONPATH}"
         echo
         alias black="black --config pyproject.toml"
-        alias arrancar="uvicorn --host=127.0.0.1 --port 8002 --reload plataforma_web.app:create_app"
+        alias arrancar="uvicorn --factory --host=127.0.0.1 --port 8002 --reload plataforma_web.app:create_app"
         echo "-- Ejecutar FastAPI 127.0.0.1:8002"
         echo "   arrancar"
         echo

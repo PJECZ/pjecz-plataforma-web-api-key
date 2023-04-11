@@ -8,14 +8,19 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class AbogadoOut(BaseModel):
-    """Esquema para entregar abogados"""
+class AbogadoIn(BaseModel):
+    """Esquema para recibir un abogado"""
 
-    id: int | None
     fecha: date | None
     numero: str | None
     libro: str | None
     nombre: str | None
+
+
+class AbogadoOut(AbogadoIn):
+    """Esquema para entregar abogados"""
+
+    id: int | None
 
     class Config:
         """SQLAlchemy config"""

@@ -14,20 +14,20 @@ GET {{baseUrl}}/audiencias
     ?autoridad_id=37
 X-Api-Key: {{api_key}}
 
-### Audiencias de la autoridad SLT-J2-CIV
+### Audiencias de la autoridad MNC-J2-CIV
 GET {{baseUrl}}/audiencias
-    ?autoridad_clave=SLT-J2-CIV
+    ?autoridad_clave=MNC-J2-CIV
 X-Api-Key: {{api_key}}
 
-### Audiencias de la autoridad SLT-J2-CIV del anio 2021
+### Audiencias de la autoridad MNC-J2-CIV del anio 2021
 GET {{baseUrl}}/audiencias
-    ?autoridad_clave=SLT-J2-CIV
+    ?autoridad_clave=MNC-J2-CIV
     &anio=2021
 X-Api-Key: {{api_key}}
 
-### Audiencias de la autoridad SLT-J2-CIV de 2021-04-26
+### Audiencias de la autoridad MNC-J2-CIV de 2021-04-26
 GET {{baseUrl}}/audiencias
-    ?autoridad_clave=SLT-J2-CIV
+    ?autoridad_clave=MNC-J2-CIV
     &fecha=2021-04-26
 X-Api-Key: {{api_key}}
 

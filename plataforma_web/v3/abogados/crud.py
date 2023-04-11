@@ -46,3 +46,34 @@ def get_abogado(db: Session, abogado_id: int) -> Abogado:
     if abogado.estatus != "A":
         raise MyIsDeletedError("No es activo ese abogado, está eliminado")
     return abogado
+
+
+def create_abogado(db: Session, abogado: Abogado) -> Abogado:
+    """Crear un abogado"""
+    db.add(abogado)
+    db.commit()
+    db.refresh(abogado)
+    return abogado
+
+
+def update_abogado(db: Session, abogado_id: int, abogado_in: Abogado) -> Abogado:
+    """Actualizar un abogado"""
+    abogado = get_abogado(db=db, abogado_id=abogado_id)
+    abogado.fecha = abogado_in.fecha
+    abogado.numero = abogado_in.numero
+    abogado.libro = abogado_in.libro
+    abogado.nombre = abogado_in.nombre
+    db.add(abogado)
+    db.commit()
+    db.refresh(abogado)
+    return abogado
+
+
+def delete_abogado(db: Session, abogado_id: int) -> Abogado:
+    """Eliminar un abogado"""
+    abogado = get_abogado(db=db, abogado_id=abogado_id)
+    abogado.estatus = "B"
+    db.add(abogado)
+    db.commit()
+    db.refresh(abogado)
+    return abogado
