@@ -16,16 +16,16 @@ class AbogadoIn(BaseModel):
     libro: str | None
     nombre: str | None
 
+    class Config:
+        """SQLAlchemy config"""
+
+        orm_mode = True
+
 
 class AbogadoOut(AbogadoIn):
     """Esquema para entregar abogados"""
 
     id: int | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
 
 
 class OneAbogadoOut(AbogadoOut, OneBaseOut):

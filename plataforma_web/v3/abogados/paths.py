@@ -11,6 +11,7 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
+from ...core.abogados.models import Abogado
 from .crud import get_abogados, get_abogado, create_abogado, update_abogado
 from .schemas import AbogadoIn, AbogadoOut, OneAbogadoOut
 
@@ -60,13 +61,13 @@ async def detalle_abogado(
 async def crear_abogado(
     current_user: CurrentUser,
     db: DatabaseSession,
-    abogado: AbogadoIn,
+    abogado_in: AbogadoIn,
 ):
     """Crear un abogado"""
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = create_abogado(db=db, abogado=abogado)
+        abogado = create_abogado(db=db, abogado=Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     return OneAbogadoOut.from_orm(abogado)
@@ -83,7 +84,7 @@ async def actualizar_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = update_abogado(db=db, abogado_id=abogado_id, abogado_in=abogado_in)
+        abogado = update_abogado(db=db, abogado_id=abogado_id, abogado_in=Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     return OneAbogadoOut.from_orm(abogado)

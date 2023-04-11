@@ -25,3 +25,35 @@ GET {{baseUrl}}/abogados
     ?anio_desde=2020
     &anio_hasta=2021
 X-Api-Key: {{api_key}}
+
+### Abogados crear un nuevo abogado
+POST {{baseUrl}}/abogados
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "fecha": "2023-04-11",
+    "numero": "99999",
+    "libro": "XXX",
+    "nombre": "FULANO DE TAL"
+}
+
+### Abogados detalle del abogado con id 11971
+GET {{baseUrl}}/abogados/11971
+X-Api-Key: {{api_key}}
+
+### Abogados modificar el nombre de un abogado
+PUT {{baseUrl}}/abogados/11971
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "fecha": "2020-02-14",
+    "numero": "11913",
+    "libro": "XXII",
+    "nombre": "MARTHA CORNEJO ACOSTA"
+}
+
+### Abogados eliminar el abogado con id 11971
+DELETE {{baseUrl}}/abogados/11971
+X-Api-Key: {{api_key}}
