@@ -12,7 +12,7 @@ from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
 from ...core.abogados.models import Abogado
-from .crud import get_abogados, get_abogado, create_abogado, update_abogado
+from .crud import get_abogados, get_abogado, create_abogado, update_abogado, delete_abogado
 from .schemas import AbogadoIn, AbogadoOut, OneAbogadoOut
 
 abogados = APIRouter(prefix="/v3/abogados", tags=["abogados"])
@@ -100,9 +100,7 @@ async def borrar_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = get_abogado(db=db, abogado_id=abogado_id)
-        db.delete(abogado)
-        db.commit()
+        abogado = delete_abogado(db=db, abogado_id=abogado_id)
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     return OneAbogadoOut.from_orm(abogado)

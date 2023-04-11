@@ -13,8 +13,9 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_audiencias, get_audiencia
-from .schemas import AudienciaOut, OneAudienciaOut
+from ...core.audiencias.models import Audiencia
+from .crud import get_audiencias, get_audiencia, create_audiencia, update_audiencia, delete_audiencia
+from .schemas import AudienciaIn, AudienciaOut, OneAudienciaOut
 
 audiencias = APIRouter(prefix="/v3/audiencias", tags=["audiencias"])
 
@@ -59,6 +60,55 @@ async def detalle_audiencia(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
+    except MyAnyError as error:
+        return OneAudienciaOut(success=False, message=str(error))
+    return OneAudienciaOut.from_orm(audiencia)
+
+
+@audiencias.post("", response_model=OneAudienciaOut)
+async def crear_audiencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    audiencia: AudienciaIn,
+):
+    """Crear una audiencia"""
+    if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.CREAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        audiencia = create_audiencia(db=db, audiencia=Audiencia(**audiencia.dict()))
+    except MyAnyError as error:
+        return OneAudienciaOut(success=False, message=str(error))
+    return OneAudienciaOut.from_orm(audiencia)
+
+
+@audiencias.put("/{audiencia_id}", response_model=OneAudienciaOut)
+async def actualizar_audiencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    audiencia_id: int,
+    audiencia_in: AudienciaIn,
+):
+    """Actualizar una audiencia"""
+    if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        audiencia = update_audiencia(db=db, audiencia_id=audiencia_id, audiencia_in=Audiencia(**audiencia_in.dict()))
+    except MyAnyError as error:
+        return OneAudienciaOut(success=False, message=str(error))
+    return OneAudienciaOut.from_orm(audiencia)
+
+
+@audiencias.delete("/{audiencia_id}", response_model=OneAudienciaOut)
+async def borrar_audiencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    audiencia_id: int,
+):
+    """Borrar una audiencia"""
+    if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        audiencia = delete_audiencia(db=db, audiencia_id=audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     return OneAudienciaOut.from_orm(audiencia)
