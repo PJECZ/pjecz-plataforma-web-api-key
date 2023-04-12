@@ -6,7 +6,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 
 from ...core.autoridades.models import Autoridad
 from ...core.edictos.models import Edicto
@@ -53,4 +53,58 @@ def get_edicto(db: Session, edicto_id: int) -> Edicto:
         raise MyNotExistsError("No existe ese edicto")
     if edicto.estatus != "A":
         raise MyIsDeletedError("No es activo ese edicto, está eliminado")
+    return edicto
+
+
+def create_edicto(db: Session, edicto: Edicto) -> Edicto:
+    """Crear un edicto"""
+
+    # Validar autoridad
+    if edicto.autoridad_id is None:
+        raise MyNotValidParamError("No se especificó la autoridad")
+    autoridad = get_autoridad(db=db, autoridad_id=edicto.autoridad_id)
+    edicto.autoridad_id = autoridad.id
+
+    # Crear
+    db.add(edicto)
+    db.commit()
+    db.refresh(edicto)
+
+    # Entregar
+    return edicto
+
+
+def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
+    """Actualizar un edicto"""
+    edicto = get_edicto(db=db, edicto_id=edicto_id)
+
+    # Validar autoridad, si se especificó y se cambió
+    if edicto_in.autoridad_id is not None and edicto.autoridad_id != edicto_in.autoridad_id:
+        autoridad = get_autoridad(db=db, autoridad_id=edicto_in.autoridad_id)
+        edicto.autoridad_id = autoridad.autoridad_id
+
+    # Actualizar las columnas
+    edicto.fecha = edicto_in.fecha
+    edicto.descripcion = edicto_in.descripcion
+    edicto.expediente = edicto_in.expediente
+    edicto.numero_publicacion = edicto_in.numero_publicacion
+    edicto.archivo = edicto_in.archivo
+    edicto.url = edicto_in.url
+
+    # Actualizar
+    db.add(edicto)
+    db.commit()
+    db.refresh(edicto)
+
+    # Entregar
+    return edicto
+
+
+def delete_edicto(db: Session, edicto_id: int) -> Edicto:
+    """Eliminar un edicto"""
+    edicto = get_edicto(db=db, edicto_id=edicto_id)
+    edicto.estatus = "B"
+    db.add(edicto)
+    db.commit()
+    db.refresh(edicto)
     return edicto
