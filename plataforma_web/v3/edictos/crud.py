@@ -60,12 +60,9 @@ def create_edicto(db: Session, edicto: Edicto) -> Edicto:
     """Crear un edicto"""
 
     # Validar autoridad
-    if edicto.autoridad_id is None:
-        raise MyNotValidParamError("No se especificó la autoridad")
-    autoridad = get_autoridad(db=db, autoridad_id=edicto.autoridad_id)
-    edicto.autoridad_id = autoridad.id
+    get_autoridad(db=db, autoridad_id=edicto.autoridad_id)
 
-    # Crear
+    # Guardar
     db.add(edicto)
     db.commit()
     db.refresh(edicto)
@@ -76,6 +73,8 @@ def create_edicto(db: Session, edicto: Edicto) -> Edicto:
 
 def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
     """Actualizar un edicto"""
+
+    # Consultar edicto
     edicto = get_edicto(db=db, edicto_id=edicto_id)
 
     # Validar autoridad, si se especificó y se cambió
@@ -91,7 +90,7 @@ def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
     edicto.archivo = edicto_in.archivo
     edicto.url = edicto_in.url
 
-    # Actualizar
+    # Guardar
     db.add(edicto)
     db.commit()
     db.refresh(edicto)

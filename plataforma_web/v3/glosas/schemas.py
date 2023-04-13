@@ -8,7 +8,19 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class GlosaOut(BaseModel):
+class GlosaIn(BaseModel):
+    """Esquema para recibir una glosa"""
+
+    autoridad_id: int | None
+    fecha: date | None
+    tipo_juicio: str | None
+    descripcion: str | None
+    expediente: str | None
+    archivo: str | None
+    url: str | None
+
+
+class GlosaOut(GlosaIn):
     """Esquema para entregar glosas"""
 
     id: int | None
@@ -16,16 +28,9 @@ class GlosaOut(BaseModel):
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
-    autoridad_id: int | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
-    fecha: date | None
-    tipo_juicio: str | None
-    descripcion: str | None
-    expediente: str | None
-    archivo: str | None
-    url: str | None
 
     class Config:
         """SQLAlchemy config"""
