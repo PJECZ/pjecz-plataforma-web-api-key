@@ -62,12 +62,9 @@ def create_audiencia(db: Session, audiencia: Audiencia) -> Audiencia:
     """Crear una audiencia"""
 
     # Validar autoridad
-    if audiencia.autoridad_id is None:
-        raise MyNotValidParamError("No se especificó la autoridad")
-    autoridad = get_autoridad(db=db, autoridad_id=audiencia.autoridad_id)
-    audiencia.autoridad_id = autoridad.id
+    get_autoridad(db=db, autoridad_id=audiencia.autoridad_id)
 
-    # Crear
+    # Guardar
     db.add(audiencia)
     db.commit()
     db.refresh(audiencia)
@@ -78,6 +75,8 @@ def create_audiencia(db: Session, audiencia: Audiencia) -> Audiencia:
 
 def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) -> Audiencia:
     """Actualizar una audiencia"""
+
+    # Consultar audiencia
     audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
 
     # Validar autoridad, si se especificó y se cambió
@@ -100,7 +99,7 @@ def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) ->
     audiencia.imputados = audiencia_in.imputados
     audiencia.origen = audiencia_in.origen
 
-    # Actualizar
+    # Guardar
     db.add(audiencia)
     db.commit()
     db.refresh(audiencia)

@@ -36,6 +36,40 @@ GET {{baseUrl}}/glosas
     &expediente=5/2021-AIL
 X-Api-Key: {{api_key}}
 
-### Glosa con id 1868
-GET {{baseUrl}}/glosas/1868
+### Detalle de la glosa con id 1940
+GET {{baseUrl}}/glosas/1940
+X-Api-Key: {{api_key}}
+
+### Crear una nueva glosa
+POST {{baseUrl}}/glosas
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 106,
+    "fecha": "2023-04-12",
+    "tipo_juicio": "ND",
+    "descripcion": "TOCAS VISTOS EN SESION DE PLENO",
+    "expediente": "12/2023",
+    "archivo": "2023-04-12-12-2023.pdf",
+    "url": "https://storage.googleapis.com/pjecz-consultas/Glosas/Pleno%20del%20Tribunal%20Constitucional/Pleno%20del%20Tribunal%20Constitucional/2023/Abril/2023-04-12-12-2023.pdf"
+}
+
+### Modificar la glosa con id 1940
+PUT {{baseUrl}}/glosas/1940
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 106,
+    "fecha": "2023-04-12",
+    "tipo_juicio": "ND",
+    "descripcion": "ACCION DE INCONSTITUCIONALIDAD",
+    "expediente": "12/2023",
+    "archivo": "2023-04-12-12-2023.pdf",
+    "url": "https://storage.googleapis.com/pjecz-consultas/Glosas/Pleno%20del%20Tribunal%20Constitucional/Pleno%20del%20Tribunal%20Constitucional/2023/Abril/2023-04-12-12-2023.pdf"
+}
+
+### Eliminar la glosa con id 1940
+DELETE {{baseUrl}}/glosas/1940
 X-Api-Key: {{api_key}}
