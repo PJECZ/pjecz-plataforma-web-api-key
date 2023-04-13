@@ -15,7 +15,7 @@ class EdictoIn(BaseModel):
     fecha: date | None
     descripcion: str | None
     expediente: str | None
-    numero: str | None
+    numero_publicacion: str | None
     archivo: str | None
     url: str | None
 
