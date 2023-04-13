@@ -8,7 +8,19 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class EdictoOut(BaseModel):
+class EdictoIn(BaseModel):
+    """Esquema para recibir un edicto"""
+
+    autoridad_id: int | None
+    fecha: date | None
+    descripcion: str | None
+    expediente: str | None
+    numero_publicacion: str | None
+    archivo: str | None
+    url: str | None
+
+
+class EdictoOut(EdictoIn):
     """Esquema para entregar edictos"""
 
     id: int | None
@@ -16,16 +28,9 @@ class EdictoOut(BaseModel):
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
-    autoridad_id: int | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
-    fecha: date | None
-    descripcion: str | None
-    expediente: str | None
-    numero: str | None
-    archivo: str | None
-    url: str | None
 
     class Config:
         """SQLAlchemy config"""

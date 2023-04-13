@@ -36,6 +36,40 @@ GET {{baseUrl}}/edictos
     ?distrito_clave=DMNC
 X-Api-Key: {{api_key}}
 
-### Edicto con id 49367
-GET {{baseUrl}}/edictos/49367
+### Detalle del edicto con id 64081
+GET {{baseUrl}}/edictos/64081
+X-Api-Key: {{api_key}}
+
+### Crear un nuevo edicto
+POST {{baseUrl}}/edictos
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 44,
+    "fecha": "2023-04-12",
+    "descripcion": "JUICIO SUCESORIO INTESTAMENTARIO A BIENAS DE FULANO DE TAL",
+    "expediente": "123/2023",
+    "numero_publicacion": "",
+    "archivo": "2023-04-12-123-2023-juicio-sucesorio-intestamentario-a-bienes-de-fulano-de-tal.pdf",
+    "url": "https://storage.googleapis.com/pjecz-consultas/Edictos/Distrito%20de%20Saltillo/Juzgado%20Cuarto%20de%20Primera%20Instancia%20en%20Materia%20Civil%20Saltillo/2023/Abril/2023-04-12-123-2023-juicio-sucesorio-intestamentario-a-bienes-de-fulano-de-tal.pdf"
+}
+
+### Modificar el edicto con id 64081
+PUT {{baseUrl}}/edictos/64081
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 44,
+    "fecha": "2023-04-12",
+    "descripcion": "JUICIO SUCESORIO INTESTAMENTARIO A BIENAS DE FULANO DE TAL",
+    "expediente": "423/2023",
+    "numero_publicacion": "",
+    "archivo": "2023-04-12-423-2023-juicio-sucesorio-intestamentario-a-bienes-de-fulano-de-tal.pdf",
+    "url": "https://storage.googleapis.com/pjecz-consultas/Edictos/Distrito%20de%20Saltillo/Juzgado%20Cuarto%20de%20Primera%20Instancia%20en%20Materia%20Civil%20Saltillo/2023/Abril/2023-04-12-423-2023-juicio-sucesorio-intestamentario-a-bienes-de-fulano-de-tal.pdf"
+}
+
+### Eliminar el edicto con id 64081
+DELETE {{baseUrl}}/edictos/64081
 X-Api-Key: {{api_key}}
