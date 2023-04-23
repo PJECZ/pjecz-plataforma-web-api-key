@@ -1,5 +1,5 @@
 """
-REDAMs (Registro Estatal de Deudores Alimentarios Morosos), modelos
+REDAM (Registro Estatal de Deudores Alimentarios Morosos), modelos
 """
 from sqlalchemy import Column, Date, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
@@ -9,7 +9,7 @@ from lib.universal_mixin import UniversalMixin
 
 
 class Redam(Base, UniversalMixin):
-    """Redam"""
+    """REDAM"""
 
     # Nombre de la tabla
     __tablename__ = "redam"
@@ -19,7 +19,7 @@ class Redam(Base, UniversalMixin):
 
     # Claves foráneas
     autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="redams")
+    autoridad = relationship("Autoridad", back_populates="redam")
 
     # Columnas
     nombre = Column(String(256), nullable=False)

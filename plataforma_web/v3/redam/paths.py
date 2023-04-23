@@ -1,5 +1,5 @@
 """
-REDAMs v3, rutas (paths)
+REDAM (Registro Estatal de Deudores Alimentarios Morosos) v3, rutas (paths)
 """
 from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -14,10 +14,10 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_redams, get_redam
 from .schemas import RedamOut, OneRedamOut
 
-redams = APIRouter(prefix="/v3/redams", tags=["redam"])
+redam = APIRouter(prefix="/v3/redam", tags=["redam"])
 
 
-@redams.get("", response_model=CustomPage[RedamOut])
+@redam.get("", response_model=CustomPage[RedamOut])
 async def listado_redams(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -46,7 +46,7 @@ async def listado_redams(
     return paginate(resultados)
 
 
-@redams.get("/{redam_id}", response_model=OneRedamOut)
+@redam.get("/{redam_id}", response_model=OneRedamOut)
 async def detalle_redam(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -56,7 +56,7 @@ async def detalle_redam(
     if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        redam = get_redam(db=db, redam_id=redam_id)
+        deudor = get_redam(db=db, redam_id=redam_id)
     except MyAnyError as error:
         return OneRedamOut(success=False, message=str(error))
-    return OneRedamOut.from_orm(redam)
+    return OneRedamOut.from_orm(deudor)

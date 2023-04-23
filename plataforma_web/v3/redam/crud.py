@@ -1,5 +1,5 @@
 """
-REDAMs v3, CRUD (create, read, update, and delete)
+REDAM (Registro Estatal de Deudores Alimentarios Morosos) v3, CRUD (create, read, update, and delete)
 """
 from typing import Any
 
@@ -9,7 +9,7 @@ from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamEr
 from lib.safe_string import safe_string, safe_expediente
 
 from ...core.autoridades.models import Autoridad
-from ...core.redams.models import Redam
+from ...core.redam.models import Redam
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 
@@ -23,7 +23,7 @@ def get_redams(
     nombre: str = None,
     expediente: str = None,
 ) -> Any:
-    """Consultar los redams activos"""
+    """Consultar los deudores alimenticios morosos activos"""
     consulta = db.query(Redam)
     if autoridad_id is not None:
         autoridad = get_autoridad(db, autoridad_id)
@@ -52,7 +52,7 @@ def get_redams(
 
 
 def get_redam(db: Session, redam_id: int) -> Redam:
-    """Consultar un redam por su id"""
+    """Consultar un deudor alimenticio moroso por su id"""
     redam = db.query(Redam).get(redam_id)
     if redam is None:
         raise MyNotExistsError("No existe ese redam")

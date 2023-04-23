@@ -46,6 +46,11 @@ class Perito(Base, UniversalMixin):
         """Distrito nombre corto"""
         return self.distrito.nombre_corto
 
+    @property
+    def perito_tipo_nombre(self):
+        """Nombre del tipo de perito"""
+        return self.perito_tipo.nombre
+
     def __repr__(self):
         """Representación"""
         return f"<Perito {self.id}>"

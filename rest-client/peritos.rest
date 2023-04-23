@@ -42,3 +42,7 @@ GET {{baseUrl}}/peritos
     ?distrito_clave=DSLT
     &nombre=Luis
 X-Api-Key: {{api_key}}
+
+### Perito con id 474
+GET {{baseUrl}}/peritos/474
+X-Api-Key: {{api_key}}
