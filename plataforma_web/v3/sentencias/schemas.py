@@ -8,18 +8,11 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class SentenciaOut(BaseModel):
-    """Esquema para entregar sentencias"""
+class SentenciaIn(BaseModel):
+    """Esquema para recibir una sentencia"""
 
-    id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
     autoridad_id: int | None
-    autoridad_clave: str | None
-    autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
+    materia_tipo_juicio_id: int | None
     sentencia: str | None
     sentencia_fecha: date | None
     expediente: str | None
@@ -28,6 +21,22 @@ class SentenciaOut(BaseModel):
     es_perspectiva_genero: bool | None
     archivo: str | None
     url: str | None
+
+
+class SentenciaOut(SentenciaIn):
+    """Esquema para entregar sentencias"""
+
+    id: int | None
+    distrito_id: int | None
+    distrito_clave: str | None
+    distrito_nombre: str | None
+    distrito_nombre_corto: str | None
+    autoridad_clave: str | None
+    autoridad_descripcion: str | None
+    autoridad_descripcion_corta: str | None
+    materia_id: int | None
+    materia_nombre: str | None
+    materia_tipo_juicio_descripcion: str | None
 
     class Config:
         """SQLAlchemy config"""

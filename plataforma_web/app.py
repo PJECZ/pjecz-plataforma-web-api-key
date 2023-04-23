@@ -23,7 +23,7 @@ from .v3.modulos.paths import modulos
 from .v3.peritos.paths import peritos
 from .v3.peritos_tipos.paths import peritos_tipos
 from .v3.permisos.paths import permisos
-from .v3.redams.paths import redams
+from .v3.redam.paths import redam
 from .v3.repsvm_agresores.paths import repsvm_agresores
 from .v3.roles.paths import roles
 from .v3.sentencias.paths import sentencias
@@ -69,7 +69,7 @@ def create_app() -> FastAPI:
     app.include_router(peritos)
     app.include_router(peritos_tipos)
     app.include_router(permisos)
-    app.include_router(redams)
+    app.include_router(redam)
     app.include_router(repsvm_agresores)
     app.include_router(roles)
     app.include_router(sentencias)

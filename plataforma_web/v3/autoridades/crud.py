@@ -9,10 +9,13 @@ from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamEr
 from lib.safe_string import safe_clave
 
 from ...core.autoridades.models import Autoridad
+from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_autoridades(
     db: Session,
+    distrito_id: int = None,
+    distrito_clave: str = None,
     es_cemasc: bool = False,
     es_defensoria: bool = False,
     es_jurisdiccional: bool = False,
@@ -20,6 +23,12 @@ def get_autoridades(
 ) -> Any:
     """Consultar los autoridades activos"""
     consulta = db.query(Autoridad)
+    if distrito_id is not None:
+        distrito = get_distrito(db, distrito_id)
+        consulta = consulta.filter_by(distrito_id=distrito.id)
+    elif distrito_clave is not None:
+        distrito = get_distrito_with_clave(db, distrito_clave)
+        consulta = consulta.filter_by(distrito_id=distrito.id)
     if es_cemasc is not None:
         consulta = consulta.filter_by(es_cemasc=es_cemasc)
     if es_defensoria is not None:
