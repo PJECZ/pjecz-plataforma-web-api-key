@@ -70,7 +70,9 @@ async def crear_abogado(
         abogado = create_abogado(db=db, abogado=Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
-    return OneAbogadoOut.from_orm(abogado)
+    respuesta = OneAbogadoOut.from_orm(abogado)
+    respuesta.message = "Abogado creado correctamente"
+    return respuesta
 
 
 @abogados.put("/{abogado_id}", response_model=OneAbogadoOut)
@@ -87,7 +89,9 @@ async def actualizar_abogado(
         abogado = update_abogado(db=db, abogado_id=abogado_id, abogado_in=Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
-    return OneAbogadoOut.from_orm(abogado)
+    respuesta = OneAbogadoOut.from_orm(abogado)
+    respuesta.message = "Abogado actualizado correctamente"
+    return respuesta
 
 
 @abogados.delete("/{abogado_id}", response_model=OneAbogadoOut)
@@ -103,4 +107,6 @@ async def borrar_abogado(
         abogado = delete_abogado(db=db, abogado_id=abogado_id)
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
-    return OneAbogadoOut.from_orm(abogado)
+    respuesta = OneAbogadoOut.from_orm(abogado)
+    respuesta.message = "Abogado borrado correctamente"
+    return respuesta

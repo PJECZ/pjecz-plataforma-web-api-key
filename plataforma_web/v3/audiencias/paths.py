@@ -78,7 +78,9 @@ async def crear_audiencia(
         audiencia = create_audiencia(db=db, audiencia=Audiencia(**audiencia.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    return OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta.message = "Audiencia creada correctamente"
+    return respuesta
 
 
 @audiencias.put("/{audiencia_id}", response_model=OneAudienciaOut)
@@ -95,7 +97,9 @@ async def actualizar_audiencia(
         audiencia = update_audiencia(db=db, audiencia_id=audiencia_id, audiencia_in=Audiencia(**audiencia_in.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    return OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta.message = "Audiencia actualizada correctamente"
+    return respuesta
 
 
 @audiencias.delete("/{audiencia_id}", response_model=OneAudienciaOut)
@@ -111,4 +115,6 @@ async def borrar_audiencia(
         audiencia = delete_audiencia(db=db, audiencia_id=audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    return OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta.message = "Audiencia borrada correctamente"
+    return respuesta
