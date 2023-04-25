@@ -103,4 +103,6 @@ async def borrar_abogado(
         abogado = delete_abogado(db=db, abogado_id=abogado_id)
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
-    return OneAbogadoOut.from_orm(abogado)
+    respuesta = OneAbogadoOut.from_orm(abogado)
+    respuesta.message = "Abogado borrado correctamente"
+    return respuesta

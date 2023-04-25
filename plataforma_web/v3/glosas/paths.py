@@ -113,4 +113,6 @@ async def borrar_glosa(
         glosa = delete_glosa(db=db, glosa_id=glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    return OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta.message = "Glosa borrada correctamente"
+    return respuesta

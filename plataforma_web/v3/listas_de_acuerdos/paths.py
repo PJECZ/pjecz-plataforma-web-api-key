@@ -111,4 +111,6 @@ async def borrar_lista_de_acuerdo(
         lista_de_acuerdo = delete_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta.message = "Lista de Acuerdo borrada correctamente"
+    return respuesta

@@ -111,4 +111,6 @@ async def borrar_edicto(
         edicto = delete_edicto(db=db, edicto_id=edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta.message = "Edicto borrado correctamente"
+    return respuesta

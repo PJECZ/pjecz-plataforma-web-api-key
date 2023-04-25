@@ -111,4 +111,6 @@ async def borrar_audiencia(
         audiencia = delete_audiencia(db=db, audiencia_id=audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    return OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta.message = "Audiencia borrada correctamente"
+    return respuesta
