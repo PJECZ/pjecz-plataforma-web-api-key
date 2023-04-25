@@ -78,7 +78,9 @@ async def crear_edicto(
         edicto = create_edicto(db=db, edicto=Edicto(**edicto.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta.message = "Edicto creado correctamente"
+    return respuesta
 
 
 @edictos.put("/{edicto_id}", response_model=OneEdictoOut)
@@ -95,7 +97,9 @@ async def actualizar_edicto(
         edicto = update_edicto(db=db, edicto_id=edicto_id, edicto_in=Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta.message = "Edicto actualizado correctamente"
+    return respuesta
 
 
 @edictos.delete("/{edicto_id}", response_model=OneEdictoOut)

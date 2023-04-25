@@ -80,7 +80,9 @@ async def crear_glosa(
         glosa = create_glosa(db=db, glosa=Glosa(**glosa.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    return OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta.message = "Glosa creada correctamente"
+    return respuesta
 
 
 @glosas.put("/{glosa_id}", response_model=OneGlosaOut)
@@ -97,7 +99,9 @@ async def actualizar_glosa(
         glosa = update_glosa(db=db, glosa_id=glosa_id, glosa_in=Glosa(**glosa_in.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    return OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta.message = "Glosa actualizada correctamente"
+    return respuesta
 
 
 @glosas.delete("/{glosa_id}", response_model=OneGlosaOut)
