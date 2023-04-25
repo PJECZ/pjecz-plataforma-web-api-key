@@ -14,6 +14,7 @@ class Permiso(Base, UniversalMixin):
     VER = 1
     MODIFICAR = 2
     CREAR = 3
+    BORRAR = 3
     ADMINISTRAR = 4
     NIVELES = {
         1: "VER",

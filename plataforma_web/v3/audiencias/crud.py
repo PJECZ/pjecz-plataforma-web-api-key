@@ -74,7 +74,7 @@ def create_audiencia(db: Session, audiencia: Audiencia) -> Audiencia:
 
 
 def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) -> Audiencia:
-    """Actualizar una audiencia"""
+    """Modificar una audiencia"""
 
     # Consultar audiencia
     audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
@@ -109,7 +109,7 @@ def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) ->
 
 
 def delete_audiencia(db: Session, audiencia_id: int) -> Audiencia:
-    """Eliminar una audiencia"""
+    """Borrar una audiencia"""
     audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
     audiencia.estatus = "B"
     db.add(audiencia)

@@ -69,13 +69,13 @@ async def detalle_edicto(
 async def crear_edicto(
     current_user: CurrentUser,
     db: DatabaseSession,
-    edicto: EdictoIn,
+    edicto_in: EdictoIn,
 ):
     """Crear un edicto"""
     if current_user.permissions.get("EDICTOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        edicto = create_edicto(db=db, edicto=Edicto(**edicto.dict()))
+        edicto = create_edicto(db=db, edicto=Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
     respuesta = OneEdictoOut.from_orm(edicto)
@@ -84,13 +84,13 @@ async def crear_edicto(
 
 
 @edictos.put("/{edicto_id}", response_model=OneEdictoOut)
-async def actualizar_edicto(
+async def modificar_edicto(
     current_user: CurrentUser,
     db: DatabaseSession,
     edicto_id: int,
     edicto_in: EdictoIn,
 ):
-    """Actualizar un edicto"""
+    """Modificar un edicto"""
     if current_user.permissions.get("EDICTOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -109,7 +109,7 @@ async def borrar_edicto(
     edicto_id: int,
 ):
     """Borrar un edicto"""
-    if current_user.permissions.get("EDICTOS", 0) < Permiso.MODIFICAR:
+    if current_user.permissions.get("EDICTOS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         edicto = delete_edicto(db=db, edicto_id=edicto_id)

@@ -57,7 +57,7 @@ def create_abogado(db: Session, abogado: Abogado) -> Abogado:
 
 
 def update_abogado(db: Session, abogado_id: int, abogado_in: Abogado) -> Abogado:
-    """Actualizar un abogado"""
+    """Modificar un abogado"""
     abogado = get_abogado(db=db, abogado_id=abogado_id)
     abogado.fecha = abogado_in.fecha
     abogado.numero = abogado_in.numero
@@ -70,7 +70,7 @@ def update_abogado(db: Session, abogado_id: int, abogado_in: Abogado) -> Abogado
 
 
 def delete_abogado(db: Session, abogado_id: int) -> Abogado:
-    """Eliminar un abogado"""
+    """Borrar un abogado"""
     abogado = get_abogado(db=db, abogado_id=abogado_id)
     abogado.estatus = "B"
     db.add(abogado)
