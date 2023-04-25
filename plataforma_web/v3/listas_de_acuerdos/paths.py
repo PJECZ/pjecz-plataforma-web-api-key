@@ -15,7 +15,7 @@ from ..usuarios.authentications import CurrentUser
 
 from ...core.listas_de_acuerdos.models import ListaDeAcuerdo
 from .crud import get_listas_de_acuerdos, get_lista_de_acuerdo, create_lista_de_acuerdo, update_lista_de_acuerdo, delete_lista_de_acuerdo
-from .schemas import ListaDeAcuerdoOut, OneListaDeAcuerdoOut
+from .schemas import ListaDeAcuerdoIn, ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 
 listas_de_acuerdos = APIRouter(prefix="/v3/listas_de_acuerdos", tags=["listas de acuerdos"])
 
@@ -69,13 +69,13 @@ async def detalle_lista_de_acuerdo(
 async def crear_lista_de_acuerdo(
     current_user: CurrentUser,
     db: DatabaseSession,
-    lista_de_acuerdo: ListaDeAcuerdoOut,
+    lista_de_acuerdo: ListaDeAcuerdoIn,
 ):
     """Crear una lista de acuerdo"""
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = create_lista_de_acuerdo(db=db, lista_de_acuerdo=lista_de_acuerdo)
+        lista_de_acuerdo = create_lista_de_acuerdo(db=db, lista_de_acuerdo=ListaDeAcuerdo(**lista_de_acuerdo.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
@@ -86,13 +86,13 @@ async def actualizar_lista_de_acuerdo(
     current_user: CurrentUser,
     db: DatabaseSession,
     lista_de_acuerdo_id: int,
-    lista_de_acuerdo: ListaDeAcuerdoOut,
+    lista_de_acuerdo: ListaDeAcuerdoIn,
 ):
     """Actualizar una lista de acuerdo"""
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = update_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id, lista_de_acuerdo=lista_de_acuerdo)
+        lista_de_acuerdo = update_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id, lista_de_acuerdo_in=ListaDeAcuerdo(**lista_de_acuerdo.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
