@@ -8,4 +8,4 @@ class OneBaseOut(BaseModel):
     """BaseOut"""
 
     success: bool = True
-    message: str = "Success"
+    message: str = "Consulta realizada con éxito"
