@@ -6,7 +6,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 
 from ...core.autoridades.models import Autoridad
 from ...core.listas_de_acuerdos.models import ListaDeAcuerdo
@@ -53,4 +53,55 @@ def get_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerd
         raise MyNotExistsError("No existe ese lista de acuerdo")
     if lista_de_acuerdo.estatus != "A":
         raise MyIsDeletedError("No es activo ese lista de acuerdo, está eliminado")
+    return lista_de_acuerdo
+
+
+def create_lista_de_acuerdo(db: Session, lista_de_acuerdo: ListaDeAcuerdo) -> ListaDeAcuerdo:
+    """Crear una lista de acuerdos"""
+
+    # Validar autoridad
+    get_autoridad(db=db, autoridad_id=lista_de_acuerdo.autoridad_id)
+
+    # Guardar
+    db.add(lista_de_acuerdo)
+    db.commit()
+    db.refresh(lista_de_acuerdo)
+
+    # Entregar
+    return lista_de_acuerdo
+
+
+def update_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int, lista_de_acuerdo_in: ListaDeAcuerdo) -> ListaDeAcuerdo:
+    """Actualizar una lista de acuerdos"""
+
+    # Consultar lista de acuerdos
+    lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+
+    # Validar autoridad, si se especificó y se cambió
+    if lista_de_acuerdo_in.autoridad_id is not None and lista_de_acuerdo.autoridad_id != lista_de_acuerdo_in.autoridad_id:
+        autoridad = get_autoridad(db=db, autoridad_id=lista_de_acuerdo_in.autoridad_id)
+        lista_de_acuerdo.autoridad_id = autoridad.autoridad_id
+
+    # Actualizar las columnas
+    lista_de_acuerdo.fecha = lista_de_acuerdo_in.fecha
+    lista_de_acuerdo.descripcion = lista_de_acuerdo_in.descripcion
+    lista_de_acuerdo.archivo = lista_de_acuerdo_in.archivo
+    lista_de_acuerdo.url = lista_de_acuerdo_in.url
+
+    # Guardar
+    db.add(lista_de_acuerdo)
+    db.commit()
+    db.refresh(lista_de_acuerdo)
+
+    # Entregar
+    return lista_de_acuerdo
+
+
+def delete_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerdo:
+    """Eliminar una lista de acuerdos"""
+    lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+    lista_de_acuerdo.estatus = "B"
+    db.add(lista_de_acuerdo)
+    db.commit()
+    db.refresh(lista_de_acuerdo)
     return lista_de_acuerdo

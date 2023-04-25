@@ -37,6 +37,36 @@ GET {{baseUrl}}/listas_de_acuerdos
     &fecha=2021-04-26
 X-Api-Key: {{api_key}}
 
-### Lista de Acuerdos con id 93199
-GET {{baseUrl}}/listas_de_acuerdos/93199
+### Lista de Acuerdos con id 114261
+GET {{baseUrl}}/listas_de_acuerdos/114261
+X-Api-Key: {{api_key}}
+
+### Crear una nueva lista de acuerdos
+POST {{baseUrl}}/listas_de_acuerdos
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 37,
+    "fecha": "2021-04-26",
+    "descripcion": "LISTA DE ACUERDO DEL SLT-J2-CIV DEL 2021-04-26",
+    "archivo": "example.pdf",
+    "url": "https://example.com/example.pdf"
+}
+
+### Modificar la lista de acuerdos con id 114261
+PUT {{baseUrl}}/listas_de_acuerdos/114261
+X-Api-Key: {{api_key}}
+Content-Type: application/json
+
+{
+    "autoridad_id": 37,
+    "fecha": "2021-04-26",
+    "descripcion": "Lista de Acuerdos del SLT-J2-CIV del 2021-04-26",
+    "archivo": "example2.pdf",
+    "url": "https://example.com/example2.pdf"
+}
+
+### Eliminar la lista de acuerdos con id 114261
+DELETE {{baseUrl}}/listas_de_acuerdos/114261
 X-Api-Key: {{api_key}}
