@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pjecz_plataforma_web_api_key"
-version = "0.1.0"
+version = "1.0.0"
 description = "API con autentificación para realizar operaciones con la base de datos de Plataforma Web."
 authors = ["Guillermo Valdes <guillermo.valdes@pjecz.gob.mx>"]
 license = "AGPL3"
