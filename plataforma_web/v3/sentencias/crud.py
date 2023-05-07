@@ -80,7 +80,7 @@ def create_sentencia(db: Session, sentencia: Sentencia) -> Sentencia:
 
 
 def update_sentencia(db: Session, sentencia_id: int, sentencia_in: Sentencia) -> Sentencia:
-    """Actualizar una sentencia"""
+    """Modificar una sentencia"""
 
     # Consultar la sentencia
     sentencia = get_sentencia(db=db, sentencia_id=sentencia_id)
@@ -115,7 +115,7 @@ def update_sentencia(db: Session, sentencia_id: int, sentencia_in: Sentencia) ->
 
 
 def delete_sentencia(db: Session, sentencia_id: int) -> Sentencia:
-    """Eliminar una sentencia"""
+    """Borrar una sentencia"""
     sentencia = get_sentencia(db=db, sentencia_id=sentencia_id)
     sentencia.estatus = "B"
     db.add(sentencia)

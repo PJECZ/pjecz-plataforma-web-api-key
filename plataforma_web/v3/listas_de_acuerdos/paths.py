@@ -69,33 +69,37 @@ async def detalle_lista_de_acuerdo(
 async def crear_lista_de_acuerdo(
     current_user: CurrentUser,
     db: DatabaseSession,
-    lista_de_acuerdo: ListaDeAcuerdoIn,
+    lista_de_acuerdo_in: ListaDeAcuerdoIn,
 ):
     """Crear una lista de acuerdo"""
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = create_lista_de_acuerdo(db=db, lista_de_acuerdo=ListaDeAcuerdo(**lista_de_acuerdo.dict()))
+        lista_de_acuerdo = create_lista_de_acuerdo(db=db, lista_de_acuerdo=ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta.message = "Lista de acuerdo creada correctamente"
+    return respuesta
 
 
 @listas_de_acuerdos.put("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
-async def actualizar_lista_de_acuerdo(
+async def modificar_lista_de_acuerdo(
     current_user: CurrentUser,
     db: DatabaseSession,
     lista_de_acuerdo_id: int,
-    lista_de_acuerdo: ListaDeAcuerdoIn,
+    lista_de_acuerdo_in: ListaDeAcuerdoIn,
 ):
-    """Actualizar una lista de acuerdo"""
+    """Modificar una lista de acuerdo"""
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = update_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id, lista_de_acuerdo_in=ListaDeAcuerdo(**lista_de_acuerdo.dict()))
+        lista_de_acuerdo = update_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id, lista_de_acuerdo_in=ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta.message = "Lista de acuerdo actualizada correctamente"
+    return respuesta
 
 
 @listas_de_acuerdos.delete("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
@@ -105,7 +109,7 @@ async def borrar_lista_de_acuerdo(
     lista_de_acuerdo_id: int,
 ):
     """Borrar una lista de acuerdo"""
-    if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.MODIFICAR:
+    if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         lista_de_acuerdo = delete_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)

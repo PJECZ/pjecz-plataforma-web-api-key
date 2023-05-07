@@ -72,7 +72,7 @@ def create_lista_de_acuerdo(db: Session, lista_de_acuerdo: ListaDeAcuerdo) -> Li
 
 
 def update_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int, lista_de_acuerdo_in: ListaDeAcuerdo) -> ListaDeAcuerdo:
-    """Actualizar una lista de acuerdos"""
+    """Modificar una lista de acuerdos"""
 
     # Consultar lista de acuerdos
     lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
@@ -98,7 +98,7 @@ def update_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int, lista_de_acue
 
 
 def delete_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerdo:
-    """Eliminar una lista de acuerdos"""
+    """Borrar una lista de acuerdos"""
     lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
     lista_de_acuerdo.estatus = "B"
     db.add(lista_de_acuerdo)

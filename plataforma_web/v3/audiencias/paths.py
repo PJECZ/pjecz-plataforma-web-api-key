@@ -84,13 +84,13 @@ async def crear_audiencia(
 
 
 @audiencias.put("/{audiencia_id}", response_model=OneAudienciaOut)
-async def actualizar_audiencia(
+async def modificar_audiencia(
     current_user: CurrentUser,
     db: DatabaseSession,
     audiencia_id: int,
     audiencia_in: AudienciaIn,
 ):
-    """Actualizar una audiencia"""
+    """Modificar una audiencia"""
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

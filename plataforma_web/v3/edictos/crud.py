@@ -72,7 +72,7 @@ def create_edicto(db: Session, edicto: Edicto) -> Edicto:
 
 
 def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
-    """Actualizar un edicto"""
+    """Modificar un edicto"""
 
     # Consultar edicto
     edicto = get_edicto(db=db, edicto_id=edicto_id)
@@ -100,7 +100,7 @@ def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
 
 
 def delete_edicto(db: Session, edicto_id: int) -> Edicto:
-    """Eliminar un edicto"""
+    """Borrar un edicto"""
     edicto = get_edicto(db=db, edicto_id=edicto_id)
     edicto.estatus = "B"
     db.add(edicto)

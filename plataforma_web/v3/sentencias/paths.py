@@ -13,8 +13,9 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_sentencias, get_sentencia
-from .schemas import SentenciaOut, OneSentenciaOut
+from ...core.sentencias.models import Sentencia
+from .crud import get_sentencias, get_sentencia, create_sentencia, update_sentencia, delete_sentencia
+from .schemas import SentenciaIn, SentenciaOut, OneSentenciaOut
 
 sentencias = APIRouter(prefix="/v3/sentencias", tags=["sentencias"])
 
@@ -64,3 +65,58 @@ async def detalle_sentencia(
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     return OneSentenciaOut.from_orm(sentencia)
+
+
+@sentencias.post("", response_model=OneSentenciaOut)
+async def crear_sentencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    sentencia_in: SentenciaIn,
+):
+    """Crear una sentencia"""
+    if current_user.permissions.get("SENTENCIAS", 0) < Permiso.CREAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        sentencia = create_sentencia(db=db, sentencia=Sentencia(**sentencia_in.dict()))
+    except MyAnyError as error:
+        return OneSentenciaOut(success=False, message=str(error))
+    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta.message = "Sentencia creada correctamente"
+    return respuesta
+
+
+@sentencias.put("/{sentencia_id}", response_model=OneSentenciaOut)
+async def modificar_sentencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    sentencia_id: int,
+    sentencia_in: SentenciaIn,
+):
+    """Modificar una sentencia"""
+    if current_user.permissions.get("SENTENCIAS", 0) < Permiso.MODIFICAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        sentencia = update_sentencia(db=db, sentencia_id=sentencia_id, sentencia_in=Sentencia(**sentencia_in.dict()))
+    except MyAnyError as error:
+        return OneSentenciaOut(success=False, message=str(error))
+    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta.message = "Sentencia actualizada correctamente"
+    return respuesta
+
+
+@sentencias.delete("/{sentencia_id}", response_model=OneSentenciaOut)
+async def borrar_sentencia(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    sentencia_id: int,
+):
+    """Borrar una sentencia"""
+    if current_user.permissions.get("SENTENCIAS", 0) < Permiso.BORRAR:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        sentencia = delete_sentencia(db=db, sentencia_id=sentencia_id)
+    except MyAnyError as error:
+        return OneSentenciaOut(success=False, message=str(error))
+    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta.message = "Sentencia eliminada correctamente"
+    return respuesta

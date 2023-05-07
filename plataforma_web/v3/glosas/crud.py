@@ -80,7 +80,7 @@ def create_glosa(db: Session, glosa: Glosa) -> Glosa:
 
 
 def update_glosa(db: Session, glosa_id: int, glosa_in: Glosa) -> Glosa:
-    """Actualizar un glosa"""
+    """Modificar un glosa"""
 
     # Consultar glosa
     glosa = get_glosa(db=db, glosa_id=glosa_id)
@@ -108,7 +108,7 @@ def update_glosa(db: Session, glosa_id: int, glosa_in: Glosa) -> Glosa:
 
 
 def delete_glosa(db: Session, glosa_id: int) -> Glosa:
-    """Eliminar un glosa"""
+    """Borrar un glosa"""
     glosa = get_glosa(db=db, glosa_id=glosa_id)
     glosa.estatus = "B"
     db.add(glosa)

@@ -76,13 +76,13 @@ async def crear_abogado(
 
 
 @abogados.put("/{abogado_id}", response_model=OneAbogadoOut)
-async def actualizar_abogado(
+async def modificar_abogado(
     current_user: CurrentUser,
     db: DatabaseSession,
     abogado_id: int,
     abogado_in: AbogadoIn,
 ):
-    """Actualizar un abogado a partir de su id"""
+    """Modificar un abogado a partir de su id"""
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -101,7 +101,7 @@ async def borrar_abogado(
     abogado_id: int,
 ):
     """Borrar un abogado a partir de su id"""
-    if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
+    if current_user.permissions.get("ABOGADOS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         abogado = delete_abogado(db=db, abogado_id=abogado_id)
