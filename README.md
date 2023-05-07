@@ -125,7 +125,6 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         export PYTHONPATH=$(pwd)
         echo "   PYTHONPATH: ${PYTHONPATH}"
         echo
-        alias black="black --config pyproject.toml"
         alias arrancar="uvicorn --factory --host=127.0.0.1 --port 8002 --reload plataforma_web.app:create_app"
         echo "-- Ejecutar FastAPI 127.0.0.1:8002"
         echo "   arrancar"
@@ -134,9 +133,10 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
 
     if [ -f app.yaml ]
     then
-        echo "-- Subir a Google Cloud"
+        echo "-- Para subir a produccion ya NO necesita ejecutar gcloud app deploy"
+        echo "   GitHub Actions lo hace automaticamente"
+        echo "   Pero si hace cambios en pyproject.toml reconstruya requirements.txt"
         echo "   poetry export -f requirements.txt --output requirements.txt --without-hashes"
-        echo "   gcloud app deploy"
         echo
     fi
 
@@ -172,12 +172,8 @@ Ejecute `arrancar` que contiene el comando y parametros para arrancar el servici
 
 ## Google Cloud deployment
 
-Relice estos pasos para subir a Google Cloud App Engine
-
-Crear el archivo `requirements.txt`
+Si agrega o quita paquetes o edita `pyproject.toml` debe crear el archivo `requirements.txt`
 
     poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-Y subir a Google Cloud
-
-    gcloud app deploy
+GitHub Actions se hara cargo de subir los cambios a Google Cloud
