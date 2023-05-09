@@ -26,7 +26,7 @@ def get_rol(db: Session, rol_id: int) -> Rol:
     return rol
 
 
-def get_rol_by_nombre(db: Session, nombre: str) -> Rol:
+def (db: Session, nombre: str) -> Rol:
     """Consultar un rol por su nombre"""
     nombre = safe_string(nombre)
     if nombre == "":

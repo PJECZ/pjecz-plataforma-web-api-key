@@ -6,11 +6,10 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
-from lib.safe_string import safe_email
 
 from ...core.usuarios_roles.models import UsuarioRol
-from ..roles.crud import get_rol, get_rol_by_nombre
-from ..usuarios.crud import get_usuario, get_usuario_by_email
+from ..roles.crud import get_rol,
+from ..usuarios.crud import get_usuario, get_usuario_with_email
 
 
 def get_usuarios_roles(
@@ -26,17 +25,13 @@ def get_usuarios_roles(
         rol = get_rol(db, rol_id)
         consulta = consulta.filter(rol == rol)
     elif rol_nombre is not None:
-        rol = get_rol_by_nombre(db, rol_nombre)
+        rol = (db, rol_nombre)
         consulta = consulta.filter(rol == rol)
     if usuario_id is not None:
         usuario = get_usuario(db, usuario_id)
         consulta = consulta.filter(usuario == usuario)
     elif usuario_email is not None:
-        try:
-            usuario_email = safe_email(usuario_email)
-        except ValueError as error:
-            raise MyNotValidParamError("El email no es válido") from error
-        usuario = get_usuario_by_email(db, usuario_email)
+        usuario = get_usuario_with_email(db, usuario_email)
         consulta = consulta.filter(usuario == usuario)
     return consulta.filter_by(estatus="A").order_by(UsuarioRol.id)
 

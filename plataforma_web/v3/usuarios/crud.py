@@ -51,7 +51,7 @@ def get_usuario(db: Session, usuario_id: int) -> Usuario:
     return usuario
 
 
-def get_usuario_by_email(db: Session, email: str) -> Usuario:
+def get_usuario_with_email(db: Session, email: str) -> Usuario:
     """Consultar un usuario por su email"""
     try:
         email = safe_email(email)
