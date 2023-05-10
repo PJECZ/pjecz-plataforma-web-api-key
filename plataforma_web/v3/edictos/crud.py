@@ -6,7 +6,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.autoridades.models import Autoridad
 from ...core.edictos.models import Edicto

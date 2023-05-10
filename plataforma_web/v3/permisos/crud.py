@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.permisos.models import Permiso
-from ..modulos.crud import get_modulo,
-from ..roles.crud import get_rol,
+from ..modulos.crud import get_modulo
+from ..roles.crud import get_rol
 
 
 def get_permisos(

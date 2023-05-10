@@ -5,10 +5,10 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.usuarios_roles.models import UsuarioRol
-from ..roles.crud import get_rol,
+from ..roles.crud import get_rol
 from ..usuarios.crud import get_usuario, get_usuario_with_email
 
 

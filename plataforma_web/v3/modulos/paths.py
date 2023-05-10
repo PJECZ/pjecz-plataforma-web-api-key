@@ -11,7 +11,7 @@ from lib.fastapi_pagination_custom_list import CustomList, custom_list_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_modulos,
+from .crud import get_modulos, get_modulo_by_nombre
 from .schemas import ModuloOut, OneModuloOut
 
 modulos = APIRouter(prefix="/v3/modulos", tags=["usuarios"])
@@ -38,11 +38,11 @@ async def detalle_modulo(
     db: DatabaseSession,
     nombre: str,
 ):
-    """Detalle de una modulos a partir de su id"""
+    """Detalle de un modulo a partir de su nombre"""
     if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        modulo = (db=db, nombre=nombre)
+        modulo = get_modulo_by_nombre(db=db, nombre=nombre)
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
     return OneModuloOut.from_orm(modulo)
