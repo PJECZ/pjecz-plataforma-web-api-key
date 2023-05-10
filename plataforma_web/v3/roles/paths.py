@@ -11,7 +11,7 @@ from lib.fastapi_pagination_custom_list import CustomList, custom_list_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_roles, get_rol_with_name
+from .crud import get_roles, get_rol
 from .schemas import RolOut, OneRolOut
 
 roles = APIRouter(prefix="/v3/roles", tags=["usuarios"])
@@ -32,17 +32,17 @@ async def listado_roles(
     return paginate(resultados)
 
 
-@roles.get("/{nombre}", response_model=OneRolOut)
+@roles.get("/{rol_id}", response_model=OneRolOut)
 async def detalle_rol(
     current_user: CurrentUser,
     db: DatabaseSession,
-    nombre: str,
+    rol_id: int,
 ):
     """Detalle de una rol a partir de su nombre"""
     if current_user.permissions.get("ROLES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        rol = get_rol_with_name(db=db, nombre=nombre)
+        rol = get_rol(db=db, rol_id=rol_id)
     except MyAnyError as error:
         return OneRolOut(success=False, message=str(error))
     return OneRolOut.from_orm(rol)
