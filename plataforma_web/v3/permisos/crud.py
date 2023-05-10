@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.permisos.models import Permiso
-from ..modulos.crud import get_modulo, get_modulo_by_nombre
-from ..roles.crud import get_rol, get_rol_by_nombre
+from ..modulos.crud import get_modulo
+from ..roles.crud import get_rol
 
 
 def get_permisos(
@@ -25,13 +25,13 @@ def get_permisos(
         modulo = get_modulo(db, modulo_id)
         consulta = consulta.filter(modulo == modulo)
     elif modulo_nombre is not None:
-        modulo = get_modulo_by_nombre(db, modulo_nombre)
+        modulo = (db, modulo_nombre)
         consulta = consulta.filter(modulo == modulo)
     if rol_id is not None:
         rol = get_rol(db, rol_id)
         consulta = consulta.filter(rol == rol)
     elif rol_nombre is not None:
-        rol = get_rol_by_nombre(db, rol_nombre)
+        rol = (db, rol_nombre)
         consulta = consulta.filter(rol == rol)
     return consulta.filter_by(estatus="A").order_by(Permiso.id)
 

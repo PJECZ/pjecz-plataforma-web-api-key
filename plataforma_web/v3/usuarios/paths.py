@@ -11,7 +11,7 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_usuarios, get_usuario_by_email
+from .crud import get_usuarios, get_usuario_with_email
 from .schemas import UsuarioOut, OneUsuarioOut
 
 usuarios = APIRouter(prefix="/v3/usuarios", tags=["usuarios"])
@@ -46,7 +46,7 @@ async def detalle_usuario(
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        usuario = get_usuario_by_email(db=db, email=email)
+        usuario = get_usuario_with_email(db=db, email=email)
     except MyAnyError as error:
         return OneUsuarioOut(success=False, message=str(error))
     return OneUsuarioOut.from_orm(usuario)
