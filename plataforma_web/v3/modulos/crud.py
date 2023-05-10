@@ -26,7 +26,7 @@ def get_modulo(db: Session, modulo_id: int) -> Modulo:
     return modulo
 
 
-def get_modulo_by_nombre(db: Session, nombre: str) -> Modulo:
+def get_modulo_with_nombre(db: Session, nombre: str) -> Modulo:
     """Consultar un modulo por su nombre"""
     nombre = safe_string(nombre)
     if nombre == "":
