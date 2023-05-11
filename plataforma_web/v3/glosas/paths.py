@@ -31,6 +31,8 @@ async def listado_glosas(
     expediente: str = None,
     anio: int = None,
     fecha: date = None,
+    fecha_desde: date = None,
+    fecha_hasta: date = None,
 ):
     """Listado de glosas"""
     if current_user.permissions.get("GLOSAS", 0) < Permiso.VER:
@@ -45,6 +47,8 @@ async def listado_glosas(
             expediente=expediente,
             anio=anio,
             fecha=fecha,
+            fecha_desde=fecha_desde,
+            fecha_hasta=fecha_hasta,
         )
     except MyAnyError as error:
         return custom_page_success_false(error)

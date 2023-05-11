@@ -11,10 +11,7 @@ from ...core.materias_tipos_juicios.models import MateriaTipoJuicio
 from ..materias.crud import get_materia
 
 
-def get_materias_tipos_juicios(
-    db: Session,
-    materia_id: int = None,
-) -> Any:
+def get_materias_tipos_juicios(db: Session, materia_id: int = None) -> Any:
     """Consultar los materias-tipos de juicios activos"""
     consulta = db.query(MateriaTipoJuicio)
     if materia_id is not None:
