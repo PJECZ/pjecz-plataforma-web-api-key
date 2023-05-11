@@ -22,6 +22,8 @@ def get_listas_de_acuerdos(
     distrito_clave: str = None,
     anio: int = None,
     fecha: date = None,
+    fecha_desde: date = None,
+    fecha_hasta: date = None,
 ) -> Any:
     """Consultar los listas de acuerdos activos"""
     consulta = db.query(ListaDeAcuerdo)
@@ -37,12 +39,17 @@ def get_listas_de_acuerdos(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(db, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
-    if fecha is not None:
-        consulta = consulta.filter(ListaDeAcuerdo.fecha == fecha)
-    elif anio is not None:
+    if anio is not None:
         desde = date(year=anio, month=1, day=1)
         hasta = date(year=anio, month=12, day=31)
         consulta = consulta.filter(ListaDeAcuerdo.fecha >= desde).filter(ListaDeAcuerdo.fecha <= hasta)
+    elif fecha is not None:
+        consulta = consulta.filter(ListaDeAcuerdo.fecha == fecha)
+    else:
+        if fecha_desde is not None:
+            consulta = consulta.filter(ListaDeAcuerdo.fecha >= fecha_desde)
+        if fecha_hasta is not None:
+            consulta = consulta.filter(ListaDeAcuerdo.fecha <= fecha_hasta)
     return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id)
 
 

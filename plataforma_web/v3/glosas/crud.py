@@ -24,6 +24,8 @@ def get_glosas(
     expediente: str = None,
     anio: int = None,
     fecha: date = None,
+    fecha_desde: date = None,
+    fecha_hasta: date = None,
 ) -> Any:
     """Consultar los glosas activas"""
     consulta = db.query(Glosa)
@@ -45,12 +47,17 @@ def get_glosas(
         except (IndexError, ValueError) as error:
             raise MyNotValidParamError("El expediente no es válido") from error
         consulta = consulta.filter_by(expediente=expediente)
-    if fecha is not None:
-        consulta = consulta.filter(Glosa.fecha == fecha)
-    elif anio is not None:
+    if anio is not None:
         desde = date(year=anio, month=1, day=1)
         hasta = date(year=anio, month=12, day=31)
         consulta = consulta.filter(Glosa.fecha >= desde).filter(Glosa.fecha <= hasta)
+    elif fecha is not None:
+        consulta = consulta.filter(Glosa.fecha == fecha)
+    else:
+        if fecha_desde is not None:
+            consulta = consulta.filter(Glosa.fecha >= fecha_desde)
+        if fecha_hasta is not None:
+            consulta = consulta.filter(Glosa.fecha <= fecha_hasta)
     return consulta.filter_by(estatus="A").order_by(Glosa.id)
 
 
