@@ -18,6 +18,7 @@ class AutoridadOut(BaseModel):
     descripcion: str | None
     descripcion_corta: str | None
     es_cemasc: bool | None
+    es_creador_glosas: bool | None
     es_defensoria: bool | None
     es_jurisdiccional: bool | None
     es_notaria: bool | None

@@ -74,6 +74,11 @@ class Autoridad(Base, UniversalMixin):
     ubicaciones_expedientes = relationship("UbicacionExpediente", back_populates="autoridad")
 
     @property
+    def es_creador_glosas(self):
+        """Es creador de glosas"""
+        return self.organo_jurisdiccional in ["PLENO O SALA DEL TSJ", "TRIBUNAL DE CONCILIACION Y ARBITRAJE"]
+
+    @property
     def distrito_clave(self):
         """Clave del distrito"""
         return self.distrito.clave
