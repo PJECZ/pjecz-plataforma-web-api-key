@@ -17,6 +17,7 @@ def get_autoridades(
     distrito_id: int = None,
     distrito_clave: str = None,
     es_cemasc: bool = False,
+    es_creador_glosas: bool = False,
     es_defensoria: bool = False,
     es_jurisdiccional: bool = False,
     es_notaria: bool = False,
@@ -31,6 +32,8 @@ def get_autoridades(
         consulta = consulta.filter_by(distrito_id=distrito.id)
     if es_cemasc is not None:
         consulta = consulta.filter_by(es_cemasc=es_cemasc)
+    if es_creador_glosas is True:
+        consulta = consulta.filter(Autoridad.organo_jurisdiccional.in_(["PLENO O SALA DEL TSJ", "TRIBUNAL DE CONCILIACION Y ARBITRAJE"]))
     if es_defensoria is not None:
         consulta = consulta.filter_by(es_defensoria=es_defensoria)
     if es_jurisdiccional is not None:

@@ -51,6 +51,11 @@ GET {{baseUrl}}/autoridades
     ?es_cemasc=true
 X-Api-Key: {{api_key}}
 
+### Autoridades creadoras de glosas
+GET {{baseUrl}}/autoridades
+    ?es_creador_glosas=true
+X-Api-Key: {{api_key}}
+
 ### Autoridades Defensorias
 GET {{baseUrl}}/autoridades
     ?es_defensoria=true

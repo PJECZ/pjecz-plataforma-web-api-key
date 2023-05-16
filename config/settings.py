@@ -42,7 +42,7 @@ from fastapi import Depends
 from google.cloud import secretmanager
 from pydantic import BaseSettings
 
-PROJECT_ID = os.getenv("PROJECT_ID", "")  # Por defecto esta vacio, esto significa que no estamos en google cloud
+PROJECT_ID = os.getenv("PROJECT_ID", "")  # Por defecto esta vacio, esto significa estamos en modo local
 SERVICE_PREFIX = os.getenv("SERVICE_PREFIX", "pjecz_plataforma_web_api_key")
 
 
