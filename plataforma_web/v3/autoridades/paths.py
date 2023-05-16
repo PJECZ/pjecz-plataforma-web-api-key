@@ -24,7 +24,7 @@ async def listado_autoridades(
     distrito_id: int = None,
     distrito_clave: str = None,
     es_cemasc: bool = None,
-    es_creador_glosas: bool = False,
+    es_creador_glosas: bool = None,
     es_defensoria: bool = None,
     es_jurisdiccional: bool = None,
     es_notaria: bool = None,

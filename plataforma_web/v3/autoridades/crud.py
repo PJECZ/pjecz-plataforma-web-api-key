@@ -16,11 +16,11 @@ def get_autoridades(
     db: Session,
     distrito_id: int = None,
     distrito_clave: str = None,
-    es_cemasc: bool = False,
-    es_creador_glosas: bool = False,
-    es_defensoria: bool = False,
-    es_jurisdiccional: bool = False,
-    es_notaria: bool = False,
+    es_cemasc: bool = None,
+    es_creador_glosas: bool = None,
+    es_defensoria: bool = None,
+    es_jurisdiccional: bool = None,
+    es_notaria: bool = None,
 ) -> Any:
     """Consultar los autoridades activos"""
     consulta = db.query(Autoridad)
