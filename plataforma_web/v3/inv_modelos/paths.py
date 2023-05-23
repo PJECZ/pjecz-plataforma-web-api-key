@@ -21,12 +21,16 @@ inv_modelos = APIRouter(prefix="/v3/inv_modelos", tags=["categoria"])
 async def listado_inv_modelos(
     current_user: CurrentUser,
     db: DatabaseSession,
+    inv_marca_id: int = None,
 ):
     """Listado de modelos"""
     if current_user.permissions.get("INV MODELOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_inv_modelos(db=db)
+        resultados = get_inv_modelos(
+            db=db,
+            inv_marca_id=inv_marca_id,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

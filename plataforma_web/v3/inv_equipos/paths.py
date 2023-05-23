@@ -1,6 +1,8 @@
 """
 Inventarios Equipos v3, rutas (paths)
 """
+from datetime import date
+
 from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
@@ -21,12 +23,36 @@ inv_equipos = APIRouter(prefix="/v3/inv_equipos", tags=["categoria"])
 async def listado_inv_equipos(
     current_user: CurrentUser,
     db: DatabaseSession,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
+    fecha_fabricacion_desde: date = None,
+    fecha_fabricacion_hasta: date = None,
+    inv_custodia_id: int = None,
+    inv_modelo_id: int = None,
+    inv_red_id: int = None,
+    oficina_id: int = None,
+    oficina_clave: str = None,
+    tipo: str = None,
 ):
     """Listado de equipos"""
     if current_user.permissions.get("INV EQUIPOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_inv_equipos(db=db)
+        resultados = get_inv_equipos(
+            db=db,
+            creado=creado,
+            creado_desde=creado_desde,
+            creado_hasta=creado_hasta,
+            fecha_fabricacion_desde=fecha_fabricacion_desde,
+            fecha_fabricacion_hasta=fecha_fabricacion_hasta,
+            inv_custodia_id=inv_custodia_id,
+            inv_modelo_id=inv_modelo_id,
+            inv_red_id=inv_red_id,
+            oficina_id=oficina_id,
+            oficina_clave=oficina_clave,
+            tipo=tipo,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

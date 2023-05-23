@@ -21,12 +21,20 @@ inv_componentes = APIRouter(prefix="/v3/inv_componentes", tags=["categoria"])
 async def listado_inv_componentes(
     current_user: CurrentUser,
     db: DatabaseSession,
+    generacion: str = None,
+    inv_categoria_id: int = None,
+    inv_equipo_id: int = None,
 ):
     """Listado de componentes"""
     if current_user.permissions.get("INV COMPONENTES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_inv_componentes(db=db)
+        resultados = get_inv_componentes(
+            db=db,
+            generacion=generacion,
+            inv_categoria_id=inv_categoria_id,
+            inv_equipo_id=inv_equipo_id,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

@@ -5,6 +5,8 @@ from datetime import date, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func, extract
+import pytz
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 from lib.safe_string import safe_string
@@ -24,7 +26,6 @@ def get_inv_equipos(
     creado: date = None,
     creado_desde: date = None,
     creado_hasta: date = None,
-    estatus: str = None,
     fecha_fabricacion_desde: date = None,
     fecha_fabricacion_hasta: date = None,
     inv_custodia_id: int = None,
@@ -35,7 +36,43 @@ def get_inv_equipos(
     tipo: str = None,
 ) -> Any:
     """Consultar los equipos activos"""
+    servidor_huso_horario = pytz.utc
     consulta = db.query(InvEquipo)
+    if creado is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0).astimezone(servidor_huso_horario)
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59).astimezone(servidor_huso_horario)
+        consulta = consulta.filter(InvEquipo.creado >= desde_dt).filter(InvEquipo.creado <= hasta_dt)
+    if creado is None and creado_desde is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0).astimezone(servidor_huso_horario)
+        consulta = consulta.filter(InvEquipo.creado >= desde_dt)
+    if creado is None and creado_hasta is not None:
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59).astimezone(servidor_huso_horario)
+        consulta = consulta.filter(InvEquipo.creado <= hasta_dt)
+    if fecha_fabricacion_desde is not None:
+        consulta = consulta.filter(InvEquipo.fecha_fabricacion >= fecha_fabricacion_desde)
+    if fecha_fabricacion_hasta is not None:
+        consulta = consulta.filter(InvEquipo.fecha_fabricacion <= fecha_fabricacion_hasta)
+    if inv_custodia_id is not None:
+        inv_custodia = get_inv_custodia(db, inv_custodia_id=inv_custodia_id)
+        consulta = consulta.filter(InvEquipo.inv_custodia == inv_custodia)
+    if inv_modelo_id is not None:
+        inv_modelo = get_inv_modelo(db, inv_modelo_id=inv_modelo_id)
+        consulta = consulta.filter(InvEquipo.inv_modelo == inv_modelo)
+    if inv_red_id is not None:
+        inv_red = get_inv_red(db, inv_red_id=inv_red_id)
+        consulta = consulta.filter(InvEquipo.inv_red == inv_red)
+    if oficina_id is not None:
+        oficina = get_oficina(db, oficina_id=oficina_id)
+        consulta = consulta.join(InvCustodia, Usuario)
+        consulta = consulta.filter(Usuario.oficina == oficina)
+    elif oficina_clave is not None:
+        oficina = get_oficina_from_clave(db, oficina_clave=oficina_clave)
+        consulta = consulta.join(InvCustodia, Usuario)
+        consulta = consulta.filter(Usuario.oficina == oficina)
+    if tipo is not None:
+        tipo = safe_string(tipo)
+        if tipo in InvEquipo.TIPOS:
+            consulta = consulta.filter(InvEquipo.tipo == tipo)
     return consulta.filter_by(estatus="A").order_by(InvEquipo.id)
 
 
