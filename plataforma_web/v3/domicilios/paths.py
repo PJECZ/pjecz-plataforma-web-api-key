@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_domicilios, get_domicilio
 from .schemas import DomicilioOut, OneDomicilioOut
 
-domicilios = APIRouter(prefix="/v3/domicilios", tags=["categoria"])
+domicilios = APIRouter(prefix="/v3/domicilios", tags=["oficinas"])
 
 
 @domicilios.get("", response_model=CustomPage[DomicilioOut])

@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_inv_redes, get_inv_red
 from .schemas import InvRedOut, OneInvRedOut
 
-inv_redes = APIRouter(prefix="/v3/inv_redes", tags=["categoria"])
+inv_redes = APIRouter(prefix="/v3/inv_redes", tags=["inventarios"])
 
 
 @inv_redes.get("", response_model=CustomPage[InvRedOut])

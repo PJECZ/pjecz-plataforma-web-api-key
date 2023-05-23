@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_inv_marcas, get_inv_marca
 from .schemas import InvMarcaOut, OneInvMarcaOut
 
-inv_marcas = APIRouter(prefix="/v3/inv_marcas", tags=["categoria"])
+inv_marcas = APIRouter(prefix="/v3/inv_marcas", tags=["inventarios"])
 
 
 @inv_marcas.get("", response_model=CustomPage[InvMarcaOut])

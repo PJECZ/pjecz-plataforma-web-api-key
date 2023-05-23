@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_inv_componentes, get_inv_componente
 from .schemas import InvComponenteOut, OneInvComponenteOut
 
-inv_componentes = APIRouter(prefix="/v3/inv_componentes", tags=["categoria"])
+inv_componentes = APIRouter(prefix="/v3/inv_componentes", tags=["inventarios"])
 
 
 @inv_componentes.get("", response_model=CustomPage[InvComponenteOut])

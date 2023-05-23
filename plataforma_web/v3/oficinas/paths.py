@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_oficinas, get_oficina_with_clave
 from .schemas import OficinaOut, OneOficinaOut
 
-oficinas = APIRouter(prefix="/v3/oficinas", tags=["categoria"])
+oficinas = APIRouter(prefix="/v3/oficinas", tags=["oficinas"])
 
 
 @oficinas.get("", response_model=CustomList[OficinaOut])
@@ -42,17 +42,17 @@ async def listado_oficinas(
     return paginate(resultados)
 
 
-@oficinas.get("/{clave}", response_model=OneOficinaOut)
+@oficinas.get("/{oficina_clave}", response_model=OneOficinaOut)
 async def detalle_oficina(
     current_user: CurrentUser,
     db: DatabaseSession,
-    clave: str,
+    oficina_clave: str,
 ):
     """Detalle de una oficina a partir de su clave"""
     if current_user.permissions.get("OFICINAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        oficina = get_oficina_with_clave(db=db, clave=clave)
+        oficina = get_oficina_with_clave(db, oficina_clave)
     except MyAnyError as error:
         return OneOficinaOut(success=False, message=str(error))
     return OneOficinaOut.from_orm(oficina)

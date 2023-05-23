@@ -16,7 +16,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_inv_custodias, get_inv_custodia
 from .schemas import InvCustodiaOut, OneInvCustodiaOut
 
-inv_custodias = APIRouter(prefix="/v3/inv_custodias", tags=["categoria"])
+inv_custodias = APIRouter(prefix="/v3/inv_custodias", tags=["inventarios"])
 
 
 @inv_custodias.get("", response_model=CustomPage[InvCustodiaOut])

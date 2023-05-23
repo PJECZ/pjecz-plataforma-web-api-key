@@ -48,17 +48,17 @@ async def listado_autoridades(
     return paginate(resultados)
 
 
-@autoridades.get("/{clave}", response_model=OneAutoridadOut)
+@autoridades.get("/{autoridad_clave}", response_model=OneAutoridadOut)
 async def detalle_autoridad(
     current_user: CurrentUser,
     db: DatabaseSession,
-    clave: str,
+    autoridad_clave: str,
 ):
     """Detalle de una autoridad a partir de su clave"""
     if current_user.permissions.get("AUTORIDADES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        autoridad = get_autoridad_with_clave(db=db, clave=clave)
+        autoridad = get_autoridad_with_clave(db, autoridad_clave)
     except MyAnyError as error:
         return OneAutoridadOut(success=False, message=str(error))
     return OneAutoridadOut.from_orm(autoridad)

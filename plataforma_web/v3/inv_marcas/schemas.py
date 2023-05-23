@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class InvMarcasOut(BaseModel):
+class InvMarcaOut(BaseModel):
     """Esquema para entregar marcas"""
 
     id: int | None
@@ -18,5 +18,5 @@ class InvMarcasOut(BaseModel):
         orm_mode = True
 
 
-class OneInvMarcasOut(InvMarcasOut, OneBaseOut):
+class OneInvMarcaOut(InvMarcaOut, OneBaseOut):
     """Esquema para entregar un marca"""

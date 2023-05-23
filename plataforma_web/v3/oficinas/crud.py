@@ -46,10 +46,10 @@ def get_oficina(db: Session, oficina_id: int) -> Oficina:
     return oficina
 
 
-def get_oficina_with_clave(db: Session, clave: str) -> Oficina:
+def get_oficina_with_clave(db: Session, oficina_clave: str) -> Oficina:
     """Consultar una oficina por su clave"""
     try:
-        clave = safe_clave(clave)
+        clave = safe_clave(oficina_clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
     oficina = db.query(Oficina).filter_by(clave=clave).first()

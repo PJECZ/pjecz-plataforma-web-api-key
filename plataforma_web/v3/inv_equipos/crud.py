@@ -5,7 +5,6 @@ from datetime import date, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import func, extract
 import pytz
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
@@ -13,12 +12,11 @@ from lib.safe_string import safe_string
 
 from ...core.inv_equipos.models import InvEquipo
 from ...core.inv_custodias.models import InvCustodia
-from ...core.oficinas.models import Oficina
 from ...core.usuarios.models import Usuario
 from ..inv_custodias.crud import get_inv_custodia
 from ..inv_modelos.crud import get_inv_modelo
 from ..inv_redes.crud import get_inv_red
-from ..oficinas.crud import get_oficina, get_oficina_from_clave
+from ..oficinas.crud import get_oficina, get_oficina_with_clave
 
 
 def get_inv_equipos(
@@ -53,20 +51,20 @@ def get_inv_equipos(
     if fecha_fabricacion_hasta is not None:
         consulta = consulta.filter(InvEquipo.fecha_fabricacion <= fecha_fabricacion_hasta)
     if inv_custodia_id is not None:
-        inv_custodia = get_inv_custodia(db, inv_custodia_id=inv_custodia_id)
+        inv_custodia = get_inv_custodia(db, inv_custodia_id)
         consulta = consulta.filter(InvEquipo.inv_custodia == inv_custodia)
     if inv_modelo_id is not None:
-        inv_modelo = get_inv_modelo(db, inv_modelo_id=inv_modelo_id)
+        inv_modelo = get_inv_modelo(db, inv_modelo_id)
         consulta = consulta.filter(InvEquipo.inv_modelo == inv_modelo)
     if inv_red_id is not None:
-        inv_red = get_inv_red(db, inv_red_id=inv_red_id)
+        inv_red = get_inv_red(db, inv_red_id)
         consulta = consulta.filter(InvEquipo.inv_red == inv_red)
     if oficina_id is not None:
-        oficina = get_oficina(db, oficina_id=oficina_id)
+        oficina = get_oficina(db, oficina_id)
         consulta = consulta.join(InvCustodia, Usuario)
         consulta = consulta.filter(Usuario.oficina == oficina)
     elif oficina_clave is not None:
-        oficina = get_oficina_from_clave(db, oficina_clave=oficina_clave)
+        oficina = get_oficina_with_clave(db, oficina_clave)
         consulta = consulta.join(InvCustodia, Usuario)
         consulta = consulta.filter(Usuario.oficina == oficina)
     if tipo is not None:
