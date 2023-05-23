@@ -12,14 +12,23 @@ from .v3.audiencias.paths import audiencias
 from .v3.autoridades.paths import autoridades
 from .v3.bitacoras.paths import bitacoras
 from .v3.distritos.paths import distritos
+from .v3.domicilios.paths import domicilios
 from .v3.edictos.paths import edictos
 from .v3.entradas_salidas.paths import entradas_salidas
 from .v3.epocas.paths import epocas
 from .v3.glosas.paths import glosas
+from .v3.inv_categorias.paths import inv_categorias
+from .v3.inv_componentes.paths import inv_componentes
+from .v3.inv_custodias.paths import inv_custodias
+from .v3.inv_equipos.paths import inv_equipos
+from .v3.inv_marcas.paths import inv_marcas
+from .v3.inv_modelos.paths import inv_modelos
+from .v3.inv_redes.paths import inv_redes
 from .v3.listas_de_acuerdos.paths import listas_de_acuerdos
 from .v3.materias.paths import materias
 from .v3.materias_tipos_juicios.paths import materias_tipos_juicios
 from .v3.modulos.paths import modulos
+from .v3.oficinas.paths import oficinas
 from .v3.peritos.paths import peritos
 from .v3.peritos_tipos.paths import peritos_tipos
 from .v3.permisos.paths import permisos
@@ -58,14 +67,23 @@ def create_app() -> FastAPI:
     app.include_router(autoridades)
     app.include_router(bitacoras)
     app.include_router(distritos)
+    app.include_router(domicilios)
     app.include_router(edictos)
     app.include_router(entradas_salidas)
     app.include_router(epocas)
     app.include_router(glosas)
+    app.include_router(inv_categorias)
+    app.include_router(inv_componentes)
+    app.include_router(inv_custodias)
+    app.include_router(inv_equipos)
+    app.include_router(inv_marcas)
+    app.include_router(inv_modelos)
+    app.include_router(inv_redes)
     app.include_router(listas_de_acuerdos)
     app.include_router(materias)
     app.include_router(materias_tipos_juicios)
     app.include_router(modulos)
+    app.include_router(oficinas)
     app.include_router(peritos)
     app.include_router(peritos_tipos)
     app.include_router(permisos)

@@ -53,10 +53,10 @@ def get_autoridad(db: Session, autoridad_id: int) -> Autoridad:
     return autoridad
 
 
-def get_autoridad_with_clave(db: Session, clave: str) -> Autoridad:
+def get_autoridad_with_clave(db: Session, autoridad_clave: str) -> Autoridad:
     """Consultar un autoridad por su clave"""
     try:
-        clave = safe_clave(clave)
+        clave = safe_clave(autoridad_clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
     autoridad = db.query(Autoridad).filter_by(clave=clave).first()

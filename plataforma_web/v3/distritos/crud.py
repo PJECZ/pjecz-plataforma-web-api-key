@@ -38,10 +38,10 @@ def get_distrito(db: Session, distrito_id: int) -> Distrito:
     return distrito
 
 
-def get_distrito_with_clave(db: Session, clave: str) -> Distrito:
+def get_distrito_with_clave(db: Session, distrito_clave: str) -> Distrito:
     """Consultar un distrito por su clave"""
     try:
-        clave = safe_clave(clave)
+        clave = safe_clave(distrito_clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
     distrito = db.query(Distrito).filter_by(clave=clave).first()

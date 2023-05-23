@@ -40,17 +40,17 @@ async def listado_distritos(
     return paginate(resultados)
 
 
-@distritos.get("/{clave}", response_model=OneDistritoOut)
+@distritos.get("/{distrito_clave}", response_model=OneDistritoOut)
 async def detalle_distrito(
     current_user: CurrentUser,
     db: DatabaseSession,
-    clave: str,
+    distrito_clave: str,
 ):
     """Detalle de una distrito a partir de su clave"""
     if current_user.permissions.get("DISTRITOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        distrito = get_distrito_with_clave(db=db, clave=clave)
+        distrito = get_distrito_with_clave(db, distrito_clave)
     except MyAnyError as error:
         return OneDistritoOut(success=False, message=str(error))
     return OneDistritoOut.from_orm(distrito)
