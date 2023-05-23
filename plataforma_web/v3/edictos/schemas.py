@@ -1,7 +1,7 @@
 """
 Edictos v3, esquemas de pydantic
 """
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel
 
@@ -31,6 +31,7 @@ class EdictoOut(EdictoIn):
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
+    creado: datetime | None
 
     class Config:
         """SQLAlchemy config"""

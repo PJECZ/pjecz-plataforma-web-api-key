@@ -61,11 +61,13 @@ def get_inv_equipos(
         consulta = consulta.filter(InvEquipo.inv_red == inv_red)
     if oficina_id is not None:
         oficina = get_oficina(db, oficina_id)
-        consulta = consulta.join(InvCustodia, Usuario)
+        consulta = consulta.join(InvCustodia)
+        consulta = consulta.join(Usuario)
         consulta = consulta.filter(Usuario.oficina == oficina)
     elif oficina_clave is not None:
         oficina = get_oficina_with_clave(db, oficina_clave)
-        consulta = consulta.join(InvCustodia, Usuario)
+        consulta = consulta.join(InvCustodia)
+        consulta = consulta.join(Usuario)
         consulta = consulta.filter(Usuario.oficina == oficina)
     if tipo is not None:
         tipo = safe_string(tipo)
