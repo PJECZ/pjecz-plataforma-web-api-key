@@ -2,7 +2,8 @@
 Inventarios Redes, modelos
 """
 from collections import OrderedDict
-from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Integer, String
+
+from sqlalchemy import Column, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -12,6 +13,13 @@ from lib.universal_mixin import UniversalMixin
 class InvRed(Base, UniversalMixin):
     """InvRed"""
 
+    TIPOS = OrderedDict(
+        [
+            ("LAN", "Lan"),
+            ("WIRELESS", "Wireless"),
+        ]
+    )
+
     # Nombre de la tabla
     __tablename__ = "inv_redes"
 
@@ -19,10 +27,11 @@ class InvRed(Base, UniversalMixin):
     id = Column(Integer, primary_key=True)
 
     # Columnas
-    fecha = Column(Date, index=True, nullable=False)
-    descripcion = Column(String(256), nullable=False)
-    archivo = Column(String(256), default="")
-    url = Column(String(512), default="")
+    nombre = Column(String(256), unique=True, nullable=False)
+    tipo = Column(Enum(*TIPOS, name="tipos_redes", native_enum=False), index=True, nullable=False)
+
+    # Hijos
+    inv_equipos = relationship("InvEquipo", back_populates="inv_red")
 
     def __repr__(self):
         """Representación"""

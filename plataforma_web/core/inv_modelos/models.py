@@ -1,8 +1,7 @@
 """
 Inventarios Modelos, modelos
 """
-from collections import OrderedDict
-from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -18,11 +17,20 @@ class InvModelo(Base, UniversalMixin):
     # Clave primaria
     id = Column(Integer, primary_key=True)
 
+    # Clave foránea
+    inv_marca_id = Column(Integer, ForeignKey("inv_marcas.id"), index=True, nullable=False)
+    inv_marca = relationship("InvMarca", back_populates="inv_modelos")
+
     # Columnas
-    fecha = Column(Date, index=True, nullable=False)
     descripcion = Column(String(256), nullable=False)
-    archivo = Column(String(256), default="")
-    url = Column(String(512), default="")
+
+    # Hijos
+    inv_equipos = relationship("InvEquipo", back_populates="inv_modelo")
+
+    @property
+    def inv_marca_nombre(self):
+        """Nombre de la marca"""
+        return self.inv_marca.nombre
 
     def __repr__(self):
         """Representación"""
