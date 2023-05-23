@@ -9,13 +9,18 @@
 .vscode
 .DS_Store
 
+*.csv
 *.py[cod]
 *.sqlite3
 *.xlsx
 
 __pycache__/
+
+/.git
+/.venv
+/.vscode
 /poetry.lock
 /pyproject.toml
-
 /rest-client
+/setup.py
 /tests
