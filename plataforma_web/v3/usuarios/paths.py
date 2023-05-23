@@ -21,16 +21,30 @@ usuarios = APIRouter(prefix="/v3/usuarios", tags=["usuarios"])
 async def listado_usuarios(
     current_user: CurrentUser,
     db: DatabaseSession,
-    email: str = None,
-    nombres: str = None,
     apellido_paterno: str = None,
     apellido_materno: str = None,
+    autoridad_id: int = None,
+    autoridad_clave: str = None,
+    email: str = None,
+    nombres: str = None,
+    oficina_id: int = None,
+    oficina_clave: str = None,
 ):
     """Listado de usuarios"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_usuarios(db=db, email=email, nombres=nombres, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno)
+        resultados = get_usuarios(
+            db=db,
+            apellido_paterno=apellido_paterno,
+            apellido_materno=apellido_materno,
+            autoridad_id=autoridad_id,
+            autoridad_clave=autoridad_clave,
+            email=email,
+            nombres=nombres,
+            oficina_id=oficina_id,
+            oficina_clave=oficina_clave,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

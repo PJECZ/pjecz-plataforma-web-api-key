@@ -71,6 +71,46 @@ class Usuario(Base, UniversalMixin):
         return self.nombres + " " + self.apellido_paterno + " " + self.apellido_materno
 
     @property
+    def distrito_id(self):
+        """Distrito ID"""
+        return self.autoridad.distrito_id
+
+    @property
+    def distrito_clave(self):
+        """Distrito clave"""
+        return self.autoridad.distrito.clave
+
+    @property
+    def distrito_nombre(self):
+        """Distrito nombre"""
+        return self.autoridad.distrito.nombre
+
+    @property
+    def distrito_nombre_corto(self):
+        """Distrito nombre corto"""
+        return self.autoridad.distrito.nombre_corto
+
+    @property
+    def autoridad_clave(self):
+        """Autoridad clave"""
+        return self.autoridad.clave
+
+    @property
+    def autoridad_descripcion(self):
+        """Autoridad descripción"""
+        return self.autoridad.descripcion
+
+    @property
+    def autoridad_descripcion_corta(self):
+        """Autoridad descripción corta"""
+        return self.autoridad.descripcion_corta
+
+    @property
+    def oficina_clave(self):
+        """Oficina clave"""
+        return self.oficina.clave
+
+    @property
     def permissions(self):
         """Entrega un diccionario con todos los permisos"""
         if len(self.permisos_consultados) > 0:
