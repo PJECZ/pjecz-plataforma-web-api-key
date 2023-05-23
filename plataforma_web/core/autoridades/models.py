@@ -72,6 +72,7 @@ class Autoridad(Base, UniversalMixin):
     sentencias = relationship("Sentencia", back_populates="autoridad")
     tesis_jurisprudencias = relationship("TesisJurisprudencia", back_populates="autoridad")
     ubicaciones_expedientes = relationship("UbicacionExpediente", back_populates="autoridad")
+    usuarios = relationship("Usuario", back_populates="autoridad")
 
     @property
     def es_creador_glosas(self):

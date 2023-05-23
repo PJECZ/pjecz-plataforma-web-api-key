@@ -13,10 +13,14 @@ from ...core.usuarios.models import Usuario
 
 def get_usuarios(
     db: Session,
-    email: str = None,
-    nombres: str = None,
     apellido_paterno: str = None,
     apellido_materno: str = None,
+    autoridad_id: int = None,
+    autoridad_clave: str = None,
+    email: str = None,
+    nombres: str = None,
+    oficina_id: int = None,
+    oficina_clave: str = None,
 ) -> Any:
     """Consultar los usuarios activos"""
     consulta = db.query(Usuario)

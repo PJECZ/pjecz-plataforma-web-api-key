@@ -3,7 +3,7 @@ Usuarios, modelos
 """
 from collections import OrderedDict
 
-from sqlalchemy import Column, DateTime, Enum, Integer, String
+from sqlalchemy import Column, DateTime, Enum, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -29,6 +29,12 @@ class Usuario(Base, UniversalMixin):
 
     # Clave primaria
     id = Column(Integer, primary_key=True)
+
+    # Claves foráneas
+    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
+    autoridad = relationship("Autoridad", back_populates="usuarios")
+    oficina_id = Column(Integer, ForeignKey("oficinas.id"), index=True, nullable=False)
+    oficina = relationship("Oficina", back_populates="usuarios")
 
     # Columnas
     email = Column(String(256), nullable=False, unique=True, index=True)
