@@ -6,7 +6,7 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.database import DatabaseSession
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_list import CustomList, custom_list_success_false
+from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
 
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
@@ -17,7 +17,7 @@ from .schemas import OficinaOut, OneOficinaOut
 oficinas = APIRouter(prefix="/v3/oficinas", tags=["oficinas"])
 
 
-@oficinas.get("", response_model=CustomList[OficinaOut])
+@oficinas.get("", response_model=CustomPage[OficinaOut])
 async def listado_oficinas(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -38,7 +38,7 @@ async def listado_oficinas(
             es_jurisdiccional=es_jurisdiccional,
         )
     except MyAnyError as error:
-        return custom_list_success_false(error)
+        return custom_page_success_false(error)
     return paginate(resultados)
 
 
