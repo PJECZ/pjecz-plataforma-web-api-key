@@ -1,0 +1,22 @@
+"""
+Inventarios Marcas v3, esquemas de pydantic
+"""
+from pydantic import BaseModel
+
+from lib.schemas_base import OneBaseOut
+
+
+class InvMarcasOut(BaseModel):
+    """Esquema para entregar marcas"""
+
+    id: int | None
+    nombre: str | None
+
+    class Config:
+        """SQLAlchemy config"""
+
+        orm_mode = True
+
+
+class OneInvMarcasOut(InvMarcasOut, OneBaseOut):
+    """Esquema para entregar un marca"""
