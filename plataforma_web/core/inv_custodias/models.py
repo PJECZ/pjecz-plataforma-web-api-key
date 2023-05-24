@@ -42,6 +42,11 @@ class InvCustodia(Base, UniversalMixin):
         return self.usuario.oficina.distrito.clave
 
     @property
+    def domicilio_edificio(self):
+        """Edificio del domicilio"""
+        return self.usuario.oficina.domicilio.edificio
+
+    @property
     def oficina_id(self):
         """Id de la oficina"""
         return self.usuario.oficina_id

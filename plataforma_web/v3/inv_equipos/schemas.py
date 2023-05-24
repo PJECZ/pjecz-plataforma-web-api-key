@@ -19,6 +19,7 @@ class InvEquipoOut(BaseModel):
     disco_duro: str | None
     distrito_id: int | None
     distrito_clave: str | None
+    domicilio_edificio: str | None
     fecha_fabricacion: date | None
     inv_custodia_id: int | None
     inv_custodia_nombre_completo: str | None

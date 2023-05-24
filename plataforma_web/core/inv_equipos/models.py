@@ -73,6 +73,11 @@ class InvEquipo(Base, UniversalMixin):
         return self.inv_custodia.usuario.oficina.distrito.clave
 
     @property
+    def domicilio_edificio(self):
+        """Edificio del domicilio"""
+        return self.inv_custodia.usuario.oficina.domicilio.edificio
+
+    @property
     def inv_marca_id(self):
         """ID de la marca"""
         return self.inv_modelo.inv_marca_id

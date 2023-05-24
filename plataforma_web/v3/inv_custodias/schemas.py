@@ -16,6 +16,7 @@ class InvCustodiaOut(BaseModel):
     curp: str | None
     distrito_id: int | None
     distrito_clave: str | None
+    domicilio_edificio: str | None
     fecha: date | None
     nombre_completo: str | None
     oficina_id: int | None
