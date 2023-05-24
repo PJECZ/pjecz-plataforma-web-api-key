@@ -23,8 +23,12 @@ inv_custodias = APIRouter(prefix="/v3/inv_custodias", tags=["inventarios"])
 async def listado_inv_custodias(
     current_user: CurrentUser,
     db: DatabaseSession,
+    distrito_id: int = None,
+    distrito_clave: str = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
+    oficina_id: int = None,
+    oficina_clave: str = None,
     usuario_id: int = None,
     usuario_email: str = None,
 ):
@@ -34,8 +38,12 @@ async def listado_inv_custodias(
     try:
         resultados = get_inv_custodias(
             db=db,
+            distrito_id=distrito_id,
+            distrito_clave=distrito_clave,
             fecha_desde=fecha_desde,
             fecha_hasta=fecha_hasta,
+            oficina_id=oficina_id,
+            oficina_clave=oficina_clave,
             usuario_id=usuario_id,
             usuario_email=usuario_email,
         )

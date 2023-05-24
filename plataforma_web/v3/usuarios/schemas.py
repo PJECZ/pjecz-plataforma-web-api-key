@@ -12,6 +12,15 @@ class UsuarioOut(BaseModel):
     """Esquema para entregar usuarios"""
 
     id: int | None
+    distrito_id: int | None
+    distrito_clave: str | None
+    distrito_nombre: str | None
+    distrito_nombre_corto: str | None
+    autoridad_clave: str | None
+    autoridad_descripcion: str | None
+    autoridad_descripcion_corta: str | None
+    oficina_id: int | None
+    oficina_clave: str | None
     email: str | None
     nombres: str | None
     apellido_paterno: str | None

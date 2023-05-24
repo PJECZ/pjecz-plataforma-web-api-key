@@ -1,7 +1,7 @@
 """
 Sentencias v3, esquemas de pydantic
 """
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel
 
@@ -37,6 +37,7 @@ class SentenciaOut(SentenciaIn):
     materia_id: int | None
     materia_nombre: str | None
     materia_tipo_juicio_descripcion: str | None
+    creado: datetime | None
 
     class Config:
         """SQLAlchemy config"""

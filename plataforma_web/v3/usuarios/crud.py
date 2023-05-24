@@ -9,6 +9,8 @@ from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamEr
 from lib.safe_string import safe_email, safe_string
 
 from ...core.usuarios.models import Usuario
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..oficinas.crud import get_oficina, get_oficina_with_clave
 
 
 def get_usuarios(
@@ -24,6 +26,20 @@ def get_usuarios(
 ) -> Any:
     """Consultar los usuarios activos"""
     consulta = db.query(Usuario)
+    if apellido_paterno is not None:
+        apellido_paterno = safe_string(apellido_paterno)
+        if apellido_paterno != "":
+            consulta = consulta.filter(Usuario.apellido_paterno.contains(apellido_paterno))
+    if apellido_materno is not None:
+        apellido_materno = safe_string(apellido_materno)
+        if apellido_materno != "":
+            consulta = consulta.filter(Usuario.apellido_materno.contains(apellido_materno))
+    if autoridad_id is not None:
+        autoridad = get_autoridad(db, autoridad_id)
+        consulta = consulta.filter_by(autoridad_id=autoridad.id)
+    elif autoridad_clave is not None:
+        autoridad = get_autoridad_with_clave(db, autoridad_clave)
+        consulta = consulta.filter_by(autoridad_id=autoridad.id)
     if email is not None:
         try:
             email = safe_email(email, search_fragment=True)
@@ -34,14 +50,12 @@ def get_usuarios(
         nombres = safe_string(nombres)
         if nombres != "":
             consulta = consulta.filter(Usuario.nombres.contains(nombres))
-    if apellido_paterno is not None:
-        apellido_paterno = safe_string(apellido_paterno)
-        if apellido_paterno != "":
-            consulta = consulta.filter(Usuario.apellido_paterno.contains(apellido_paterno))
-    if apellido_materno is not None:
-        apellido_materno = safe_string(apellido_materno)
-        if apellido_materno != "":
-            consulta = consulta.filter(Usuario.apellido_materno.contains(apellido_materno))
+    if oficina_id is not None:
+        oficina = get_oficina(db, oficina_id)
+        consulta = consulta.filter_by(oficina_id=oficina.id)
+    elif oficina_clave is not None:
+        oficina = get_oficina_with_clave(db, oficina_clave)
+        consulta = consulta.filter_by(oficina_id=oficina.id)
     return consulta.filter_by(estatus="A").order_by(Usuario.email)
 
 
