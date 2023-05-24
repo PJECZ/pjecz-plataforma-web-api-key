@@ -9,13 +9,21 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.inv_custodias.models import InvCustodia
+from ...core.oficinas.models import Oficina
+from ...core.usuarios.models import Usuario
+from ..distritos.crud import get_distrito, get_distrito_with_clave
+from ..oficinas.crud import get_oficina, get_oficina_with_clave
 from ..usuarios.crud import get_usuario, get_usuario_with_email
 
 
 def get_inv_custodias(
     db: Session,
+    distrito_id: int = None,
+    distrito_clave: str = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
+    oficina_id: int = None,
+    oficina_clave: str = None,
     usuario_id: int = None,
     usuario_email: str = None,
 ) -> Any:
@@ -25,6 +33,24 @@ def get_inv_custodias(
         consulta = consulta.filter(InvCustodia.fecha >= fecha_desde)
     if fecha_hasta is not None:
         consulta = consulta.filter(InvCustodia.fecha <= fecha_hasta)
+    if oficina_id is not None:
+        oficina = get_oficina(db, oficina_id)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.filter(Usuario.oficina == oficina)
+    elif oficina_clave is not None:
+        oficina = get_oficina_with_clave(db, oficina_clave)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.filter(Usuario.oficina == oficina)
+    elif distrito_id is not None:
+        distrito = get_distrito(db, distrito_id)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.join(Oficina)
+        consulta = consulta.filter(Oficina.distrito == distrito)
+    elif distrito_clave is not None:
+        distrito = get_distrito_with_clave(db, distrito_clave)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.join(Oficina)
+        consulta = consulta.filter(Oficina.distrito == distrito)
     if usuario_id is not None:
         usuario = get_usuario(db, usuario_id=usuario_id)
         consulta = consulta.filter(InvCustodia.usuario == usuario)

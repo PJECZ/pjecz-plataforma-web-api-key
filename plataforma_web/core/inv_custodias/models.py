@@ -7,6 +7,8 @@ from sqlalchemy.orm import relationship
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
 
+from ..distritos.models import Distrito
+
 
 class InvCustodia(Base, UniversalMixin):
     """InvCustodia"""
@@ -30,14 +32,29 @@ class InvCustodia(Base, UniversalMixin):
     inv_equipos = relationship("InvEquipo", back_populates="inv_custodia")
 
     @property
+    def distrito_id(self):
+        """Id del distrito"""
+        return self.usuario.oficina.distrito_id
+
+    @property
+    def distrito_clave(self):
+        """Clave del distrito"""
+        return self.usuario.oficina.distrito.clave
+
+    @property
+    def oficina_id(self):
+        """Id de la oficina"""
+        return self.usuario.oficina_id
+
+    @property
+    def oficina_clave(self):
+        """Clave de la oficina"""
+        return self.usuario.oficina.clave
+
+    @property
     def usuario_email(self):
         """Email del usuario"""
         return self.usuario.email
-
-    @property
-    def usuario_nombre(self):
-        """Nombre del usuario"""
-        return self.usuario.nombre
 
     def __repr__(self):
         """Representación"""

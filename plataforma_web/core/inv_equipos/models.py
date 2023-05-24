@@ -63,6 +63,16 @@ class InvEquipo(Base, UniversalMixin):
         return self.inv_custodia.nombre_completo
 
     @property
+    def distrito_id(self):
+        """Id del distrito"""
+        return self.inv_custodia.usuario.oficina.distrito_id
+
+    @property
+    def distrito_clave(self):
+        """Clave del distrito"""
+        return self.inv_custodia.usuario.oficina.distrito.clave
+
+    @property
     def inv_marca_id(self):
         """ID de la marca"""
         return self.inv_modelo.inv_marca_id
@@ -81,6 +91,50 @@ class InvEquipo(Base, UniversalMixin):
     def inv_red_nombre(self):
         """Nombre de la red"""
         return self.inv_red.nombre
+
+    @property
+    def oficina_id(self):
+        """ID de la oficina"""
+        return self.inv_custodia.usuario.oficina_id
+
+    @property
+    def oficina_clave(self):
+        """Clave de la oficina"""
+        return self.inv_custodia.usuario.oficina.clave
+
+    @property
+    def usuario_id(self):
+        """ID del usuario"""
+        return self.inv_custodia.usuario_id
+
+    @property
+    def usuario_email(self):
+        """Email del usuario"""
+        return self.inv_custodia.usuario.email
+
+    @property
+    def disco_duro(self):
+        """Disco duro"""
+        for inv_componente in self.inv_componentes:
+            if inv_componente.inv_categoria.nombre == "DISCO DURO":
+                return f"{inv_componente.descripcion}; {inv_componente.version}"
+        return ""
+
+    @property
+    def memoria_ram(self):
+        """Memoria RAM"""
+        for inv_componente in self.inv_componentes:
+            if inv_componente.inv_categoria.nombre == "MEMORIA RAM":
+                return inv_componente.descripcion
+        return ""
+
+    @property
+    def procesador(self):
+        """Procesador"""
+        for inv_componente in self.inv_componentes:
+            if inv_componente.inv_categoria.nombre == "PROCESADOR":
+                return f"{inv_componente.descripcion}; {inv_componente.generacion}; {inv_componente.version}"
+        return ""
 
     def __repr__(self):
         """Representación"""

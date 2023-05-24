@@ -12,7 +12,9 @@ from lib.safe_string import safe_string
 
 from ...core.inv_equipos.models import InvEquipo
 from ...core.inv_custodias.models import InvCustodia
+from ...core.oficinas.models import Oficina
 from ...core.usuarios.models import Usuario
+from ..distritos.crud import get_distrito, get_distrito_with_clave
 from ..inv_custodias.crud import get_inv_custodia
 from ..inv_modelos.crud import get_inv_modelo
 from ..inv_redes.crud import get_inv_red
@@ -24,6 +26,8 @@ def get_inv_equipos(
     creado: date = None,
     creado_desde: date = None,
     creado_hasta: date = None,
+    distrito_id: int = None,
+    distrito_clave: str = None,
     fecha_fabricacion_desde: date = None,
     fecha_fabricacion_hasta: date = None,
     inv_custodia_id: int = None,
@@ -69,6 +73,18 @@ def get_inv_equipos(
         consulta = consulta.join(InvCustodia)
         consulta = consulta.join(Usuario)
         consulta = consulta.filter(Usuario.oficina == oficina)
+    elif distrito_id is not None:
+        distrito = get_distrito(db, distrito_id)
+        consulta = consulta.join(InvCustodia)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.join(Oficina)
+        consulta = consulta.filter(Oficina.distrito == distrito)
+    elif distrito_clave is not None:
+        distrito = get_distrito_with_clave(db, distrito_clave)
+        consulta = consulta.join(InvCustodia)
+        consulta = consulta.join(Usuario)
+        consulta = consulta.join(Oficina)
+        consulta = consulta.filter(Oficina.distrito == distrito)
     if tipo is not None:
         tipo = safe_string(tipo)
         if tipo in InvEquipo.TIPOS:
