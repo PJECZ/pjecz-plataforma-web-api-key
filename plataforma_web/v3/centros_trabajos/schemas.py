@@ -1,13 +1,13 @@
 """
-Oficinas v3, esquemas de pydantic
+Centros de Trabajo v3, esquemas de pydantic
 """
 from pydantic import BaseModel
 
 from lib.schemas_base import OneBaseOut
 
 
-class OficinaOut(BaseModel):
-    """Esquema para entregar oficinas"""
+class CentroTrabajoOut(BaseModel):
+    """Esquema para entregar centros de trabajo"""
 
     id: int | None
     distrito_id: int | None
@@ -18,9 +18,8 @@ class OficinaOut(BaseModel):
     domicilio_completo: str | None
     domicilio_edificio: str | None
     clave: str | None
-    descripcion: str | None
-    descripcion_corta: str | None
-    es_jurisdiccional: bool | None
+    nombre: str | None
+    telefono: str | None
 
     class Config:
         """SQLAlchemy config"""
@@ -28,5 +27,5 @@ class OficinaOut(BaseModel):
         orm_mode = True
 
 
-class OneOficinaOut(OficinaOut, OneBaseOut):
-    """Esquema para entregar un oficina"""
+class OneCentroTrabajoOut(CentroTrabajoOut, OneBaseOut):
+    """Esquema para entregar un centro de trabajo"""
