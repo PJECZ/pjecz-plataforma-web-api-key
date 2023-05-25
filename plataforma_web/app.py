@@ -11,11 +11,13 @@ from .v3.abogados.paths import abogados
 from .v3.audiencias.paths import audiencias
 from .v3.autoridades.paths import autoridades
 from .v3.bitacoras.paths import bitacoras
+from .v3.centros_trabajos.paths import centros_trabajos
 from .v3.distritos.paths import distritos
 from .v3.domicilios.paths import domicilios
 from .v3.edictos.paths import edictos
 from .v3.entradas_salidas.paths import entradas_salidas
 from .v3.epocas.paths import epocas
+from .v3.funcionarios.paths import funcionarios
 from .v3.glosas.paths import glosas
 from .v3.inv_categorias.paths import inv_categorias
 from .v3.inv_componentes.paths import inv_componentes
@@ -66,11 +68,13 @@ def create_app() -> FastAPI:
     app.include_router(audiencias)
     app.include_router(autoridades)
     app.include_router(bitacoras)
+    app.include_router(centros_trabajos)
     app.include_router(distritos)
     app.include_router(domicilios)
     app.include_router(edictos)
     app.include_router(entradas_salidas)
     app.include_router(epocas)
+    app.include_router(funcionarios)
     app.include_router(glosas)
     app.include_router(inv_categorias)
     app.include_router(inv_componentes)
