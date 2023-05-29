@@ -58,6 +58,7 @@ class Usuario(Base, UniversalMixin):
 
     # Hijos
     arc_solicitudes_asignadas = relationship("ArcSolicitud", back_populates="arc_usuario_asignado")
+    arc_remesas_asignadas = relationship("ArcRemesa", back_populates="arc_usuario_asignado")
     bitacoras = relationship("Bitacora", back_populates="usuario")
     entradas_salidas = relationship("EntradaSalida", back_populates="usuario")
     inv_custodias = relationship("InvCustodia", back_populates="usuario")
