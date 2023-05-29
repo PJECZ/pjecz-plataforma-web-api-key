@@ -57,6 +57,7 @@ class Usuario(Base, UniversalMixin):
     contrasena = Column(String(256), nullable=False)
 
     # Hijos
+    arc_solicitudes_asignadas = relationship("ArcSolicitud", back_populates="arc_usuario_asignado")
     bitacoras = relationship("Bitacora", back_populates="usuario")
     entradas_salidas = relationship("EntradaSalida", back_populates="usuario")
     inv_custodias = relationship("InvCustodia", back_populates="usuario")
