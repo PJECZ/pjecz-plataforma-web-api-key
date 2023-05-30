@@ -8,6 +8,11 @@ from fastapi_pagination import add_pagination
 from config.settings import get_settings
 
 from .v3.abogados.paths import abogados
+from .v3.arc_documentos.paths import arc_documentos
+from .v3.arc_juzgados_extintos.paths import arc_juzgados_extintos
+from .v3.arc_remesas.paths import arc_remesas
+from .v3.arc_remesas_documentos.paths import arc_remesas_documentos
+from .v3.arc_solicitudes.paths import arc_solicitudes
 from .v3.audiencias.paths import audiencias
 from .v3.autoridades.paths import autoridades
 from .v3.bitacoras.paths import bitacoras
@@ -65,6 +70,11 @@ def create_app() -> FastAPI:
 
     # Rutas
     app.include_router(abogados)
+    app.include_router(arc_documentos)
+    app.include_router(arc_juzgados_extintos)
+    app.include_router(arc_remesas)
+    app.include_router(arc_remesas_documentos)
+    app.include_router(arc_solicitudes)
     app.include_router(audiencias)
     app.include_router(autoridades)
     app.include_router(bitacoras)
