@@ -57,9 +57,52 @@ class ArcSolicitud(Base, UniversalMixin):
         Enum(*ESTADOS, name="estados", native_enum=False),
         nullable=False,
     )
-    razon = Column(Enum(*RAZONES, name="razon", native_enum=False))
+    razon = Column(
+        Enum(*RAZONES, name="razon", native_enum=False),
+        nullable=False,
+    )
     observaciones_solicitud = Column(String(256))
     observaciones_razon = Column(String(256))
+
+    @property
+    def distrito_id(self):
+        """Distrito ID"""
+        return self.autoridad.distrito_id
+
+    @property
+    def distrito_clave(self):
+        """Distrito clave"""
+        return self.autoridad.distrito.clave
+
+    @property
+    def distrito_nombre(self):
+        """Distrito nombre"""
+        return self.autoridad.distrito.nombre
+
+    @property
+    def distrito_nombre_corto(self):
+        """Distrito nombre corto"""
+        return self.autoridad.distrito.nombre_corto
+
+    @property
+    def autoridad_clave(self):
+        """Autoridad clave"""
+        return self.autoridad.clave
+
+    @property
+    def autoridad_descripcion(self):
+        """Autoridad descripción"""
+        return self.autoridad.descripcion
+
+    @property
+    def usuario_asignado_email(self):
+        """Email del usuario"""
+        return self.usuario_asignado.email
+
+    @property
+    def usuario_asignado_nombre(self):
+        """Nombre del usuario"""
+        return self.usuario_asignado.nombre
 
     def __repr__(self):
         """Representación"""

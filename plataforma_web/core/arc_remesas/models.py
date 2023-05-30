@@ -69,14 +69,64 @@ class ArcRemesa(Base, UniversalMixin):
     )
     num_documentos = Column(Integer, nullable=False)
     num_anomalias = Column(Integer, nullable=False)
-    razon = Column(Enum(*RAZONES, name="razones", native_enum=False))
+    razon = Column(
+        Enum(*RAZONES, name="razones", native_enum=False),
+        index=True,
+        nullable=False,
+    )
     estado = Column(
         Enum(*ESTADOS, name="estados", native_enum=False),
+        index=True,
         nullable=False,
     )
 
     # Hijos
     arc_remesas_documentos = relationship("ArcRemesaDocumento", back_populates="arc_remesa")
+
+    @property
+    def distrito_id(self):
+        """Distrito ID"""
+        return self.autoridad.distrito_id
+
+    @property
+    def distrito_clave(self):
+        """Distrito clave"""
+        return self.autoridad.distrito.clave
+
+    @property
+    def distrito_nombre(self):
+        """Distrito nombre"""
+        return self.autoridad.distrito.nombre
+
+    @property
+    def distrito_nombre_corto(self):
+        """Distrito nombre corto"""
+        return self.autoridad.distrito.nombre_corto
+
+    @property
+    def autoridad_clave(self):
+        """Autoridad clave"""
+        return self.autoridad.clave
+
+    @property
+    def autoridad_descripcion(self):
+        """Autoridad descripción"""
+        return self.autoridad.descripcion
+
+    @property
+    def autoridad_descripcion_corta(self):
+        """Autoridad descripción corta"""
+        return self.autoridad.descripcion_corta
+
+    @property
+    def usuario_asignado_email(self):
+        """Email del usuario"""
+        return self.usuario_asignado.email
+
+    @property
+    def usuario_asignado_nombre(self):
+        """Nombre del usuario"""
+        return self.usuario_asignado.nombre
 
     def __repr__(self):
         """Representación"""
