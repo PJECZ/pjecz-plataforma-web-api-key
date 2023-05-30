@@ -55,10 +55,12 @@ class ArcSolicitud(Base, UniversalMixin):
     fojas = Column(Integer())
     estado = Column(
         Enum(*ESTADOS, name="estados", native_enum=False),
+        index=True,
         nullable=False,
     )
     razon = Column(
         Enum(*RAZONES, name="razon", native_enum=False),
+        index=True,
         nullable=False,
     )
     observaciones_solicitud = Column(String(256))

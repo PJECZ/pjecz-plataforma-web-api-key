@@ -13,13 +13,6 @@ from lib.universal_mixin import UniversalMixin
 class ArcRemesaDocumento(Base, UniversalMixin):
     """ArcRemesaDocumento"""
 
-    TIPOS = OrderedDict(
-        [
-            ("TRADICIONAL", "Pendiente"),
-            ("ORAL", "Cancelado"),
-        ]
-    )
-
     ANOMALIAS = OrderedDict(
         [
             ("EXPEDIENTE CON NUMERO INCORRECTO", "Expediente con número incorrecto"),
@@ -33,6 +26,13 @@ class ArcRemesaDocumento(Base, UniversalMixin):
             ("EXPEDIENTE SIN CARATULA", "Expediente sin caratula"),
             ("EXPEDIENTE SIN ESPECIFICACION DE TOMOS ENVIADOS", "Expediente sin especificación de tomos enviados"),
             ("EXPEDIENTE CON CAPTURA ERRONEA DE FOJAS", "Expediente con captura errónea de fojas"),
+        ]
+    )
+
+    TIPOS_JUZGADOS = OrderedDict(
+        [
+            ("TRADICIONAL", "Pendiente"),
+            ("ORAL", "Cancelado"),
         ]
     )
 
@@ -57,7 +57,7 @@ class ArcRemesaDocumento(Base, UniversalMixin):
     observaciones_solicitante = Column(String(256))
     observaciones_archivista = Column(String(256))
     tipo_juzgado = Column(
-        Enum(*TIPOS, name="tipos", native_enum=False),
+        Enum(*TIPOS_JUZGADOS, name="tipos", native_enum=False),
         nullable=False,
     )
 

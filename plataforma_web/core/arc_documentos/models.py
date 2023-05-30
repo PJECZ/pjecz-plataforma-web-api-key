@@ -13,22 +13,6 @@ from lib.universal_mixin import UniversalMixin
 class ArcDocumento(Base, UniversalMixin):
     """ArcDocumento"""
 
-    UBICACIONES = OrderedDict(
-        [
-            ("NO DEFINIDO", "No Definido"),
-            ("ARCHIVO", "Archivo"),
-            ("JUZGADO", "Juzgado"),
-            ("REMESA", "Remesa"),
-        ]
-    )
-
-    TIPO_JUZGADOS = OrderedDict(
-        [
-            ("ORAL", "Oral"),
-            ("TRADICIONAL", "Tradicional"),
-        ]
-    )
-
     TIPOS = OrderedDict(
         [
             ("NO DEFINIDO", "No Definido"),
@@ -39,6 +23,22 @@ class ArcDocumento(Base, UniversalMixin):
             ("EXPEDIENTILLO", "Expedientillo"),
             ("FOLIO", "Folio"),
             ("LIBRO", "Libro"),
+        ]
+    )
+
+    TIPO_JUZGADOS = OrderedDict(
+        [
+            ("ORAL", "Oral"),
+            ("TRADICIONAL", "Tradicional"),
+        ]
+    )
+
+    UBICACIONES = OrderedDict(
+        [
+            ("NO DEFINIDO", "No Definido"),
+            ("ARCHIVO", "Archivo"),
+            ("JUZGADO", "Juzgado"),
+            ("REMESA", "Remesa"),
         ]
     )
 
