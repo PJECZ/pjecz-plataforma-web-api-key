@@ -64,6 +64,9 @@ class Autoridad(Base, UniversalMixin):
     )
 
     # Hijos
+    arc_documentos = relationship("ArcDocumento", back_populates="autoridad")
+    arc_remesas = relationship("ArcRemesa", back_populates="autoridad")
+    arc_solicitudes = relationship("ArcSolicitud", back_populates="autoridad")
     audiencias = relationship("Audiencia", back_populates="autoridad")
     edictos = relationship("Edicto", back_populates="autoridad")
     glosas = relationship("Glosa", back_populates="autoridad")

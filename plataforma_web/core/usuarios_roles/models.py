@@ -32,6 +32,11 @@ class UsuarioRol(Base, UniversalMixin):
         return self.rol.nombre
 
     @property
+    def usuario_email(self):
+        """Email del usuario"""
+        return self.usuario.email
+
+    @property
     def usuario_nombre(self):
         """Nombre del usuario"""
         return self.usuario.nombre
