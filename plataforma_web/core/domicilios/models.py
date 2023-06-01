@@ -32,6 +32,7 @@ class Domicilio(Base, UniversalMixin):
     # Hijos
     centros_trabajos = relationship("CentroTrabajo", back_populates="domicilio")
     oficinas = relationship("Oficina", back_populates="domicilio")
+    siga_salas = relationship("SIGASala", back_populates="domicilio")
 
     def __repr__(self):
         """Representación"""
