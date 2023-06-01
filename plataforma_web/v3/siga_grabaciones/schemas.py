@@ -8,18 +8,11 @@ from pydantic import BaseModel
 from lib.schemas_base import OneBaseOut
 
 
-class SIGAGrabacionOut(BaseModel):
-    """Esquema para entregar grabaciones"""
+class SIGAGrabacionIn(BaseModel):
+    """Esquema para recibir una grabacion"""
 
-    id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
     autoridad_id: int | None
     autoridad_clave: str | None
-    autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
     siga_sala_id: int | None
     siga_sala_clave: str | None
     expediente: str | None
@@ -30,6 +23,18 @@ class SIGAGrabacionOut(BaseModel):
     storage_url: str | None
     tamanio: int | None
     duracion: time | None
+
+
+class SIGAGrabacionOut(SIGAGrabacionIn):
+    """Esquema para entregar grabaciones"""
+
+    id: int | None
+    distrito_id: int | None
+    distrito_clave: str | None
+    distrito_nombre: str | None
+    distrito_nombre_corto: str | None
+    autoridad_descripcion: str | None
+    autoridad_descripcion_corta: str | None
     transcripcion: dict | None
     estado: str | None
     nota: str | None

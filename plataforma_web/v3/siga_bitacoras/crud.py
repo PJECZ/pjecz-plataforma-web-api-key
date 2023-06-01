@@ -39,7 +39,7 @@ def get_siga_bitacoras(
     elif siga_sala_clave is not None:
         siga_sala = get_siga_sala_with_clave(db, siga_sala_clave)
         consulta = consulta.filter_by(siga_sala_id=siga_sala.id)
-    return consulta.filter_by(estatus="A").order_by(SIGABitacora.id)
+    return consulta.filter_by(estatus="A").order_by(SIGABitacora.id.desc())
 
 
 def get_siga_bitacora(db: Session, siga_bitacora_id: int) -> SIGABitacora:

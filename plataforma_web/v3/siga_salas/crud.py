@@ -38,7 +38,7 @@ def get_siga_salas(
             consulta = consulta.filter_by(estado=estado)
         else:
             raise MyNotValidParamError("No es un estado válido")
-    return consulta.filter_by(estatus="A").order_by(SIGASala.id)
+    return consulta.filter_by(estatus="A").order_by(SIGASala.clave)
 
 
 def get_siga_sala(db: Session, siga_sala_id: int) -> SIGASala:
