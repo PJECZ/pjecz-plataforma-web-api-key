@@ -8,11 +8,23 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.domicilios.models import Domicilio
+from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
-def get_domicilios(db: Session) -> Any:
+def get_domicilios(
+    db: Session,
+    distrito_id: int = None,
+    distrito_clave: str = None,
+) -> Any:
     """Consultar los domicilios activos"""
-    return db.query(Domicilio).filter_by(estatus="A").order_by(Domicilio.id)
+    consulta = db.query(Domicilio)
+    if distrito_id is not None:
+        distrito = get_distrito(db, distrito_id)
+        consulta = consulta.filter_by(distrito_id=distrito.id)
+    elif distrito_clave is not None:
+        distrito = get_distrito_with_clave(db, distrito_clave)
+        consulta = consulta.filter_by(distrito_id=distrito.id)
+    return consulta.filter_by(estatus="A").order_by(Domicilio.id)
 
 
 def get_domicilio(db: Session, domicilio_id: int) -> Domicilio:

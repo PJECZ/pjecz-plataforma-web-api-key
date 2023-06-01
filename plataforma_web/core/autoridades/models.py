@@ -38,7 +38,7 @@ class Autoridad(Base, UniversalMixin):
     # Clave primaria
     id = Column(Integer, primary_key=True)
 
-    # Clave foránea
+    # Claves foráneas
     distrito_id = Column(Integer, ForeignKey("distritos.id"), index=True, nullable=False)
     distrito = relationship("Distrito", back_populates="autoridades")
     materia_id = Column(Integer, ForeignKey("materias.id"), index=True, nullable=False)
