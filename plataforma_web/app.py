@@ -43,6 +43,9 @@ from .v3.redam.paths import redam
 from .v3.repsvm_agresores.paths import repsvm_agresores
 from .v3.roles.paths import roles
 from .v3.sentencias.paths import sentencias
+from .v3.siga_bitacoras.paths import siga_bitacoras
+from .v3.siga_grabaciones.paths import siga_grabaciones
+from .v3.siga_salas.paths import siga_salas
 from .v3.tesis_jurisprudencias.paths import tesis_jurisprudencias
 from .v3.usuarios.paths import usuarios
 from .v3.usuarios_roles.paths import usuarios_roles
@@ -105,6 +108,9 @@ def create_app() -> FastAPI:
     app.include_router(repsvm_agresores)
     app.include_router(roles)
     app.include_router(sentencias)
+    app.include_router(siga_bitacoras)
+    app.include_router(siga_grabaciones)
+    app.include_router(siga_salas)
     app.include_router(tesis_jurisprudencias)
     app.include_router(usuarios)
     app.include_router(usuarios_roles)

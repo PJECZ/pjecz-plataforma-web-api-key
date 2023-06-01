@@ -23,7 +23,7 @@ async def listado_arc_juzgados_extintos(
     db: DatabaseSession,
 ):
     """Listado de juzgados extintos"""
-    if current_user.permissions.get("ARC JUZGADOS EXTINTOS", 0) < Permiso.VER:
+    if current_user.permissions.get("ARC DOCUMENTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_arc_juzgados_extintos(db=db)
@@ -39,7 +39,7 @@ async def detalle_arc_juzgado_extinto(
     arc_juzgado_extinto_id: int,
 ):
     """Detalle de una juzgado extinto a partir de su id"""
-    if current_user.permissions.get("ARC JUZGADOS EXTINTOS", 0) < Permiso.VER:
+    if current_user.permissions.get("ARC DOCUMENTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         arc_juzgado_extinto = get_arc_juzgado_extinto(db, arc_juzgado_extinto_id)
