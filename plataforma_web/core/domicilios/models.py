@@ -1,7 +1,7 @@
 """
 Domicilios, modelos
 """
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -16,6 +16,10 @@ class Domicilio(Base, UniversalMixin):
 
     # Clave primaria
     id = Column(Integer, primary_key=True)
+
+    # Claves foráneas
+    distrito_id = Column(Integer, ForeignKey("distritos.id"), index=True, nullable=False)
+    distrito = relationship("Distrito", back_populates="domicilios")
 
     # Columnas
     edificio = Column(String(64), nullable=True, unique=True)
@@ -33,6 +37,21 @@ class Domicilio(Base, UniversalMixin):
     centros_trabajos = relationship("CentroTrabajo", back_populates="domicilio")
     oficinas = relationship("Oficina", back_populates="domicilio")
     siga_salas = relationship("SIGASala", back_populates="domicilio")
+
+    @property
+    def distrito_clave(self):
+        """Clave del distrito"""
+        return self.distrito.clave
+
+    @property
+    def distrito_nombre(self):
+        """Nombre del distrito"""
+        return self.distrito.nombre
+
+    @property
+    def distrito_nombre_corto(self):
+        """Nombre corto del distrito"""
+        return self.distrito.nombre_corto
 
     def __repr__(self):
         """Representación"""

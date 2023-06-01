@@ -21,12 +21,18 @@ domicilios = APIRouter(prefix="/v3/domicilios", tags=["oficinas"])
 async def listado_domicilios(
     current_user: CurrentUser,
     db: DatabaseSession,
+    distrito_id: int = None,
+    distrito_clave: str = None,
 ):
     """Listado de domicilios"""
     if current_user.permissions.get("DOMICILIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_domicilios(db=db)
+        resultados = get_domicilios(
+            db=db,
+            distrito_id=distrito_id,
+            distrito_clave=distrito_clave,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
