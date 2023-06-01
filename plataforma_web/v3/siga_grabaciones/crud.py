@@ -44,7 +44,7 @@ def get_siga_grabaciones(
     elif siga_sala_clave is not None:
         siga_sala = get_siga_sala_with_clave(db, siga_sala_clave)
         consulta = consulta.filter_by(siga_sala_id=siga_sala.id)
-    return consulta.filter_by(estatus="A").order_by(SIGAGrabacion.id)
+    return consulta.filter_by(estatus="A").order_by(SIGAGrabacion.id.desc())
 
 
 def get_siga_grabacion(db: Session, siga_grabacion_id: int) -> SIGAGrabacion:
