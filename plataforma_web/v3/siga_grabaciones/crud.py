@@ -11,6 +11,7 @@ from ...core.autoridades.models import Autoridad
 from ...core.siga_grabaciones.models import SIGAGrabacion
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
+from ..materias.crud import get_materia
 from ..siga_salas.crud import get_siga_sala, get_siga_sala_with_clave
 
 
@@ -53,4 +54,33 @@ def get_siga_grabacion(db: Session, siga_grabacion_id: int) -> SIGAGrabacion:
         raise MyNotExistsError("No existe ese grabacion")
     if siga_grabacion.estatus != "A":
         raise MyIsDeletedError("No es activo ese grabacion, está eliminado")
+    return siga_grabacion
+
+
+def create_siga_gabacion(db: Session, siga_grabacion: SIGAGrabacion) -> SIGAGrabacion:
+    """Crear una grabacion"""
+
+    # Validar autoridad
+    if siga_grabacion.autoridad_id is not None:
+        get_autoridad(db, siga_grabacion.autoridad_id)
+    elif siga_grabacion.autoridad_clave is not None:
+        autoridad = get_autoridad_with_clave(db, siga_grabacion.autoridad_clave)
+        siga_grabacion.autoridad_id = autoridad.id
+
+    # Validar materia
+    get_materia(db, siga_grabacion.materia_id)
+
+    # Validar sala
+    if siga_grabacion.siga_sala_id is not None:
+        get_siga_sala(db, siga_grabacion.siga_sala_id)
+    elif siga_grabacion.siga_sala_clave is not None:
+        siga_sala = get_siga_sala_with_clave(db, siga_grabacion.siga_sala_clave)
+        siga_grabacion.siga_sala_id = siga_sala.id
+
+    # Guardar
+    db.add(siga_grabacion)
+    db.commit()
+    db.refresh(siga_grabacion)
+
+    # Entregar
     return siga_grabacion
