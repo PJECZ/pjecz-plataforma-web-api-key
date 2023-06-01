@@ -27,12 +27,12 @@ class SIGAGrabacion(Base, UniversalMixin):
     id = Column(Integer, primary_key=True)
 
     # Claves foráneas
-    siga_sala_id = Column(Integer, ForeignKey("siga_salas.id"), index=True, nullable=False)
-    siga_sala = relationship("SIGASala", back_populates="siga_grabaciones")
     autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
     autoridad = relationship("Autoridad", back_populates="siga_grabaciones")
     materia_id = Column(Integer, ForeignKey("materias.id"), index=True, nullable=False)
     materia = relationship("Materia", back_populates="siga_grabaciones")
+    siga_sala_id = Column(Integer, ForeignKey("siga_salas.id"), index=True, nullable=False)
+    siga_sala = relationship("SIGASala", back_populates="siga_grabaciones")
 
     # Columnas
     expediente = Column(String(32), nullable=False)
