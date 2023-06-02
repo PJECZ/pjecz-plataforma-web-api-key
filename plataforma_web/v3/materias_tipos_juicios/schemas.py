@@ -11,6 +11,7 @@ class MateriaTipoJuicioOut(BaseModel):
 
     id: int | None
     materia_id: int | None
+    materia_clave: str | None
     materia_nombre: str | None
     descripcion: str | None
 

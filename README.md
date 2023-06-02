@@ -131,6 +131,13 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo
     fi
 
+    if [ -d tests ]
+    then
+        echo "-- Pruebas unitarias"
+        echo "   python -m unittest discover tests"
+        echo
+    fi
+
     if [ -f .github/workflows/gcloud-app-deploy.yml ]
     then
         echo "-- Google Cloud"

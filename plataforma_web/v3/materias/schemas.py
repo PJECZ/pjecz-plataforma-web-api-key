@@ -10,6 +10,7 @@ class MateriaOut(BaseModel):
     """Esquema para entregar materias"""
 
     id: int | None
+    clave: str | None
     nombre: str | None
 
     class Config:

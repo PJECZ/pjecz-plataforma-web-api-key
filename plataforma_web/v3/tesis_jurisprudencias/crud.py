@@ -12,7 +12,7 @@ from ...core.tesis_jurisprudencias.models import TesisJurisprudencia
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 from ..epocas.crud import get_epoca
-from ..materias.crud import get_materia
+from ..materias.crud import get_materia, get_materia_with_clave
 
 
 def get_tesis_jurisprudencias(
@@ -23,6 +23,7 @@ def get_tesis_jurisprudencias(
     distrito_clave: str = None,
     epoca_id: int = None,
     materia_id: int = None,
+    materia_clave: str = None,
 ) -> Any:
     """Consultar los tesis jurisprudencias activos"""
     consulta = db.query(TesisJurisprudencia)
@@ -43,6 +44,9 @@ def get_tesis_jurisprudencias(
         consulta = consulta.filter_by(epoca_id=epoca.id)
     if materia_id is not None:
         materia = get_materia(db, materia_id)
+        consulta = consulta.filter_by(materia_id=materia.id)
+    elif materia_clave is not None:
+        materia = get_materia_with_clave(db, materia_clave)
         consulta = consulta.filter_by(materia_id=materia.id)
     return consulta.filter_by(estatus="A").order_by(TesisJurisprudencia.id)
 

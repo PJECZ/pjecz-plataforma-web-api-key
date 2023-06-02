@@ -8,14 +8,21 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.materias_tipos_juicios.models import MateriaTipoJuicio
-from ..materias.crud import get_materia
+from ..materias.crud import get_materia, get_materia_with_clave
 
 
-def get_materias_tipos_juicios(db: Session, materia_id: int = None) -> Any:
+def get_materias_tipos_juicios(
+    db: Session,
+    materia_id: int = None,
+    materia_clave: str = None,
+) -> Any:
     """Consultar los materias-tipos de juicios activos"""
     consulta = db.query(MateriaTipoJuicio)
     if materia_id is not None:
         materia = get_materia(db, materia_id)
+        consulta = consulta.filter_by(materia_id=materia.id)
+    elif materia_clave is not None:
+        materia = get_materia_with_clave(db, materia_clave)
         consulta = consulta.filter_by(materia_id=materia.id)
     return consulta.filter_by(estatus="A").order_by(MateriaTipoJuicio.descripcion)
 

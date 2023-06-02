@@ -18,6 +18,7 @@ class Materia(Base, UniversalMixin):
     id = Column(Integer, primary_key=True)
 
     # Columnas
+    clave = Column(String(16), nullable=False, unique=True)
     nombre = Column(String(64), unique=True, nullable=False)
 
     # Hijos

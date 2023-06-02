@@ -15,6 +15,8 @@ class SIGAGrabacionIn(BaseModel):
     autoridad_clave: str | None
     siga_sala_id: int | None
     siga_sala_clave: str | None
+    materia_id: int | None
+    materia_clave: str | None
     expediente: str | None
     inicio: datetime | None
     termino: datetime | None
@@ -35,6 +37,7 @@ class SIGAGrabacionOut(SIGAGrabacionIn):
     distrito_nombre_corto: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
+    materia_nombre: str | None
     transcripcion: dict | None
     estado: str | None
     nota: str | None

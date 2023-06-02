@@ -14,6 +14,9 @@ class AutoridadOut(BaseModel):
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
+    materia_id: int | None
+    materia_clave: str | None
+    materia_nombre: str | None
     clave: str | None
     descripcion: str | None
     descripcion_corta: str | None

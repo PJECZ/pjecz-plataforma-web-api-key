@@ -1,5 +1,5 @@
 """
-Unit tests for oficinas category
+Unit tests for materias category
 """
 import os
 import unittest
@@ -10,8 +10,8 @@ import requests
 load_dotenv()
 
 
-class TestOficinas(unittest.TestCase):
-    """Tests for oficinas category"""
+class TestMaterias(unittest.TestCase):
+    """Tests for materias category"""
 
     def setUp(self) -> None:
         """Initialize the test case"""
@@ -29,14 +29,14 @@ class TestOficinas(unittest.TestCase):
         # Return super
         return super().setUp()
 
-    def test_get_domicilios(self):
-        """Test GET method for domicilios"""
-        response = requests.get(f"{self.host}/v3/domicilios", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
+    def test_get_materias(self):
+        """Test GET method for materias"""
+        response = requests.get(f"{self.host}/v3/materias", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
 
-    def test_get_oficinas(self):
-        """Test GET method for oficinas"""
-        response = requests.get(f"{self.host}/v3/oficinas", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
+    def test_get_materias_tipos_juicios(self):
+        """Test GET method for materias_tipos_juicios"""
+        response = requests.get(f"{self.host}/v3/materias_tipos_juicios", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
 
 

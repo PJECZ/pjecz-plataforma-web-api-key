@@ -35,3 +35,8 @@ X-Api-Key: {{api_key}}
 GET {{baseUrl}}/tesis_jurisprudencias
     ?materia_id=2
 X-Api-Key: {{api_key}}
+
+### Tesis Jurisprudencias de la materia con clave FAM
+GET {{baseUrl}}/tesis_jurisprudencias
+    ?materia_clave=FAM
+X-Api-Key: {{api_key}}

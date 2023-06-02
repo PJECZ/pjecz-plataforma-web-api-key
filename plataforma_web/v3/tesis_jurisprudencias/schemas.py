@@ -23,6 +23,7 @@ class TesisJurisprudenciaOut(BaseModel):
     epoca_id: int | None
     epoca_nombre: str | None
     materia_id: int | None
+    materia_clave: str | None
     materia_nombre: str | None
     titulo: str | None
     subtitulo: str | None

@@ -27,6 +27,7 @@ async def listado_tesis_jurisprudencias(
     distrito_clave: str = None,
     epoca_id: int = None,
     materia_id: int = None,
+    materia_clave: str = None,
 ):
     """Listado de tesis jurisprudencias"""
     if current_user.permissions.get("TESIS JURISPRUDENCIAS", 0) < Permiso.VER:
@@ -40,6 +41,7 @@ async def listado_tesis_jurisprudencias(
             distrito_clave=distrito_clave,
             epoca_id=epoca_id,
             materia_id=materia_id,
+            materia_clave=materia_clave,
         )
     except MyAnyError as error:
         return custom_page_success_false(error)

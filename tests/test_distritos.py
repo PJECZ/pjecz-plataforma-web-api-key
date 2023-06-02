@@ -10,8 +10,8 @@ import requests
 load_dotenv()
 
 
-class TestFuncionarios(unittest.TestCase):
-    """Tests for funcionarios category"""
+class TestDistritos(unittest.TestCase):
+    """Tests for distritos category"""
 
     def setUp(self) -> None:
         """Initialize the test case"""
@@ -34,8 +34,8 @@ class TestFuncionarios(unittest.TestCase):
         response = requests.get(f"{self.host}/v3/distritos", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
 
-    def test_get_distritos_by_distritos_judiciales(self):
-        """Test GET method for distritos by distritos_judiciales"""
+    def test_get_distritos_by_es_distrito_judicial(self):
+        """Test GET method for distritos by es_distrito_judicial"""
         response = requests.get(f"{self.host}/v3/distritos", headers={"X-Api-Key": self.api_key}, params={"es_distrito_judicial": 1}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -43,8 +43,8 @@ class TestFuncionarios(unittest.TestCase):
         result = data["result"]
         self.assertEqual(result["total"], 14)  # Total of es_distrito_judicial is 14
 
-    def test_get_distritos_by_distritos(self):
-        """Test GET method for distritos by distritos_judiciales"""
+    def test_get_distritos_by_es_distrito(self):
+        """Test GET method for distritos by es_distrito"""
         response = requests.get(f"{self.host}/v3/distritos", headers={"X-Api-Key": self.api_key}, params={"es_distrito": 1}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -52,8 +52,8 @@ class TestFuncionarios(unittest.TestCase):
         result = data["result"]
         self.assertEqual(result["total"], 9)  # Total of es_distrito is 9
 
-    def test_get_distritos_by_jurisdiccionales(self):
-        """Test GET method for distritos by distritos_judiciales"""
+    def test_get_distritos_by_es_jurisdiccional(self):
+        """Test GET method for distritos by es_jurisdiccional"""
         response = requests.get(f"{self.host}/v3/distritos", headers={"X-Api-Key": self.api_key}, params={"es_jurisdiccional": 1}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
         data = response.json()

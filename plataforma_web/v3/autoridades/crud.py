@@ -10,6 +10,7 @@ from lib.safe_string import safe_clave
 
 from ...core.autoridades.models import Autoridad
 from ..distritos.crud import get_distrito, get_distrito_with_clave
+from ..materias.crud import get_materia, get_materia_with_clave
 
 
 def get_autoridades(
@@ -21,6 +22,8 @@ def get_autoridades(
     es_defensoria: bool = None,
     es_jurisdiccional: bool = None,
     es_notaria: bool = None,
+    materia_id: int = None,
+    materia_clave: str = None,
 ) -> Any:
     """Consultar los autoridades activos"""
     consulta = db.query(Autoridad)
@@ -40,6 +43,12 @@ def get_autoridades(
         consulta = consulta.filter_by(es_jurisdiccional=es_jurisdiccional)
     if es_notaria is not None:
         consulta = consulta.filter_by(es_notaria=es_notaria)
+    if materia_id is not None:
+        materia = get_materia(db, materia_id)
+        consulta = consulta.filter_by(materia_id=materia.id)
+    elif materia_clave is not None:
+        materia = get_materia_with_clave(db, materia_clave)
+        consulta = consulta.filter_by(materia_id=materia.id)
     return consulta.filter_by(estatus="A").order_by(Autoridad.id)
 
 

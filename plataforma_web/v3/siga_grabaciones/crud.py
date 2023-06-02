@@ -11,7 +11,7 @@ from ...core.autoridades.models import Autoridad
 from ...core.siga_grabaciones.models import SIGAGrabacion
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
-from ..materias.crud import get_materia
+from ..materias.crud import get_materia, get_materia_with_clave
 from ..siga_salas.crud import get_siga_sala, get_siga_sala_with_clave
 
 
@@ -21,6 +21,8 @@ def get_siga_grabaciones(
     autoridad_clave: str = None,
     distrito_id: int = None,
     distrito_clave: str = None,
+    materia_id: int = None,
+    materia_clave: str = None,
     siga_sala_id: int = None,
     siga_sala_clave: str = None,
 ) -> Any:
@@ -44,6 +46,12 @@ def get_siga_grabaciones(
     elif siga_sala_clave is not None:
         siga_sala = get_siga_sala_with_clave(db, siga_sala_clave)
         consulta = consulta.filter_by(siga_sala_id=siga_sala.id)
+    if materia_id is not None:
+        materia = get_materia(db, materia_id)
+        consulta = consulta.filter_by(materia_id=materia.id)
+    elif materia_clave is not None:
+        materia = get_materia_with_clave(db, materia_clave)
+        consulta = consulta.filter_by(materia_id=materia.id)
     return consulta.filter_by(estatus="A").order_by(SIGAGrabacion.id.desc())
 
 

@@ -28,6 +28,11 @@ class MateriaTipoJuicio(Base, UniversalMixin):
     sentencias = relationship("Sentencia", back_populates="materia_tipo_juicio")
 
     @property
+    def materia_clave(self):
+        """Clave de la materia"""
+        return self.materia.clave
+
+    @property
     def materia_nombre(self):
         """Nombre de la materia"""
         return self.materia.nombre

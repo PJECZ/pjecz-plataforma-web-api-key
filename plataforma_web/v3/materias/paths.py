@@ -11,7 +11,7 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_materias, get_materia
+from .crud import get_materias, get_materia_with_clave
 from .schemas import MateriaOut, OneMateriaOut
 
 materias = APIRouter(prefix="/v3/materias", tags=["materias"])
@@ -32,17 +32,17 @@ async def listado_materias(
     return paginate(resultados)
 
 
-@materias.get("/{materia_id}", response_model=OneMateriaOut)
+@materias.get("/{materia_clave}", response_model=OneMateriaOut)
 async def detalle_materia(
     current_user: CurrentUser,
     db: DatabaseSession,
-    materia_id: int,
+    materia_clave: str,
 ):
-    """Detalle de una materia a partir de su id"""
+    """Detalle de una materia a partir de su clave"""
     if current_user.permissions.get("MATERIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        materia = get_materia(db=db, materia_id=materia_id)
+        materia = get_materia_with_clave(db, materia_clave)
     except MyAnyError as error:
         return OneMateriaOut(success=False, message=str(error))
     return OneMateriaOut.from_orm(materia)
