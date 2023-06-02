@@ -22,7 +22,6 @@ class SIGAGrabacionIn(BaseModel):
     termino: datetime | None
     archivo_nombre: str | None
     justicia_ruta: str | None
-    storage_url: str | None
     tamanio: int | None
     duracion: timedelta | None
 
@@ -38,6 +37,7 @@ class SIGAGrabacionOut(SIGAGrabacionIn):
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
     materia_nombre: str | None
+    storage_url: str | None
     transcripcion: dict | None
     estado: str | None
     nota: str | None
