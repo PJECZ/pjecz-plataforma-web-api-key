@@ -68,22 +68,40 @@ def get_siga_grabacion(db: Session, siga_grabacion_id: int) -> SIGAGrabacion:
 def create_siga_gabacion(db: Session, siga_grabacion: SIGAGrabacion) -> SIGAGrabacion:
     """Crear una grabacion"""
 
-    # Validar autoridad
+    # Validar autoridad, si viene la clave definir el id de la autoridad
     if siga_grabacion.autoridad_id is not None:
         get_autoridad(db, siga_grabacion.autoridad_id)
     elif siga_grabacion.autoridad_clave is not None:
         autoridad = get_autoridad_with_clave(db, siga_grabacion.autoridad_clave)
         siga_grabacion.autoridad_id = autoridad.id
 
-    # Validar materia
-    get_materia(db, siga_grabacion.materia_id)
+    # Validar materia, si viene la clave definir el id de la materia
+    if siga_grabacion.materia_id is not None:
+        get_materia(db, siga_grabacion.materia_id)
+    elif siga_grabacion.materia_clave is not None:
+        materia = get_materia_with_clave(db, siga_grabacion.materia_clave)
+        siga_grabacion.materia_id = materia.id
 
-    # Validar sala
+    # Validar sala, si viene la clave definir el id de la sala
     if siga_grabacion.siga_sala_id is not None:
         get_siga_sala(db, siga_grabacion.siga_sala_id)
     elif siga_grabacion.siga_sala_clave is not None:
         siga_sala = get_siga_sala_with_clave(db, siga_grabacion.siga_sala_clave)
         siga_grabacion.siga_sala_id = siga_sala.id
+
+    # Validar expediente
+
+    # Validar inicio
+
+    # Validar termino
+
+    # Validar archivo_nombre
+
+    # Validar justicia_ruta
+
+    # Validar tamanio
+
+    # Validar duracion
 
     # Guardar
     db.add(siga_grabacion)
