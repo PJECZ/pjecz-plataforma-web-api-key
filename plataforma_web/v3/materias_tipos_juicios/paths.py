@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_materias_tipos_juicios, get_materia_tipo_juicio
 from .schemas import MateriaTipoJuicioOut, OneMateriaTipoJuicioOut
 
-materias_tipos_juicios = APIRouter(prefix="/v3/materias_tipos_juicios", tags=["materias - tipos de juicios"])
+materias_tipos_juicios = APIRouter(prefix="/v3/materias_tipos_juicios", tags=["materias"])
 
 
 @materias_tipos_juicios.get("", response_model=CustomPage[MateriaTipoJuicioOut])
@@ -22,12 +22,17 @@ async def listado_materias_tipos_juicios(
     current_user: CurrentUser,
     db: DatabaseSession,
     materia_id: int = None,
+    materia_clave: str = None,
 ):
     """Listado de materias-tipos de juicios"""
     if current_user.permissions.get("MATERIAS TIPOS JUICIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_materias_tipos_juicios(db=db, materia_id=materia_id)
+        resultados = get_materias_tipos_juicios(
+            db=db,
+            materia_id=materia_id,
+            materia_clave=materia_clave,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

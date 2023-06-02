@@ -25,6 +25,8 @@ async def listado_siga_grabaciones(
     autoridad_clave: str = None,
     distrito_id: int = None,
     distrito_clave: str = None,
+    materia_id: int = None,
+    materia_clave: str = None,
     siga_sala_id: int = None,
     siga_sala_clave: str = None,
 ):
@@ -38,6 +40,8 @@ async def listado_siga_grabaciones(
             autoridad_clave=autoridad_clave,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
+            materia_id=materia_id,
+            materia_clave=materia_clave,
             siga_sala_id=siga_sala_id,
             siga_sala_clave=siga_sala_clave,
         )

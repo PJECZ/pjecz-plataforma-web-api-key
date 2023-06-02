@@ -107,6 +107,11 @@ class TesisJurisprudencia(Base, UniversalMixin):
         return self.epoca.nombre
 
     @property
+    def materia_clave(self):
+        """Clave de la materia"""
+        return self.materia.clave
+
+    @property
     def materia_nombre(self):
         """Nombre de la materia"""
         return self.materia.nombre

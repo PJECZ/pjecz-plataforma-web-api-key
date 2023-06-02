@@ -10,18 +10,23 @@ GET {{baseUrl}}/materias
 X-Api-Key: {{api_key}}
 
 ### Materia Familiar
-GET {{baseUrl}}/materias/3
+GET {{baseUrl}}/materias/fam
 X-Api-Key: {{api_key}}
 
-### Materias-Tipos de Juicios
+### Tipos de Juicios
 GET {{baseUrl}}/materias_tipos_juicios
 X-Api-Key: {{api_key}}
 
-### Materias-Tipos de Juicios de la materia Familiar
+### Tipos de Juicios de la materia Familiar
+GET {{baseUrl}}/materias_tipos_juicios
+    ?materia_clave=fam
+X-Api-Key: {{api_key}}
+
+### Tipos de Juicios de la materia Familiar
 GET {{baseUrl}}/materias_tipos_juicios
     ?materia_id=3
 X-Api-Key: {{api_key}}
 
-### Materias-Tipos de Juicios Civil Hipotecario
+### Tipo de Juicio CIVIL HIPOTECARIO
 GET {{baseUrl}}/materias_tipos_juicios/60
 X-Api-Key: {{api_key}}

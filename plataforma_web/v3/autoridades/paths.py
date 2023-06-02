@@ -28,6 +28,8 @@ async def listado_autoridades(
     es_defensoria: bool = None,
     es_jurisdiccional: bool = None,
     es_notaria: bool = None,
+    materia_id: int = None,
+    materia_clave: str = None,
 ):
     """Listado de autoridades"""
     if current_user.permissions.get("AUTORIDADES", 0) < Permiso.VER:
@@ -42,6 +44,8 @@ async def listado_autoridades(
             es_defensoria=es_defensoria,
             es_jurisdiccional=es_jurisdiccional,
             es_notaria=es_notaria,
+            materia_id=materia_id,
+            materia_clave=materia_clave,
         )
     except MyAnyError as error:
         return custom_page_success_false(error)
