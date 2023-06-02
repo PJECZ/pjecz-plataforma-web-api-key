@@ -1,7 +1,7 @@
 """
 SIGA Grabaciones v3, esquemas de pydantic
 """
-from datetime import datetime, time
+from datetime import datetime, timedelta
 
 from pydantic import BaseModel
 
@@ -22,7 +22,7 @@ class SIGAGrabacionIn(BaseModel):
     justicia_ruta: str | None
     storage_url: str | None
     tamanio: int | None
-    duracion: time | None
+    duracion: timedelta | None
 
 
 class SIGAGrabacionOut(SIGAGrabacionIn):

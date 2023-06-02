@@ -3,7 +3,7 @@ SIGA Grabaciones, modelos
 """
 from collections import OrderedDict
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, JSON, Integer, String, Time
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, JSON, Integer, String, Interval
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -42,7 +42,7 @@ class SIGAGrabacion(Base, UniversalMixin):
     justicia_ruta = Column(String(512))
     storage_url = Column(String(512))
     tamanio = Column(Integer())
-    duracion = Column(Time())
+    duracion = Column(Interval())
     transcripcion = Column(JSON())
     estado = Column(Enum(*ESTADOS, name="tipos_estados", native_enum=False), index=True, nullable=False)
     nota = Column(String(512))
