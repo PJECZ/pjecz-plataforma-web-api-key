@@ -58,7 +58,7 @@ async def detalle_tesisjurisprudencia(
     if current_user.permissions.get("TESIS JURISPRUDENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        tesisjurisprudencia = get_tesis_jurisprudencia(db=db, tesis_jurisprudencia_id=tesis_jurisprudencia_id)
+        tesisjurisprudencia = get_tesis_jurisprudencia(db, tesis_jurisprudencia_id)
     except MyAnyError as error:
         return OneTesisJurisprudenciaOut(success=False, message=str(error))
     return OneTesisJurisprudenciaOut.from_orm(tesisjurisprudencia)

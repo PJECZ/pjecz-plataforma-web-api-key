@@ -11,15 +11,9 @@ from lib.safe_string import safe_clave
 from ...core.materias.models import Materia
 
 
-def get_materias(
-    db: Session,
-    filtro_boleano: bool = None,
-) -> Any:
+def get_materias(db: Session) -> Any:
     """Consultar los materias activos"""
-    consulta = db.query(Materia)
-    if filtro_boleano is not None:
-        consulta = consulta.filter_by(filtro_boleano=filtro_boleano)
-    return consulta.filter_by(estatus="A").order_by(Materia.id)
+    return db.query(Materia).filter_by(estatus="A").order_by(Materia.id)
 
 
 def get_materia(db: Session, materia_id: int) -> Materia:

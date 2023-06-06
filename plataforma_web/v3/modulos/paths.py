@@ -26,7 +26,7 @@ async def listado_modulos(
     if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_modulos(db=db)
+        resultados = get_modulos(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_modulo(
     if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        modulo = get_modulo(db=db, modulo_id=modulo_id)
+        modulo = get_modulo(db, modulo_id)
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
     return OneModuloOut.from_orm(modulo)

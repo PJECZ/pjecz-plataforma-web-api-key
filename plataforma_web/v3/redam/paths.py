@@ -56,7 +56,7 @@ async def detalle_redam(
     if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        deudor = get_redam(db=db, redam_id=redam_id)
+        deudor = get_redam(db, redam_id)
     except MyAnyError as error:
         return OneRedamOut(success=False, message=str(error))
     return OneRedamOut.from_orm(deudor)

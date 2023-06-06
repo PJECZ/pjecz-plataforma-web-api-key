@@ -52,7 +52,7 @@ async def detalle_perito(
     if current_user.permissions.get("PERITOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        perito = get_perito(db=db, perito_id=perito_id)
+        perito = get_perito(db, perito_id)
     except MyAnyError as error:
         return OnePeritoOut(success=False, message=str(error))
     return OnePeritoOut.from_orm(perito)

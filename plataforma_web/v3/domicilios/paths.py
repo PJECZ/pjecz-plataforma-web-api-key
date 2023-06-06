@@ -48,7 +48,7 @@ async def detalle_domicilio(
     if current_user.permissions.get("DOMICILIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        domicilio = get_domicilio(db=db, domicilio_id=domicilio_id)
+        domicilio = get_domicilio(db, domicilio_id)
     except MyAnyError as error:
         return OneDomicilioOut(success=False, message=str(error))
     return OneDomicilioOut.from_orm(domicilio)

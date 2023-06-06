@@ -51,7 +51,7 @@ async def detalle_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = get_abogado(db=db, abogado_id=abogado_id)
+        abogado = get_abogado(db, abogado_id)
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     return OneAbogadoOut.from_orm(abogado)
@@ -67,7 +67,7 @@ async def crear_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = create_abogado(db=db, abogado=Abogado(**abogado_in.dict()))
+        abogado = create_abogado(db, Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     respuesta = OneAbogadoOut.from_orm(abogado)
@@ -86,7 +86,7 @@ async def modificar_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = update_abogado(db=db, abogado_id=abogado_id, abogado_in=Abogado(**abogado_in.dict()))
+        abogado = update_abogado(db, abogado_id, Abogado(**abogado_in.dict()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     respuesta = OneAbogadoOut.from_orm(abogado)
@@ -104,7 +104,7 @@ async def borrar_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = delete_abogado(db=db, abogado_id=abogado_id)
+        abogado = delete_abogado(db, abogado_id)
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     respuesta = OneAbogadoOut.from_orm(abogado)

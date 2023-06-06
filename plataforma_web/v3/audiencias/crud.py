@@ -62,7 +62,7 @@ def create_audiencia(db: Session, audiencia: Audiencia) -> Audiencia:
     """Crear una audiencia"""
 
     # Validar autoridad
-    get_autoridad(db=db, autoridad_id=audiencia.autoridad_id)
+    get_autoridad(db, audiencia.autoridad_id)
 
     # Guardar
     db.add(audiencia)
@@ -77,11 +77,11 @@ def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) ->
     """Modificar una audiencia"""
 
     # Consultar audiencia
-    audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
+    audiencia = get_audiencia(db, audiencia_id)
 
     # Validar autoridad, si se especificó y se cambió
     if audiencia_in.autoridad_id is not None and audiencia.autoridad_id != audiencia_in.autoridad_id:
-        autoridad = get_autoridad(db=db, autoridad_id=audiencia_in.autoridad_id)
+        autoridad = get_autoridad(db, audiencia_in.autoridad_id)
         audiencia.autoridad_id = autoridad.autoridad_id
 
     # Actualizar las columnas
@@ -110,7 +110,7 @@ def update_audiencia(db: Session, audiencia_id: int, audiencia_in: Audiencia) ->
 
 def delete_audiencia(db: Session, audiencia_id: int) -> Audiencia:
     """Borrar una audiencia"""
-    audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
+    audiencia = get_audiencia(db, audiencia_id)
     audiencia.estatus = "B"
     db.add(audiencia)
     db.commit()

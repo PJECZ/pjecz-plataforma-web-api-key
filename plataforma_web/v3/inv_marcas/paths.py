@@ -26,7 +26,7 @@ async def listado_inv_marcas(
     if current_user.permissions.get("INV MARCAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_inv_marcas(db=db)
+        resultados = get_inv_marcas(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_inv_marca(
     if current_user.permissions.get("INV MARCAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        inv_marca = get_inv_marca(db=db, inv_marca_id=inv_marca_id)
+        inv_marca = get_inv_marca(db, inv_marca_id)
     except MyAnyError as error:
         return OneInvMarcaOut(success=False, message=str(error))
     return OneInvMarcaOut.from_orm(inv_marca)

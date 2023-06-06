@@ -59,7 +59,7 @@ async def detalle_audiencia(
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = get_audiencia(db=db, audiencia_id=audiencia_id)
+        audiencia = get_audiencia(db, audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     return OneAudienciaOut.from_orm(audiencia)
@@ -69,13 +69,13 @@ async def detalle_audiencia(
 async def crear_audiencia(
     current_user: CurrentUser,
     db: DatabaseSession,
-    audiencia: AudienciaIn,
+    audiencia_in: AudienciaIn,
 ):
     """Crear una audiencia"""
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = create_audiencia(db=db, audiencia=Audiencia(**audiencia.dict()))
+        audiencia = create_audiencia(db, Audiencia(**audiencia_in.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     respuesta = OneAudienciaOut.from_orm(audiencia)
@@ -94,7 +94,7 @@ async def modificar_audiencia(
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = update_audiencia(db=db, audiencia_id=audiencia_id, audiencia_in=Audiencia(**audiencia_in.dict()))
+        audiencia = update_audiencia(db, audiencia_id, Audiencia(**audiencia_in.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     respuesta = OneAudienciaOut.from_orm(audiencia)
@@ -112,7 +112,7 @@ async def borrar_audiencia(
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = delete_audiencia(db=db, audiencia_id=audiencia_id)
+        audiencia = delete_audiencia(db, audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     respuesta = OneAudienciaOut.from_orm(audiencia)

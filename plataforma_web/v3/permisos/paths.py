@@ -30,7 +30,12 @@ async def listado_permisos(
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_permisos(db=db, modulo_id=modulo_id, modulo_nombre=modulo_nombre, rol_id=rol_id, rol_nombre=rol_nombre)
+        resultados = get_permisos(
+            db=db,
+            modulo_id=modulo_id,
+            modulo_nombre=modulo_nombre,
+            rol_id=rol_id,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -46,7 +51,7 @@ async def detalle_permiso(
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        permiso = get_permiso(db=db, permiso_id=permiso_id)
+        permiso = get_permiso(db, permiso_id)
     except MyAnyError as error:
         return OnePermisoOut(success=False, message=str(error))
     return OnePermisoOut.from_orm(permiso)

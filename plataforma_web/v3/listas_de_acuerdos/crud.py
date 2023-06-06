@@ -67,7 +67,7 @@ def create_lista_de_acuerdo(db: Session, lista_de_acuerdo: ListaDeAcuerdo) -> Li
     """Crear una lista de acuerdos"""
 
     # Validar autoridad
-    get_autoridad(db=db, autoridad_id=lista_de_acuerdo.autoridad_id)
+    get_autoridad(db, lista_de_acuerdo.autoridad_id)
 
     # Guardar
     db.add(lista_de_acuerdo)
@@ -82,11 +82,11 @@ def update_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int, lista_de_acue
     """Modificar una lista de acuerdos"""
 
     # Consultar lista de acuerdos
-    lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+    lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
 
     # Validar autoridad, si se especificó y se cambió
     if lista_de_acuerdo_in.autoridad_id is not None and lista_de_acuerdo.autoridad_id != lista_de_acuerdo_in.autoridad_id:
-        autoridad = get_autoridad(db=db, autoridad_id=lista_de_acuerdo_in.autoridad_id)
+        autoridad = get_autoridad(db, lista_de_acuerdo_in.autoridad_id)
         lista_de_acuerdo.autoridad_id = autoridad.autoridad_id
 
     # Actualizar las columnas
@@ -106,7 +106,7 @@ def update_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int, lista_de_acue
 
 def delete_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerdo:
     """Borrar una lista de acuerdos"""
-    lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+    lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
     lista_de_acuerdo.estatus = "B"
     db.add(lista_de_acuerdo)
     db.commit()

@@ -26,7 +26,7 @@ async def listado_peritos_tipos(
     if current_user.permissions.get("PERITOS TIPOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_peritos_tipos(db=db)
+        resultados = get_peritos_tipos(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_perito_tipo(
     if current_user.permissions.get("PERITOS TIPOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        perito_tipo = get_perito_tipo(db=db, perito_tipo_id=perito_tipo_id)
+        perito_tipo = get_perito_tipo(db, perito_tipo_id)
     except MyAnyError as error:
         return OnePeritoTipoOut(success=False, message=str(error))
     return OnePeritoTipoOut.from_orm(perito_tipo)

@@ -50,7 +50,7 @@ async def detalle_ubicacion_expediente(
     if current_user.permissions.get("UBICACIONES EXPEDIENTES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        ubicacion_expediente = get_ubicacion_expediente(db=db, ubicacion_expediente_id=ubicacion_expediente_id)
+        ubicacion_expediente = get_ubicacion_expediente(db, ubicacion_expediente_id)
     except MyAnyError as error:
         return OneUbicacionExpedienteOut(success=False, message=str(error))
     return OneUbicacionExpedienteOut.from_orm(ubicacion_expediente)

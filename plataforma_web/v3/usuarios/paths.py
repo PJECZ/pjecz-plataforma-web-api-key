@@ -60,7 +60,7 @@ async def detalle_usuario(
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        usuario = get_usuario_with_email(db=db, email=email)
+        usuario = get_usuario_with_email(db, email)
     except MyAnyError as error:
         return OneUsuarioOut(success=False, message=str(error))
     return OneUsuarioOut.from_orm(usuario)
