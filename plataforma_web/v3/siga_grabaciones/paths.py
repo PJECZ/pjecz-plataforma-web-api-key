@@ -77,7 +77,24 @@ async def crear_siga_grabacion(
     if current_user.permissions.get("SIGA GRABACIONES", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        siga_grabacion = create_siga_grabacion(db, SIGAGrabacion(**siga_grabacion_in.dict()))
+        siga_grabacion = create_siga_grabacion(
+            db=db,
+            siga_grabacion=SIGAGrabacion(
+                autoridad_id=siga_grabacion_in.autoridad_id,
+                autoridad_clave=siga_grabacion_in.autoridad_clave,
+                siga_grabacion_id=siga_grabacion_in.siga_sala_id,
+                siga_grabacion_clave=siga_grabacion_in.siga_sala_clave,
+                materia_id=siga_grabacion_in.materia_id,
+                materia_clave=siga_grabacion_in.materia_clave,
+                expediente=siga_grabacion_in.expediente,
+                inicio=siga_grabacion_in.inicio,
+                termino=siga_grabacion_in.termino,
+                archivo_nombre=siga_grabacion_in.archivo_nombre,
+                justicia_ruta=siga_grabacion_in.justicia_ruta,
+                tamanio=siga_grabacion_in.tamanio,
+                duracion=siga_grabacion_in.duracion,
+            ),
+        )
     except MyAnyError as error:
         return OneSIGAGrabacionOut(success=False, message=str(error))
     respuesta = OneSIGAGrabacionOut.from_orm(siga_grabacion)
