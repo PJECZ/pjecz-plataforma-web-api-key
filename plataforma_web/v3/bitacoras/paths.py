@@ -28,7 +28,7 @@ async def listado_bitacoras(
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_bitacoras(db=db, usuario_id=usuario_id, usuario_email=usuario_email)
+        resultados = get_bitacoras(db, usuario_id, usuario_email)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -44,7 +44,7 @@ async def detalle_bitacora(
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        bitacora = get_bitacora(db=db, bitacora_id=bitacora_id)
+        bitacora = get_bitacora(db, bitacora_id)
     except MyAnyError as error:
         return OneBitacoraOut(success=False, message=str(error))
     return OneBitacoraOut.from_orm(bitacora)

@@ -50,7 +50,7 @@ async def detalle_repsvm_agresor(
     if current_user.permissions.get("REPSVM AGRESORES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        repsvm_agresor = get_repsvm_agresor(db=db, repsvm_agresor_id=repsvm_agresor_id)
+        repsvm_agresor = get_repsvm_agresor(db, repsvm_agresor_id)
     except MyAnyError as error:
         return OneRepsvmAgresorOut(success=False, message=str(error))
     return OneRepsvmAgresorOut.from_orm(repsvm_agresor)

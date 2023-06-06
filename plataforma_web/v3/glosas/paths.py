@@ -65,7 +65,7 @@ async def detalle_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = get_glosa(db=db, glosa_id=glosa_id)
+        glosa = get_glosa(db, glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     return OneGlosaOut.from_orm(glosa)
@@ -81,7 +81,7 @@ async def crear_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = create_glosa(db=db, glosa=Glosa(**glosa_in.dict()))
+        glosa = create_glosa(db, Glosa(**glosa_in.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     respuesta = OneGlosaOut.from_orm(glosa)
@@ -100,7 +100,7 @@ async def modificar_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = update_glosa(db=db, glosa_id=glosa_id, glosa_in=Glosa(**glosa_in.dict()))
+        glosa = update_glosa(db, glosa_id, Glosa(**glosa_in.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     respuesta = OneGlosaOut.from_orm(glosa)
@@ -118,7 +118,7 @@ async def borrar_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = delete_glosa(db=db, glosa_id=glosa_id)
+        glosa = delete_glosa(db, glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     respuesta = OneGlosaOut.from_orm(glosa)

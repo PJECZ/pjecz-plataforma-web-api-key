@@ -65,7 +65,7 @@ def get_siga_grabacion(db: Session, siga_grabacion_id: int) -> SIGAGrabacion:
     return siga_grabacion
 
 
-def create_siga_gabacion(db: Session, siga_grabacion: SIGAGrabacion) -> SIGAGrabacion:
+def create_siga_grabacion(db: Session, siga_grabacion: SIGAGrabacion) -> SIGAGrabacion:
     """Crear una grabacion"""
 
     # Validar autoridad, si viene la clave definir el id de la autoridad

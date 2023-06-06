@@ -26,7 +26,7 @@ async def listado_inv_categorias(
     if current_user.permissions.get("INV CATEGORIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_inv_categorias(db=db)
+        resultados = get_inv_categorias(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_inv_categoria(
     if current_user.permissions.get("INV CATEGORIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        inv_categoria = get_inv_categoria(db=db, inv_categoria_id=inv_categoria_id)
+        inv_categoria = get_inv_categoria(db, inv_categoria_id)
     except MyAnyError as error:
         return OneInvCategoriaOut(success=False, message=str(error))
     return OneInvCategoriaOut.from_orm(inv_categoria)

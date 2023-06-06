@@ -11,7 +11,8 @@ from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_siga_grabaciones, get_siga_grabacion, create_siga_gabacion
+from ...core.siga_grabaciones.models import SIGAGrabacion
+from .crud import get_siga_grabaciones, get_siga_grabacion, create_siga_grabacion
 from .schemas import SIGAGrabacionIn, SIGAGrabacionOut, OneSIGAGrabacionOut
 
 siga_grabaciones = APIRouter(prefix="/v3/siga_grabaciones", tags=["siga"])
@@ -70,13 +71,13 @@ async def detalle_siga_grabacion(
 async def crear_siga_grabacion(
     current_user: CurrentUser,
     db: DatabaseSession,
-    siga_grabacion: SIGAGrabacionIn,
+    siga_grabacion_in: SIGAGrabacionIn,
 ):
     """Crear una grabacion"""
     if current_user.permissions.get("SIGA GRABACIONES", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        siga_grabacion = create_siga_gabacion(db, siga_grabacion)
+        siga_grabacion = create_siga_grabacion(db, SIGAGrabacion(**siga_grabacion_in.dict()))
     except MyAnyError as error:
         return OneSIGAGrabacionOut(success=False, message=str(error))
     respuesta = OneSIGAGrabacionOut.from_orm(siga_grabacion)

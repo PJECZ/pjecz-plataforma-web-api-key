@@ -63,7 +63,7 @@ async def detalle_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = get_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+        lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
@@ -79,7 +79,7 @@ async def crear_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = create_lista_de_acuerdo(db=db, lista_de_acuerdo=ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
+        lista_de_acuerdo = create_lista_de_acuerdo(db, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
@@ -98,7 +98,7 @@ async def modificar_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = update_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id, lista_de_acuerdo_in=ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
+        lista_de_acuerdo = update_lista_de_acuerdo(db, lista_de_acuerdo_id, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
@@ -116,7 +116,7 @@ async def borrar_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = delete_lista_de_acuerdo(db=db, lista_de_acuerdo_id=lista_de_acuerdo_id)
+        lista_de_acuerdo = delete_lista_de_acuerdo(db, lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)

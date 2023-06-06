@@ -48,7 +48,7 @@ async def detalle_materia_tipo_juicio(
     if current_user.permissions.get("MATERIAS TIPOS JUICIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        materia_tipo_juicio = get_materia_tipo_juicio(db=db, materia_tipo_juicio_id=materia_tipo_juicio_id)
+        materia_tipo_juicio = get_materia_tipo_juicio(db, materia_tipo_juicio_id)
     except MyAnyError as error:
         return OneMateriaTipoJuicioOut(success=False, message=str(error))
     return OneMateriaTipoJuicioOut.from_orm(materia_tipo_juicio)

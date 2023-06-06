@@ -26,7 +26,7 @@ async def listado_epocas(
     if current_user.permissions.get("EPOCAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_epocas(db=db)
+        resultados = get_epocas(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_epoca(
     if current_user.permissions.get("EPOCAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        epoca = get_epoca(db=db, epoca_id=epoca_id)
+        epoca = get_epoca(db, epoca_id)
     except MyAnyError as error:
         return OneEpocaOut(success=False, message=str(error))
     return OneEpocaOut.from_orm(epoca)

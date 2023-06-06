@@ -67,7 +67,7 @@ def create_edicto(db: Session, edicto: Edicto) -> Edicto:
     """Crear un edicto"""
 
     # Validar autoridad
-    get_autoridad(db=db, autoridad_id=edicto.autoridad_id)
+    get_autoridad(db, edicto.autoridad_id)
 
     # Guardar
     db.add(edicto)
@@ -82,11 +82,11 @@ def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
     """Modificar un edicto"""
 
     # Consultar edicto
-    edicto = get_edicto(db=db, edicto_id=edicto_id)
+    edicto = get_edicto(db, edicto_id)
 
     # Validar autoridad, si se especificó y se cambió
     if edicto_in.autoridad_id is not None and edicto.autoridad_id != edicto_in.autoridad_id:
-        autoridad = get_autoridad(db=db, autoridad_id=edicto_in.autoridad_id)
+        autoridad = get_autoridad(db, edicto_in.autoridad_id)
         edicto.autoridad_id = autoridad.autoridad_id
 
     # Actualizar las columnas
@@ -108,7 +108,7 @@ def update_edicto(db: Session, edicto_id: int, edicto_in: Edicto) -> Edicto:
 
 def delete_edicto(db: Session, edicto_id: int) -> Edicto:
     """Borrar un edicto"""
-    edicto = get_edicto(db=db, edicto_id=edicto_id)
+    edicto = get_edicto(db, edicto_id)
     edicto.estatus = "B"
     db.add(edicto)
     db.commit()

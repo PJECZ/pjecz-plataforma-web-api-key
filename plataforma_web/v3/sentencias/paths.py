@@ -61,7 +61,7 @@ async def detalle_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = get_sentencia(db=db, sentencia_id=sentencia_id)
+        sentencia = get_sentencia(db, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     return OneSentenciaOut.from_orm(sentencia)
@@ -77,7 +77,7 @@ async def crear_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = create_sentencia(db=db, sentencia=Sentencia(**sentencia_in.dict()))
+        sentencia = create_sentencia(db, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     respuesta = OneSentenciaOut.from_orm(sentencia)
@@ -96,7 +96,7 @@ async def modificar_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = update_sentencia(db=db, sentencia_id=sentencia_id, sentencia_in=Sentencia(**sentencia_in.dict()))
+        sentencia = update_sentencia(db, sentencia_id, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     respuesta = OneSentenciaOut.from_orm(sentencia)
@@ -114,7 +114,7 @@ async def borrar_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.BORRAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = delete_sentencia(db=db, sentencia_id=sentencia_id)
+        sentencia = delete_sentencia(db, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     respuesta = OneSentenciaOut.from_orm(sentencia)

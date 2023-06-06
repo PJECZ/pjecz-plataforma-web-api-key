@@ -72,10 +72,10 @@ def create_sentencia(db: Session, sentencia: Sentencia) -> Sentencia:
     """Crear una nueva sentencia"""
 
     # Validar autoridad
-    get_autoridad(db=db, autoridad_id=sentencia.autoridad_id)
+    get_autoridad(db, sentencia.autoridad_id)
 
     # Validar materia_tipo_juicio
-    get_materia_tipo_juicio(db=db, materia_tipo_juicio_id=sentencia.materia_tipo_juicio_id)
+    get_materia_tipo_juicio(db, sentencia.materia_tipo_juicio_id)
 
     # Guardar
     db.add(sentencia)
@@ -90,16 +90,16 @@ def update_sentencia(db: Session, sentencia_id: int, sentencia_in: Sentencia) ->
     """Modificar una sentencia"""
 
     # Consultar la sentencia
-    sentencia = get_sentencia(db=db, sentencia_id=sentencia_id)
+    sentencia = get_sentencia(db, sentencia_id)
 
     # Validad autoridad, si se especificó y es diferente
     if sentencia_in.autoridad_id is not None and sentencia_in.autoridad_id != sentencia.autoridad_id:
-        autoridad = get_autoridad(db=db, autoridad_id=sentencia_in.autoridad_id)
+        autoridad = get_autoridad(db, sentencia_in.autoridad_id)
         sentencia.autoridad_id = autoridad.id
 
     # Validad materia_tipo_juicio, si se especificó y es diferente
     if sentencia_in.materia_tipo_juicio_id is not None and sentencia_in.materia_tipo_juicio_id != sentencia.materia_tipo_juicio_id:
-        materia_tipo_juicio = get_materia_tipo_juicio(db=db, materia_tipo_juicio_id=sentencia_in.materia_tipo_juicio_id)
+        materia_tipo_juicio = get_materia_tipo_juicio(db, sentencia_in.materia_tipo_juicio_id)
         sentencia.materia_tipo_juicio_id = materia_tipo_juicio.id
 
     # Actualizar las columnas
@@ -123,7 +123,7 @@ def update_sentencia(db: Session, sentencia_id: int, sentencia_in: Sentencia) ->
 
 def delete_sentencia(db: Session, sentencia_id: int) -> Sentencia:
     """Borrar una sentencia"""
-    sentencia = get_sentencia(db=db, sentencia_id=sentencia_id)
+    sentencia = get_sentencia(db, sentencia_id)
     sentencia.estatus = "B"
     db.add(sentencia)
     db.commit()

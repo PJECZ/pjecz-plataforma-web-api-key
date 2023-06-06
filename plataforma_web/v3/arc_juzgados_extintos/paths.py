@@ -26,7 +26,7 @@ async def listado_arc_juzgados_extintos(
     if current_user.permissions.get("ARC DOCUMENTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_arc_juzgados_extintos(db=db)
+        resultados = get_arc_juzgados_extintos(db)
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

@@ -50,7 +50,7 @@ async def detalle_inv_componente(
     if current_user.permissions.get("INV COMPONENTES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        inv_componente = get_inv_componente(db=db, inv_componente_id=inv_componente_id)
+        inv_componente = get_inv_componente(db, inv_componente_id)
     except MyAnyError as error:
         return OneInvComponenteOut(success=False, message=str(error))
     return OneInvComponenteOut.from_orm(inv_componente)

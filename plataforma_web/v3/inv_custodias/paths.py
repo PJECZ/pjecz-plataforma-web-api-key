@@ -62,7 +62,7 @@ async def detalle_inv_custodia(
     if current_user.permissions.get("INV CUSTODIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        inv_custodia = get_inv_custodia(db=db, inv_custodia_id=inv_custodia_id)
+        inv_custodia = get_inv_custodia(db, inv_custodia_id)
     except MyAnyError as error:
         return OneInvCustodiaOut(success=False, message=str(error))
     return OneInvCustodiaOut.from_orm(inv_custodia)

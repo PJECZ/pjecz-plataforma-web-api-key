@@ -75,7 +75,7 @@ def create_glosa(db: Session, glosa: Glosa) -> Glosa:
     """Crear un nuevo glosa"""
 
     # Validar autoridad
-    get_autoridad(db=db, autoridad_id=glosa.autoridad_id)
+    get_autoridad(db, glosa.autoridad_id)
 
     # Guardar
     db.add(glosa)
@@ -90,11 +90,11 @@ def update_glosa(db: Session, glosa_id: int, glosa_in: Glosa) -> Glosa:
     """Modificar un glosa"""
 
     # Consultar glosa
-    glosa = get_glosa(db=db, glosa_id=glosa_id)
+    glosa = get_glosa(db, glosa_id)
 
     # Validar autoridad, si se especificó y se cambió
     if glosa_in.autoridad_id is not None and glosa.autoridad_id != glosa_in.autoridad_id:
-        autoridad = get_autoridad(db=db, autoridad_id=glosa_in.autoridad_id)
+        autoridad = get_autoridad(db, glosa_in.autoridad_id)
         glosa.autoridad_id = autoridad.autoridad_id
 
     # Actualizar las columnas
@@ -116,7 +116,7 @@ def update_glosa(db: Session, glosa_id: int, glosa_in: Glosa) -> Glosa:
 
 def delete_glosa(db: Session, glosa_id: int) -> Glosa:
     """Borrar un glosa"""
-    glosa = get_glosa(db=db, glosa_id=glosa_id)
+    glosa = get_glosa(db, glosa_id)
     glosa.estatus = "B"
     db.add(glosa)
     db.commit()
