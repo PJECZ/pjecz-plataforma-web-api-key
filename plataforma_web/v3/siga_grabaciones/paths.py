@@ -12,6 +12,9 @@ from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
 from ...core.siga_grabaciones.models import SIGAGrabacion
+from ..autoridades.crud import get_autoridad_with_clave
+from ..materias.crud import get_materia_with_clave
+from ..siga_salas.crud import get_siga_sala_with_clave
 from .crud import get_siga_grabaciones, get_siga_grabacion, create_siga_grabacion
 from .schemas import SIGAGrabacionIn, SIGAGrabacionOut, OneSIGAGrabacionOut
 
@@ -77,15 +80,15 @@ async def crear_siga_grabacion(
     if current_user.permissions.get("SIGA GRABACIONES", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
+        autoridad = get_autoridad_with_clave(db, siga_grabacion_in.autoridad_clave)
+        materia = get_materia_with_clave(db, siga_grabacion_in.materia_clave)
+        siga_sala = get_siga_sala_with_clave(db, siga_grabacion_in.siga_sala_clave)
         siga_grabacion = create_siga_grabacion(
-            db=db,
-            siga_grabacion=SIGAGrabacion(
-                autoridad_id=siga_grabacion_in.autoridad_id,
-                autoridad_clave=siga_grabacion_in.autoridad_clave,
-                siga_grabacion_id=siga_grabacion_in.siga_sala_id,
-                siga_grabacion_clave=siga_grabacion_in.siga_sala_clave,
-                materia_id=siga_grabacion_in.materia_id,
-                materia_clave=siga_grabacion_in.materia_clave,
+            db,
+            SIGAGrabacion(
+                autoridad_id=autoridad.id,
+                materia_id=materia.id,
+                siga_sala_id=siga_sala.id,
                 expediente=siga_grabacion_in.expediente,
                 inicio=siga_grabacion_in.inicio,
                 termino=siga_grabacion_in.termino,
