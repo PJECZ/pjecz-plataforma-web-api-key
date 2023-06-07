@@ -21,6 +21,8 @@ bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
 async def listado_bitacoras(
     current_user: CurrentUser,
     db: DatabaseSession,
+    modulo_id: int = None,
+    modulo_nombre: str = None,
     usuario_id: int = None,
     usuario_email: str = None,
 ):
@@ -28,7 +30,13 @@ async def listado_bitacoras(
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_bitacoras(db, usuario_id, usuario_email)
+        resultados = get_bitacoras(
+            db=db,
+            modulo_id=modulo_id,
+            modulo_nombre=modulo_nombre,
+            usuario_id=usuario_id,
+            usuario_email=usuario_email,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

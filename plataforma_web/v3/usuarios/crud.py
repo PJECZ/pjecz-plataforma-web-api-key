@@ -23,6 +23,7 @@ def get_usuarios(
     nombres: str = None,
     oficina_id: int = None,
     oficina_clave: str = None,
+    workspace: str = None,
 ) -> Any:
     """Consultar los usuarios activos"""
     consulta = db.query(Usuario)
@@ -56,6 +57,12 @@ def get_usuarios(
     elif oficina_clave is not None:
         oficina = get_oficina_with_clave(db, oficina_clave)
         consulta = consulta.filter_by(oficina_id=oficina.id)
+    if workspace is not None:
+        workspace = safe_string(workspace)
+        if workspace != "" and workspace in Usuario.WORKSPACES:
+            consulta = consulta.filter_by(workspace=workspace)
+        else:
+            raise MyNotValidParamError("El workspace no es válido")
     return consulta.filter_by(estatus="A").order_by(Usuario.email)
 
 

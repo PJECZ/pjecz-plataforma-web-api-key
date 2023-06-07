@@ -29,6 +29,7 @@ async def listado_usuarios(
     nombres: str = None,
     oficina_id: int = None,
     oficina_clave: str = None,
+    workspace: str = None,
 ):
     """Listado de usuarios"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
@@ -44,6 +45,7 @@ async def listado_usuarios(
             nombres=nombres,
             oficina_id=oficina_id,
             oficina_clave=oficina_clave,
+            workspace=workspace,
         )
     except MyAnyError as error:
         return custom_page_success_false(error)
