@@ -21,6 +21,7 @@ class SIGAGrabacionIn(BaseModel):
     justicia_ruta: str | None
     tamanio: int | None
     duracion: timedelta | None
+    estado: str | None
 
 
 class SIGAGrabacionOut(SIGAGrabacionIn):
@@ -39,7 +40,6 @@ class SIGAGrabacionOut(SIGAGrabacionIn):
     materia_nombre: str | None
     storage_url: str | None
     transcripcion: dict | None
-    estado: str | None
     nota: str | None
 
     class Config:
