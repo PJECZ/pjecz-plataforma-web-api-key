@@ -1,6 +1,8 @@
 """
 SIGA Grabaciones v3, rutas (paths)
 """
+from datetime import timedelta
+
 from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
@@ -96,6 +98,7 @@ async def crear_siga_grabacion(
                 justicia_ruta=siga_grabacion_in.justicia_ruta,
                 tamanio=siga_grabacion_in.tamanio,
                 duracion=siga_grabacion_in.duracion,
+                estado=siga_grabacion_in.estado,
             ),
         )
     except MyAnyError as error:

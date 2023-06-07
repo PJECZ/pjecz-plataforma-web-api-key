@@ -42,6 +42,21 @@ class SIGASala(Base, UniversalMixin):
     siga_grabaciones = relationship("SIGAGrabacion", back_populates="siga_sala")
 
     @property
+    def distrito_clave(self):
+        """Clave del distrito"""
+        return self.domicilio.distrito.clave
+
+    @property
+    def distrito_nombre(self):
+        """Nombre del distrito"""
+        return self.domicilio.distrito.nombre
+
+    @property
+    def distrito_nombre_corto(self):
+        """Nombre corto del distrito"""
+        return self.domicilio.distrito.nombre_corto
+
+    @property
     def domicilio_completo(self):
         """Domicilio completo de la oficina"""
         return self.domicilio.completo

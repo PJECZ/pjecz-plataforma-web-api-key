@@ -5,7 +5,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 
 from ...core.autoridades.models import Autoridad
 from ...core.siga_grabaciones.models import SIGAGrabacion
@@ -102,6 +102,12 @@ def create_siga_grabacion(db: Session, siga_grabacion: SIGAGrabacion) -> SIGAGra
     # Validar tamanio
 
     # Validar duracion
+
+    # Validar estado, si no esta definido por defecto es VALIDO
+    if siga_grabacion.estado is None:
+        siga_grabacion.estado = "VALIDO"
+    elif siga_grabacion.estado not in SIGAGrabacion.ESTADOS:
+        raise MyNotValidParamError("No esta ese estado en los estados permitidos")
 
     # Guardar
     db.add(siga_grabacion)
