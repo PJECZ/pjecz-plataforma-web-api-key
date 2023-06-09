@@ -1,6 +1,7 @@
 """
 SIGA Grabaciones v3, CRUD (create, read, update, and delete)
 """
+import re
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -13,6 +14,8 @@ from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 from ..materias.crud import get_materia, get_materia_with_clave
 from ..siga_salas.crud import get_siga_sala, get_siga_sala_with_clave
+
+ARCHIVO_NOMBRE_REGEXP = r"(\d\d\d\d-\d\d-\d\d)_(\d\d-\d\d-\d\d)_([A-Z0-1-]{1,16})_([A-Z0-1-]{1,16})_([A-Z]{3})_(\d{1,4}-\d{4}(-[A-Z-]+)?)"
 
 
 def get_siga_grabaciones(
@@ -58,6 +61,18 @@ def get_siga_grabaciones(
 def get_siga_grabacion(db: Session, siga_grabacion_id: int) -> SIGAGrabacion:
     """Consultar una grabacion por su id"""
     siga_grabacion = db.query(SIGAGrabacion).get(siga_grabacion_id)
+    if siga_grabacion is None:
+        raise MyNotExistsError("No existe ese grabacion")
+    if siga_grabacion.estatus != "A":
+        raise MyIsDeletedError("No es activo ese grabacion, está eliminado")
+    return siga_grabacion
+
+
+def get_siga_grabacion_with_archivo_nombre(db: Session, archivo_nombre: str) -> SIGAGrabacion:
+    """Consultar una grabacion por su archivo_nombre"""
+    if not re.match(ARCHIVO_NOMBRE_REGEXP, archivo_nombre):
+        raise MyNotValidParamError("No es válido ese archivo_nombre")
+    siga_grabacion = db.query(SIGAGrabacion).filter_by(archivo_nombre=archivo_nombre).first()
     if siga_grabacion is None:
         raise MyNotExistsError("No existe ese grabacion")
     if siga_grabacion.estatus != "A":
