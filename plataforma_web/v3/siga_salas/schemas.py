@@ -10,8 +10,10 @@ class SIGASalaOut(BaseModel):
     """Esquema para entregar salas"""
 
     id: int | None
+    distrito_clave: str | None
+    distrito_nombre: str | None
+    distrito_nombre_corto: str | None
     domicilio_id: int | None
-    domicilio_completo: str | None
     domicilio_edificio: str | None
     clave: str | None
     direccion_ip: str | None

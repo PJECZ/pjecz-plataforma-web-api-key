@@ -15,7 +15,7 @@ from ...core.siga_grabaciones.models import SIGAGrabacion
 from ..autoridades.crud import get_autoridad_with_clave
 from ..materias.crud import get_materia_with_clave
 from ..siga_salas.crud import get_siga_sala_with_clave
-from .crud import get_siga_grabaciones, get_siga_grabacion, create_siga_grabacion
+from .crud import get_siga_grabaciones, get_siga_grabacion, get_siga_grabacion_with_archivo_nombre, create_siga_grabacion
 from .schemas import SIGAGrabacionIn, SIGAGrabacionOut, OneSIGAGrabacionOut
 
 siga_grabaciones = APIRouter(prefix="/v3/siga_grabaciones", tags=["siga"])
@@ -52,6 +52,22 @@ async def listado_siga_grabaciones(
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)
+
+
+@siga_grabaciones.get("/archivo_nombre/{archivo_nombre}", response_model=OneSIGAGrabacionOut)
+async def detalle_siga_grabacion_con_archivo_nombre(
+    current_user: CurrentUser,
+    db: DatabaseSession,
+    archivo_nombre: str,
+):
+    """Detalle de una grabacion a partir de su id"""
+    if current_user.permissions.get("SIGA GRABACIONES", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        siga_grabacion = get_siga_grabacion_with_archivo_nombre(db, archivo_nombre)
+    except MyAnyError as error:
+        return OneSIGAGrabacionOut(success=False, message=str(error))
+    return OneSIGAGrabacionOut.from_orm(siga_grabacion)
 
 
 @siga_grabaciones.get("/{siga_grabacion_id}", response_model=OneSIGAGrabacionOut)
@@ -96,6 +112,7 @@ async def crear_siga_grabacion(
                 justicia_ruta=siga_grabacion_in.justicia_ruta,
                 tamanio=siga_grabacion_in.tamanio,
                 duracion=siga_grabacion_in.duracion,
+                estado=siga_grabacion_in.estado,
             ),
         )
     except MyAnyError as error:
