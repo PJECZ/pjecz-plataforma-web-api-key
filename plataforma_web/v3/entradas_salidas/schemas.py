@@ -13,6 +13,7 @@ class EntradaSalidaOut(BaseModel):
 
     id: int | None
     usuario_id: int | None
+    usuario_email: str | None
     usuario_nombre: str | None
     tipo: str | None
     direccion_ip: str | None

@@ -9,6 +9,7 @@ from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamEr
 from lib.safe_string import safe_email
 
 from ...core.bitacoras.models import Bitacora
+from ...core.usuarios.models import Usuario
 from ..modulos.crud import get_modulo, get_modulo_with_nombre
 from ..usuarios.crud import get_usuario
 
@@ -36,7 +37,7 @@ def get_bitacoras(
             usuario_email = safe_email(usuario_email, search_fragment=True)
         except ValueError as error:
             raise MyNotValidParamError("El email no es válido") from error
-        consulta = consulta.filter(Bitacora.usuario.email.contains(usuario_email))
+        consulta = consulta.join(Usuario).filter(Usuario.email.ilike(usuario_email))
     return consulta.filter_by(estatus="A").order_by(Bitacora.id.desc())
 
 
