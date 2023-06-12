@@ -15,6 +15,7 @@ class BitacoraOut(BaseModel):
     modulo_id: int | None
     modulo_nombre: str | None
     usuario_id: int | None
+    usuario_email: str | None
     usuario_nombre: str | None
     descripcion: str | None
     url: str | None

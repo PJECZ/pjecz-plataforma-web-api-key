@@ -28,7 +28,11 @@ async def listado_entradas_salidas(
     if current_user.permissions.get("ENTRADAS SALIDAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_entradas_salidas(db, usuario_id, usuario_email)
+        resultados = get_entradas_salidas(
+            db=db,
+            usuario_id=usuario_id,
+            usuario_email=usuario_email,
+        )
     except MyAnyError as error:
         return custom_page_success_false(error)
     return paginate(resultados)

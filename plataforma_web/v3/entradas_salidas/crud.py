@@ -9,6 +9,7 @@ from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamEr
 from lib.safe_string import safe_email
 
 from ...core.entradas_salidas.models import EntradaSalida
+from ...core.usuarios.models import Usuario
 from ..usuarios.crud import get_usuario
 
 
@@ -27,7 +28,7 @@ def get_entradas_salidas(
             usuario_email = safe_email(usuario_email, search_fragment=True)
         except ValueError as error:
             raise MyNotValidParamError("El email no es válido") from error
-        consulta = consulta.filter(EntradaSalida.usuario.email.contains(usuario_email))
+        consulta = consulta.join(Usuario).filter(Usuario.email.ilike(usuario_email))
     return consulta.filter_by(estatus="A").order_by(EntradaSalida.id.desc())
 
 

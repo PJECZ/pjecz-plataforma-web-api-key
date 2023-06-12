@@ -38,6 +38,11 @@ class EntradaSalida(Base, UniversalMixin):
     direccion_ip = Column(String(64), nullable=False)
 
     @property
+    def usuario_email(self):
+        """email del usuario"""
+        return self.usuario.email
+
+    @property
     def usuario_nombre(self):
         """Nombre del usuario"""
         return self.usuario.nombre
