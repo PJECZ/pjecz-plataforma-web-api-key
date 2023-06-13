@@ -57,10 +57,10 @@ def safe_expediente(input_str):
     elementos = re.sub(r"[^a-zA-Z0-9]+", "|", unidecode(input_str)).split("|")
     try:
         numero = int(elementos[0])
-        ano = int(elementos[1])
+        anio = int(elementos[1])
     except (IndexError, ValueError) as error:
         raise error
-    if ano < 1950 or ano > date.today().year:
+    if anio < 1900 or anio > date.today().year:
         raise ValueError
     extra_1 = ""
     if len(elementos) >= 3:
@@ -68,7 +68,7 @@ def safe_expediente(input_str):
     extra_2 = ""
     if len(elementos) >= 4:
         extra_2 = "-" + elementos[3].upper()
-    limpio = f"{str(numero)}/{str(ano)}{extra_1}{extra_2}"
+    limpio = f"{str(numero)}/{str(anio)}{extra_1}{extra_2}"
     if len(limpio) > 16:
         raise ValueError
     return limpio
