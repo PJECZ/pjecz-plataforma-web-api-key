@@ -67,17 +67,17 @@ Verifique que este en True
 **Para desarrollo** hay que crear un archivo para las variables de entorno `.env`
 
     # Base de datos
-    DB_HOST=
-    DB_PORT=
-    DB_NAME=
-    DB_USER=
-    DB_PASS=
+    DB_HOST=NNN.NNN.NNN.NNN
+    DB_PORT=5432
+    DB_NAME=pjecz_plataforma_web
+    DB_USER=adminpjeczplataformaweb
+    DB_PASS=XXXXXXXXXXXXXXXX
 
     # CORS origins
     ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
 
     # Salt sirve para cifrar el ID con HashID
-    SALT=
+    SALT=XXXXXXXXXXXXXXXX
 
     # Huso horario
     TZ=America/Mexico_City
@@ -195,6 +195,18 @@ Construir la imagen con el comando **podman**
 podman build -t pjecz_plataforma_web_api_key .
 ```
 
+Escribir el archivo `.env` con las variables de entorno
+
+```ini
+DB_HOST=NNN.NNN.NNN.NNN
+DB_PORT=5432
+DB_NAME=pjecz_plataforma_web
+DB_USER=adminpjeczplataformaweb
+DB_PASS=XXXXXXXXXXXXXXXX
+ORIGINS=*
+SALT=XXXXXXXXXXXXXXXX
+```
+
 Arrancar el contenedor donde el puerto 8002 del contenedor se dirige al puerto 7002 local
 
 ```bash
@@ -213,6 +225,18 @@ podman run -d \
     -p 7002:8002 \
     --env-file .env \
     pjecz_plataforma_web_api_key
+```
+
+Detener contenedor
+
+```bash
+podman container stop pjecz_plataforma_web_api_key
+```
+
+Eliminar contenedor
+
+```bash
+podman container rm pjecz_plataforma_web_api_key
 ```
 
 ## Google Cloud deployment
