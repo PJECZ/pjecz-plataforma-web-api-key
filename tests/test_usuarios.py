@@ -34,6 +34,11 @@ class TestUsuarios(unittest.TestCase):
         response = requests.get(f"{self.host}/v3/bitacoras", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
         self.assertEqual(response.status_code, 200)
 
+    def test_get_bitacoras_with_modulo_clave(self):
+        """Test GET method for bitacoras with modulo_clave USUARIOS"""
+        response = requests.get(f"{self.host}/v3/bitacoras", params={"modulo_clave": "USUARIOS"}, headers={"X-Api-Key": self.api_key}, timeout=self.timeout)
+        self.assertEqual(response.status_code, 200)
+
     def test_get_entradas_salidas(self):
         """Test GET method for entradas_salidas"""
         response = requests.get(f"{self.host}/v3/entradas_salidas", headers={"X-Api-Key": self.api_key}, timeout=self.timeout)

@@ -25,10 +25,10 @@ def get_bitacoras(
     consulta = db.query(Bitacora)
     if modulo_id is not None:
         modulo = get_modulo(db, modulo_id)
-        consulta = consulta.filter(modulo == modulo)
+        consulta = consulta.filter_by(modulo_id=modulo.id)
     elif modulo_nombre is not None:
         modulo = get_modulo_with_nombre(db, modulo_nombre)
-        consulta = consulta.filter(modulo == modulo)
+        consulta = consulta.filter_by(modulo_id=modulo.id)
     if usuario_id is not None:
         usuario = get_usuario(db, usuario_id)
         consulta = consulta.filter(usuario == usuario)
