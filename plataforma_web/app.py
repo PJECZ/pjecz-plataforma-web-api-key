@@ -16,7 +16,9 @@ from .v3.arc_solicitudes.paths import arc_solicitudes
 from .v3.audiencias.paths import audiencias
 from .v3.autoridades.paths import autoridades
 from .v3.bitacoras.paths import bitacoras
+from .v3.boletines.paths import boletines
 from .v3.centros_trabajos.paths import centros_trabajos
+from .v3.cit_dias_inhabiles.paths import cit_dias_inhabiles
 from .v3.distritos.paths import distritos
 from .v3.domicilios.paths import domicilios
 from .v3.edictos.paths import edictos
@@ -81,7 +83,9 @@ def create_app() -> FastAPI:
     app.include_router(audiencias)
     app.include_router(autoridades)
     app.include_router(bitacoras)
+    app.include_router(boletines)
     app.include_router(centros_trabajos)
+    app.include_router(cit_dias_inhabiles)
     app.include_router(distritos)
     app.include_router(domicilios)
     app.include_router(edictos)
