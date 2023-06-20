@@ -102,7 +102,7 @@ async def modificar_lista_de_acuerdo(
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
-    respuesta.message = "Lista de acuerdo actualizada correctamente"
+    respuesta.message = "Lista de acuerdo modificada correctamente"
     return respuesta
 
 

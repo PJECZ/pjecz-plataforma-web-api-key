@@ -185,11 +185,9 @@ Para ejecutar las pruebas arranque el servidor y ejecute
 
 ## Contenedores
 
-Esta incluido el archivo `Dockerfile` para construir la imagen
+Esta incluido el archivo `Dockerfile` para construir la imagen con **podman**. Va a usar el puerto **8002**.
 
-Va a usar el puerto **8002** para la API
-
-Construir la imagen con el comando **podman**
+Construir la imagen
 
 ```bash
 podman build -t pjecz_plataforma_web_api_key .
