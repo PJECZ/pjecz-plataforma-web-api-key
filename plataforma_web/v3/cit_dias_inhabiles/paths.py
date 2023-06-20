@@ -42,7 +42,7 @@ async def listado_cit_dias_inhabiles(
 
 
 @cit_dias_inhabiles.get("/{cit_dia_inhabil_id}", response_model=OneCitDiaInhabilOut)
-async def detalle_cit_diget_cit_dia_inhabil(
+async def detalle_cit_dia_inhabil(
     current_user: CurrentUser,
     db: DatabaseSession,
     cit_dia_inhabil_id: int,
@@ -51,13 +51,13 @@ async def detalle_cit_diget_cit_dia_inhabil(
     if current_user.permissions.get("CIT DIAS INHABILES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        cit_diget_cit_dia_inhabil = get_cit_dia_inhabil(db, cit_dia_inhabil_id)
+        cit_dia_inhabil = get_cit_dia_inhabil(db, cit_dia_inhabil_id)
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
-    return OneCitDiaInhabilOut.from_orm(cit_diget_cit_dia_inhabil)
+    return OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
 
 
-@cit_dias_inhabiles.post("", response_model=CitDiaInhabilOut)
+@cit_dias_inhabiles.post("", response_model=OneCitDiaInhabilOut)
 async def crear_cit_dia_inhabil(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -69,13 +69,13 @@ async def crear_cit_dia_inhabil(
     try:
         cit_dia_inhabil = create_cit_dia_inhabil(db, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
     except MyAnyError as error:
-        return CitDiaInhabilOut(success=False, message=str(error))
-    respuesta = CitDiaInhabilOut.from_orm(cit_dia_inhabil)
+        return OneCitDiaInhabilOut(success=False, message=str(error))
+    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
     respuesta.message = "Dia inhabil creado correctamente"
     return respuesta
 
 
-@cit_dias_inhabiles.put("/{cit_dia_inhabil_id}", response_model=CitDiaInhabilOut)
+@cit_dias_inhabiles.put("/{cit_dia_inhabil_id}", response_model=OneCitDiaInhabilOut)
 async def modificar_cit_dia_inhabil(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -88,13 +88,13 @@ async def modificar_cit_dia_inhabil(
     try:
         cit_dia_inhabil = update_cit_dia_inhabil(db, cit_dia_inhabil_id, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
     except MyAnyError as error:
-        return CitDiaInhabilOut(success=False, message=str(error))
-    respuesta = CitDiaInhabilOut.from_orm(cit_dia_inhabil)
+        return OneCitDiaInhabilOut(success=False, message=str(error))
+    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
     respuesta.message = "Dia inhabil modificado correctamente"
     return respuesta
 
 
-@cit_dias_inhabiles.delete("/{cit_dia_inhabil_id}", response_model=CitDiaInhabilOut)
+@cit_dias_inhabiles.delete("/{cit_dia_inhabil_id}", response_model=OneCitDiaInhabilOut)
 async def borrar_cit_dia_inhabil(
     current_user: CurrentUser,
     db: DatabaseSession,
@@ -106,7 +106,7 @@ async def borrar_cit_dia_inhabil(
     try:
         cit_dia_inhabil = delete_cit_dia_inhabil(db, cit_dia_inhabil_id)
     except MyAnyError as error:
-        return CitDiaInhabilOut(success=False, message=str(error))
-    respuesta = CitDiaInhabilOut.from_orm(cit_dia_inhabil)
+        return OneCitDiaInhabilOut(success=False, message=str(error))
+    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
     respuesta.message = "Dia inhabil borrado correctamente"
     return respuesta
