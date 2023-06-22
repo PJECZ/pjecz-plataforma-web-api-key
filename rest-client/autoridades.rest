@@ -23,6 +23,11 @@ X-Api-Key: {{api_key}}
 GET {{baseUrl}}/autoridades/MNC-J2-CIV
 X-Api-Key: {{api_key}}
 
+### Autoridades que puedan hacer solicitudes al archivo
+GET {{baseUrl}}/autoridades
+    ?es_archivo_solicitante=true
+X-Api-Key: {{api_key}}
+
 ### Autoridades CEMASC
 GET {{baseUrl}}/autoridades
     ?es_cemasc=true
