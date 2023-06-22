@@ -48,6 +48,7 @@ class Autoridad(Base, UniversalMixin):
     clave = Column(String(16), nullable=False, unique=True)
     descripcion = Column(String(256), nullable=False)
     descripcion_corta = Column(String(64), nullable=False, default="")
+    es_archivo_solicitante = Column(Boolean, nullable=False, default=False)
     es_cemasc = Column(Boolean, nullable=False, default=False)
     es_defensoria = Column(Boolean, nullable=False, default=False)
     es_jurisdiccional = Column(Boolean(), nullable=False, default=False)

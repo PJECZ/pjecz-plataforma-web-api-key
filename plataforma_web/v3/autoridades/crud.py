@@ -17,6 +17,7 @@ def get_autoridades(
     db: Session,
     distrito_id: int = None,
     distrito_clave: str = None,
+    es_archivo_solicitante: bool = None,
     es_cemasc: bool = None,
     es_creador_glosas: bool = None,
     es_defensoria: bool = None,
@@ -33,6 +34,8 @@ def get_autoridades(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(db, distrito_clave)
         consulta = consulta.filter_by(distrito_id=distrito.id)
+    if es_archivo_solicitante is not None:
+        consulta = consulta.filter_by(es_archivo_solicitante=es_archivo_solicitante)
     if es_cemasc is not None:
         consulta = consulta.filter_by(es_cemasc=es_cemasc)
     if es_creador_glosas is True:

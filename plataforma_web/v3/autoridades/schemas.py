@@ -20,6 +20,7 @@ class AutoridadOut(BaseModel):
     clave: str | None
     descripcion: str | None
     descripcion_corta: str | None
+    es_archivo_solicitante: bool | None
     es_cemasc: bool | None
     es_creador_glosas: bool | None
     es_defensoria: bool | None
