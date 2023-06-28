@@ -7,21 +7,19 @@ First create a `.env` file here with
 ```ini
 API_KEY=XXXXXXXX.XXXXXXXX.XXXXXXXXXXXXXXXXXXXXXXXX
 HOST=http://127.0.0.1:8002
-TIMEOUT=10
+TIMEOUT=2
 ```
-
-Use an API key with all permissions for testing
 
 ## Running the tests
 
-To run one test, for example `test_archivo.py`, run:
+To run one test, for example `test_distritos.py`, run:
 
 ```bash
-python -m unittest tests.test_archivo
+python3 -m unittest tests.test_distritos
 ```
 
 To run all tests, run:
 
 ```bash
-python -m unittest discover tests
+python3 -m unittest discover tests
 ```
