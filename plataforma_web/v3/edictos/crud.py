@@ -6,7 +6,8 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError
+from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
+from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.edictos.models import Edicto
@@ -21,6 +22,7 @@ def get_edictos(
     distrito_id: int = None,
     distrito_clave: str = None,
     anio: int = None,
+    expediente: str = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -50,6 +52,12 @@ def get_edictos(
             consulta = consulta.filter(Edicto.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Edicto.fecha <= fecha_hasta)
+    if expediente is not None:
+        try:
+            expediente = safe_expediente(expediente)
+        except (IndexError, ValueError) as error:
+            raise MyNotValidParamError("El expediente no es válido") from error
+        consulta = consulta.filter_by(expediente=expediente)
     return consulta.filter_by(estatus="A").order_by(Edicto.id)
 
 
