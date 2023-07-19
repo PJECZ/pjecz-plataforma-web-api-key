@@ -24,13 +24,15 @@ sentencias = APIRouter(prefix="/v3/sentencias", tags=["sentencias"])
 async def listado_sentencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     db: Annotated[Session, Depends(get_db)],
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
+    expediente: str = None,
     fecha: date = None,
     materia_tipo_juicio_id: int = None,
+    sentencia: str = None,
 ):
     """Listado de sentencias"""
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.VER:
@@ -38,13 +40,15 @@ async def listado_sentencias(
     try:
         resultados = get_sentencias(
             db=db,
+            anio=anio,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
-            anio=anio,
+            expediente=expediente,
             fecha=fecha,
             materia_tipo_juicio_id=materia_tipo_juicio_id,
+            sentencia=sentencia,
         )
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))

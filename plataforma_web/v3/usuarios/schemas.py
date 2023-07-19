@@ -16,6 +16,7 @@ class UsuarioOut(BaseModel):
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
+    autoridad_id: int | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None

@@ -19,7 +19,6 @@ class ArcSolicitudOut(BaseModel):
     distrito_nombre_corto: str | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
     usuario_asignado_id: int | None
     usuario_asignado_email: str | None
     usuario_asignado_nombre: str | None

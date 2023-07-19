@@ -7,6 +7,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
+from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
@@ -17,15 +18,17 @@ from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
 def get_sentencias(
     db: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
+    expediente: str = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
     materia_tipo_juicio_id: int = None,
+    sentencia: str = None,
 ) -> Any:
     """Consultar los sentencias activos"""
     consulta = db.query(Sentencia)
@@ -52,9 +55,21 @@ def get_sentencias(
             consulta = consulta.filter(Sentencia.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Sentencia.fecha <= fecha_hasta)
+    if expediente is not None:
+        try:
+            expediente = safe_expediente(expediente)
+        except (IndexError, ValueError) as error:
+            raise MyNotValidParamError("El expediente no es válido") from error
+        consulta = consulta.filter_by(expediente=expediente)
     if materia_tipo_juicio_id is not None:
         materia_tipo_juicio = get_materia_tipo_juicio(db, materia_tipo_juicio_id)
         consulta = consulta.filter_by(materia_tipo_juicio_id=materia_tipo_juicio.id)
+    if sentencia is not None:
+        try:
+            sentencia = safe_expediente(sentencia)
+        except (IndexError, ValueError) as error:
+            raise MyNotValidParamError("La sentencia no es válida") from error
+        consulta = consulta.filter_by(sentencia=sentencia)
     return consulta.filter_by(estatus="A").order_by(Sentencia.id)
 
 

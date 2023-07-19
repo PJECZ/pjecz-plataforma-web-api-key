@@ -52,7 +52,7 @@ class ArcRemesa(Base, UniversalMixin):
     # Claves foráneas
     autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
     autoridad = relationship("Autoridad", back_populates="arc_remesas")
-    usuario_asignado_id = Column(Integer, ForeignKey("usuarios.id"), index=True, nullable=False)
+    usuario_asignado_id = Column(Integer, ForeignKey("usuarios.id"), index=True, nullable=True)  # Puede ser NULL
     usuario_asignado = relationship("Usuario", back_populates="arc_remesas_asignadas")
 
     # Columnas
@@ -121,12 +121,12 @@ class ArcRemesa(Base, UniversalMixin):
     @property
     def usuario_asignado_email(self):
         """Email del usuario"""
-        return self.usuario_asignado.email
+        return self.usuario_asignado.email if self.usuario_asignado else None
 
     @property
     def usuario_asignado_nombre(self):
         """Nombre del usuario"""
-        return self.usuario_asignado.nombre
+        return self.usuario_asignado.nombre if self.usuario_asignado else None
 
     def __repr__(self):
         """Representación"""

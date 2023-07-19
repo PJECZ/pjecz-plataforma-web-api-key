@@ -31,8 +31,7 @@ class TestArchivo(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["distrito_clave"], "DSLT")
 
     def test_get_arc_documentos_with_ubicacion(self):
@@ -46,8 +45,7 @@ class TestArchivo(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["ubicacion"], "ARCHIVO")
 
     def test_get_arc_juzgados_extintos(self):

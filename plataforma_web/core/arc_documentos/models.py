@@ -49,7 +49,7 @@ class ArcDocumento(Base, UniversalMixin):
     id = Column(Integer, primary_key=True)
 
     # Claves foráneas
-    arc_juzgado_origen_id = Column(Integer, ForeignKey("arc_juzgados_extintos.id"), index=True, nullable=False)
+    arc_juzgado_origen_id = Column(Integer, ForeignKey("arc_juzgados_extintos.id"), index=True, nullable=True)  # Puede ser NULL
     arc_juzgado_origen = relationship("ArcJuzgadoExtinto", back_populates="arc_documentos")
     autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
     autoridad = relationship("Autoridad", back_populates="arc_documentos")
@@ -84,17 +84,17 @@ class ArcDocumento(Base, UniversalMixin):
     @property
     def arc_juzgado_origen_clave(self):
         """Juzgado de Origen clave"""
-        return self.arc_juzgado_origen.clave
+        return self.arc_juzgado_origen.clave if self.arc_juzgado_origen else None
 
     @property
     def arc_juzgado_origen_descripcion(self):
         """Juzgado de Origen descripción"""
-        return self.arc_juzgado_origen.descripcion
+        return self.arc_juzgado_origen.descripcion if self.arc_juzgado_origen else None
 
     @property
     def arc_juzgado_origen_descripcion_corta(self):
         """Juzgado de Origen descripción corta"""
-        return self.arc_juzgado_origen.descripcion_corta
+        return self.arc_juzgado_origen.descripcion_corta if self.arc_juzgado_origen else None
 
     @property
     def distrito_id(self):
