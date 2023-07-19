@@ -1,8 +1,6 @@
 """
 SIGA Bitacoras v3, esquemas de pydantic
 """
-from datetime import date
-
 from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
