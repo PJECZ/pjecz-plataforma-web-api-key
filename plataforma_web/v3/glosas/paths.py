@@ -2,19 +2,19 @@
 Glosas v3, rutas (paths)
 """
 from datetime import date
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.glosas.models import Glosa
-from .crud import get_glosas, get_glosa, create_glosa, update_glosa, delete_glosa
+from ...core.permisos.models import Permiso
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import create_glosa, delete_glosa, get_glosa, get_glosas, update_glosa
 from .schemas import GlosaIn, GlosaOut, OneGlosaOut
 
 glosas = APIRouter(prefix="/v3/glosas", tags=["glosas"])
@@ -22,8 +22,8 @@ glosas = APIRouter(prefix="/v3/glosas", tags=["glosas"])
 
 @glosas.get("", response_model=CustomPage[GlosaOut])
 async def listado_glosas(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
@@ -51,14 +51,14 @@ async def listado_glosas(
             fecha_hasta=fecha_hasta,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @glosas.get("/{glosa_id}", response_model=OneGlosaOut)
 async def detalle_glosa(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     glosa_id: int,
 ):
     """Detalle de una glosa a partir de su id"""
@@ -73,8 +73,8 @@ async def detalle_glosa(
 
 @glosas.post("", response_model=OneGlosaOut)
 async def crear_glosa(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     glosa_in: GlosaIn,
 ):
     """Crear una glosa"""
@@ -91,8 +91,8 @@ async def crear_glosa(
 
 @glosas.put("/{glosa_id}", response_model=OneGlosaOut)
 async def modificar_glosa(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     glosa_id: int,
     glosa_in: GlosaIn,
 ):
@@ -110,8 +110,8 @@ async def modificar_glosa(
 
 @glosas.delete("/{glosa_id}", response_model=OneGlosaOut)
 async def borrar_glosa(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     glosa_id: int,
 ):
     """Borrar una glosa"""

@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_clave, safe_string
 
-from ...core.siga_salas.models import SIGASala
 from ...core.oficinas.models import Oficina
+from ...core.siga_salas.models import SIGASala
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 from ..domicilios.crud import get_domicilio
 

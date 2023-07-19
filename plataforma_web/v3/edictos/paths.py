@@ -2,19 +2,19 @@
 Edictos v3, rutas (paths)
 """
 from datetime import date
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.edictos.models import Edicto
-from .crud import get_edictos, get_edicto, create_edicto, update_edicto, delete_edicto
+from ...core.permisos.models import Permiso
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import create_edicto, delete_edicto, get_edicto, get_edictos, update_edicto
 from .schemas import EdictoIn, EdictoOut, OneEdictoOut
 
 edictos = APIRouter(prefix="/v3/edictos", tags=["edictos"])
@@ -22,8 +22,8 @@ edictos = APIRouter(prefix="/v3/edictos", tags=["edictos"])
 
 @edictos.get("", response_model=CustomPage[EdictoOut])
 async def listado_edictos(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
@@ -51,14 +51,14 @@ async def listado_edictos(
             fecha_hasta=fecha_hasta,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @edictos.get("/{edicto_id}", response_model=OneEdictoOut)
 async def detalle_edicto(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     edicto_id: int,
 ):
     """Detalle de un edicto a partir de su id"""
@@ -73,8 +73,8 @@ async def detalle_edicto(
 
 @edictos.post("", response_model=OneEdictoOut)
 async def crear_edicto(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     edicto_in: EdictoIn,
 ):
     """Crear un edicto"""
@@ -91,8 +91,8 @@ async def crear_edicto(
 
 @edictos.put("/{edicto_id}", response_model=OneEdictoOut)
 async def modificar_edicto(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     edicto_id: int,
     edicto_in: EdictoIn,
 ):
@@ -110,8 +110,8 @@ async def modificar_edicto(
 
 @edictos.delete("/{edicto_id}", response_model=OneEdictoOut)
 async def borrar_edicto(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     edicto_id: int,
 ):
     """Borrar un edicto"""

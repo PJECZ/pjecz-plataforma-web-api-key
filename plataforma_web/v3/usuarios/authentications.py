@@ -1,14 +1,13 @@
 """
 Autentificaciones
 """
-from typing import Annotated
-from datetime import datetime
 import re
-from typing import Optional
+from datetime import datetime
+from typing import Annotated, Optional
 
-from hashids import Hashids
-from fastapi import HTTPException, Depends
+from fastapi import Depends, HTTPException
 from fastapi.security.api_key import APIKeyHeader
+from hashids import Hashids
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 from unidecode import unidecode
@@ -111,4 +110,4 @@ async def get_current_active_user(
     return usuario
 
 
-CurrentUser = Annotated[UsuarioInDB, Depends(get_current_active_user)]
+# CurrentUser = Annotated[UsuarioInDB, Depends(get_current_active_user)]

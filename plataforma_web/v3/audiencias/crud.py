@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 
-from ...core.autoridades.models import Autoridad
 from ...core.audiencias.models import Audiencia
+from ...core.autoridades.models import Autoridad
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 

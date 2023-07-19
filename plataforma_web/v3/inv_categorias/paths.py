@@ -1,17 +1,18 @@
 """
 Inventarios Categorias v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_inv_categorias, get_inv_categoria
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_inv_categoria, get_inv_categorias
 from .schemas import InvCategoriaOut, OneInvCategoriaOut
 
 inv_categorias = APIRouter(prefix="/v3/inv_categorias", tags=["inventarios"])
@@ -19,8 +20,8 @@ inv_categorias = APIRouter(prefix="/v3/inv_categorias", tags=["inventarios"])
 
 @inv_categorias.get("", response_model=CustomPage[InvCategoriaOut])
 async def listado_inv_categorias(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     """Listado de categorias"""
     if current_user.permissions.get("INV CATEGORIAS", 0) < Permiso.VER:
@@ -28,14 +29,14 @@ async def listado_inv_categorias(
     try:
         resultados = get_inv_categorias(db)
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @inv_categorias.get("/{inv_categoria_id}", response_model=OneInvCategoriaOut)
 async def detalle_inv_categoria(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     inv_categoria_id: int,
 ):
     """Detalle de una categoria a partir de su id"""

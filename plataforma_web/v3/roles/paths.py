@@ -1,26 +1,27 @@
 """
 Roles v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_roles, get_rol
-from .schemas import RolOut, OneRolOut
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_rol, get_roles
+from .schemas import OneRolOut, RolOut
 
 roles = APIRouter(prefix="/v3/roles", tags=["usuarios"])
 
 
 @roles.get("", response_model=CustomPage[RolOut])
 async def listado_roles(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     """Listado de roles"""
     if current_user.permissions.get("ROLES", 0) < Permiso.VER:
@@ -28,14 +29,14 @@ async def listado_roles(
     try:
         resultados = get_roles(db)
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @roles.get("/{rol_id}", response_model=OneRolOut)
 async def detalle_rol(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     rol_id: int,
 ):
     """Detalle de una rol a partir de su nombre"""

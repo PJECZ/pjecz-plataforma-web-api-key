@@ -2,18 +2,18 @@
 Inventarios Custodias v3, rutas (paths)
 """
 from datetime import date
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_inv_custodias, get_inv_custodia
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_inv_custodia, get_inv_custodias
 from .schemas import InvCustodiaOut, OneInvCustodiaOut
 
 inv_custodias = APIRouter(prefix="/v3/inv_custodias", tags=["inventarios"])
@@ -21,8 +21,8 @@ inv_custodias = APIRouter(prefix="/v3/inv_custodias", tags=["inventarios"])
 
 @inv_custodias.get("", response_model=CustomPage[InvCustodiaOut])
 async def listado_inv_custodias(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
     distrito_clave: str = None,
     fecha_desde: date = None,
@@ -48,14 +48,14 @@ async def listado_inv_custodias(
             usuario_email=usuario_email,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @inv_custodias.get("/{inv_custodia_id}", response_model=OneInvCustodiaOut)
 async def detalle_inv_custodia(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     inv_custodia_id: int,
 ):
     """Detalle de una custodia a partir de su id"""

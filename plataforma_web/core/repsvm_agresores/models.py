@@ -2,6 +2,7 @@
 REPSVM Agresores, modelos
 """
 from collections import OrderedDict
+
 from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 

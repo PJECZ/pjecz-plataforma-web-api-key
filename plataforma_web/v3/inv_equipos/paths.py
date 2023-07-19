@@ -2,18 +2,18 @@
 Inventarios Equipos v3, rutas (paths)
 """
 from datetime import date
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_inv_equipos, get_inv_equipo
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_inv_equipo, get_inv_equipos
 from .schemas import InvEquipoOut, OneInvEquipoOut
 
 inv_equipos = APIRouter(prefix="/v3/inv_equipos", tags=["inventarios"])
@@ -21,8 +21,8 @@ inv_equipos = APIRouter(prefix="/v3/inv_equipos", tags=["inventarios"])
 
 @inv_equipos.get("", response_model=CustomPage[InvEquipoOut])
 async def listado_inv_equipos(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     creado: date = None,
     creado_desde: date = None,
     creado_hasta: date = None,
@@ -58,14 +58,14 @@ async def listado_inv_equipos(
             tipo=tipo,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @inv_equipos.get("/{inv_equipo_id}", response_model=OneInvEquipoOut)
 async def detalle_inv_equipo(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     inv_equipo_id: int,
 ):
     """Detalle de una equipo a partir de su id"""

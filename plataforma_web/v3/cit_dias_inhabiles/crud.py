@@ -6,7 +6,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyAlreadyExistsError
+from lib.exceptions import MyAlreadyExistsError, MyIsDeletedError, MyNotExistsError
 
 from ...core.cit_dias_inhabiles.models import CitDiaInhabil
 

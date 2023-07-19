@@ -4,14 +4,14 @@ Inventarios Equipos v3, CRUD (create, read, update, and delete)
 from datetime import date, datetime
 from typing import Any
 
-from sqlalchemy.orm import Session
 import pytz
+from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
 from lib.safe_string import safe_string
 
-from ...core.inv_equipos.models import InvEquipo
 from ...core.inv_custodias.models import InvCustodia
+from ...core.inv_equipos.models import InvEquipo
 from ...core.oficinas.models import Oficina
 from ...core.usuarios.models import Usuario
 from ..distritos.crud import get_distrito, get_distrito_with_clave
