@@ -3,7 +3,7 @@ Usuarios, modelos
 """
 from collections import OrderedDict
 
-from sqlalchemy import Column, DateTime, Enum, Integer, ForeignKey, String
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base

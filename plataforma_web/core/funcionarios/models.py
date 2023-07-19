@@ -40,6 +40,16 @@ class Funcionario(Base, UniversalMixin):
     fotografia_url = Column(String(512), nullable=False)
 
     @property
+    def centro_trabajo_clave(self):
+        """Clave del centro de trabajo"""
+        return self.centro_trabajo.clave
+
+    @property
+    def centro_trabajo_nombre(self):
+        """Nombre del centro de trabajo"""
+        return self.centro_trabajo.nombre
+
+    @property
     def nombre(self):
         """Junta nombres, apellido_paterno y apellido materno"""
         return self.nombres + " " + self.apellido_paterno + " " + self.apellido_materno

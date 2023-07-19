@@ -3,7 +3,7 @@ Archivo - Solicitudes v3, esquemas de pydantic
 """
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -19,7 +19,6 @@ class ArcSolicitudOut(BaseModel):
     distrito_nombre_corto: str | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
     usuario_asignado_id: int | None
     usuario_asignado_email: str | None
     usuario_asignado_nombre: str | None
@@ -32,11 +31,7 @@ class ArcSolicitudOut(BaseModel):
     razon: str | None
     observaciones_solicitud: str | None
     observaciones_razon: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneArcSolicitudOut(ArcSolicitudOut, OneBaseOut):

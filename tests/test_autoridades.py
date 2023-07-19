@@ -31,8 +31,7 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_cemasc"], 1)
 
     def test_get_autoridades_by_es_creador_glosas(self):
@@ -46,8 +45,7 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_creador_glosas"], 1)
 
     def test_get_autoridades_by_es_defensoria(self):
@@ -61,8 +59,7 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_defensoria"], 1)
 
     def test_get_autoridades_by_es_jurisdiccional(self):
@@ -76,8 +73,7 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_jurisdiccional"], 1)
 
     def test_get_autoridades_by_es_notaria(self):
@@ -91,8 +87,7 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_notaria"], 1)
 
 

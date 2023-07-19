@@ -1,26 +1,27 @@
 """
 Ubicaciones de Expedientes v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_ubicaciones_expedientes, get_ubicacion_expediente
-from .schemas import UbicacionExpedienteOut, OneUbicacionExpedienteOut
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_ubicacion_expediente, get_ubicaciones_expedientes
+from .schemas import OneUbicacionExpedienteOut, UbicacionExpedienteOut
 
 ubicaciones_expedientes = APIRouter(prefix="/v3/ubicaciones_expedientes", tags=["ubicaciones de expedientes"])
 
 
 @ubicaciones_expedientes.get("", response_model=CustomPage[UbicacionExpedienteOut])
 async def listado_ubicaciones_expedientes(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     expediente: str = None,
@@ -36,14 +37,14 @@ async def listado_ubicaciones_expedientes(
             expediente=expediente,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @ubicaciones_expedientes.get("/{ubicacion_expediente_id}", response_model=OneUbicacionExpedienteOut)
 async def detalle_ubicacion_expediente(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     ubicacion_expediente_id: int,
 ):
     """Detalle de una ubicacion de expediente a partir de su id"""

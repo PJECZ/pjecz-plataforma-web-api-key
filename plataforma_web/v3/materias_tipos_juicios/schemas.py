@@ -1,7 +1,7 @@
 """
 Materias-Tipos de Juicios v3, esquemas de pydantic
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -14,11 +14,7 @@ class MateriaTipoJuicioOut(BaseModel):
     materia_clave: str | None
     materia_nombre: str | None
     descripcion: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneMateriaTipoJuicioOut(MateriaTipoJuicioOut, OneBaseOut):

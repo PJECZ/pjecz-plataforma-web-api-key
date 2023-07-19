@@ -2,19 +2,19 @@
 Audiencias v3, rutas (paths)
 """
 from datetime import date
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.audiencias.models import Audiencia
-from .crud import get_audiencias, get_audiencia, create_audiencia, update_audiencia, delete_audiencia
+from ...core.permisos.models import Permiso
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import create_audiencia, delete_audiencia, get_audiencia, get_audiencias, update_audiencia
 from .schemas import AudienciaIn, AudienciaOut, OneAudienciaOut
 
 audiencias = APIRouter(prefix="/v3/audiencias", tags=["audiencias"])
@@ -22,8 +22,8 @@ audiencias = APIRouter(prefix="/v3/audiencias", tags=["audiencias"])
 
 @audiencias.get("", response_model=CustomPage[AudienciaOut])
 async def listado_audiencias(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
@@ -45,14 +45,14 @@ async def listado_audiencias(
             fecha=fecha,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @audiencias.get("/{audiencia_id}", response_model=OneAudienciaOut)
 async def detalle_audiencia(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     audiencia_id: int,
 ):
     """Detalle de una audiencia a partir de su id"""
@@ -67,8 +67,8 @@ async def detalle_audiencia(
 
 @audiencias.post("", response_model=OneAudienciaOut)
 async def crear_audiencia(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     audiencia_in: AudienciaIn,
 ):
     """Crear una audiencia"""
@@ -85,8 +85,8 @@ async def crear_audiencia(
 
 @audiencias.put("/{audiencia_id}", response_model=OneAudienciaOut)
 async def modificar_audiencia(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     audiencia_id: int,
     audiencia_in: AudienciaIn,
 ):
@@ -104,8 +104,8 @@ async def modificar_audiencia(
 
 @audiencias.delete("/{audiencia_id}", response_model=OneAudienciaOut)
 async def borrar_audiencia(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     audiencia_id: int,
 ):
     """Borrar una audiencia"""

@@ -1,7 +1,7 @@
 """
 Domicilios v3, esquemas de pydantic
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -23,11 +23,7 @@ class DomicilioOut(BaseModel):
     colonia: str | None
     cp: int | None
     completo: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneDomicilioOut(DomicilioOut, OneBaseOut):

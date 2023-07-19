@@ -1,17 +1,18 @@
 """
 Oficinas v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_oficinas, get_oficina_with_clave
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_oficina_with_clave, get_oficinas
 from .schemas import OficinaOut, OneOficinaOut
 
 oficinas = APIRouter(prefix="/v3/oficinas", tags=["oficinas"])
@@ -19,8 +20,8 @@ oficinas = APIRouter(prefix="/v3/oficinas", tags=["oficinas"])
 
 @oficinas.get("", response_model=CustomPage[OficinaOut])
 async def listado_oficinas(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
     distrito_clave: str = None,
     domicilio_id: int = None,
@@ -38,14 +39,14 @@ async def listado_oficinas(
             es_jurisdiccional=es_jurisdiccional,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @oficinas.get("/{oficina_clave}", response_model=OneOficinaOut)
 async def detalle_oficina(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     oficina_clave: str,
 ):
     """Detalle de una oficina a partir de su clave"""

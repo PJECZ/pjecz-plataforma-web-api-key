@@ -2,6 +2,7 @@
 Entradas-Salidas, modelos
 """
 from collections import OrderedDict
+
 from sqlalchemy import Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 

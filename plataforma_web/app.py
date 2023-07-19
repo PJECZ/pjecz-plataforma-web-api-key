@@ -49,9 +49,9 @@ from .v3.siga_bitacoras.paths import siga_bitacoras
 from .v3.siga_grabaciones.paths import siga_grabaciones
 from .v3.siga_salas.paths import siga_salas
 from .v3.tesis_jurisprudencias.paths import tesis_jurisprudencias
+from .v3.ubicaciones_expedientes.paths import ubicaciones_expedientes
 from .v3.usuarios.paths import usuarios
 from .v3.usuarios_roles.paths import usuarios_roles
-from .v3.ubicaciones_expedientes.paths import ubicaciones_expedientes
 
 
 def create_app() -> FastAPI:
@@ -61,6 +61,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="PJECZ Plataforma Web API Key",
         description="Bienvenido a PJECZ Plataforma Web API Key. Esta API es para trabajar con los datos de Plataforma Web. Se requiere tener una api-key para usarse.",
+        docs_url="/docs",
+        redoc_url=None,
     )
 
     # CORSMiddleware

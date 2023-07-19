@@ -1,6 +1,6 @@
 # pjecz-plataforma-web-api-key
 
-API con autentificación para realizar operaciones con la base de datos de Plataforma Web.
+API con autentificación para realizar operaciones con la base de datos de Plataforma Web. Hecho con FastAPI.
 
 ## Mejores practicas
 
@@ -15,12 +15,16 @@ Body que entrega un listado
     {
         "success": true,
         "message": "Success",
-        "result": {
-            "total": 2812,
-            "items": [ { "id": 1, ... } ],
-            "limit": 100,
-            "offset": 0
-        }
+        "total": 2812,
+        "items": [
+            {
+                "id": 123,
+                ...
+            },
+            ...
+        ],
+        "limit": 100,
+        "offset": 0
     }
 
 Body que entrega un item
@@ -76,6 +80,13 @@ Verifique que este en True
     # CORS origins
     ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
 
+    # Google Cloud Storage buckets
+    GCP_BUCKET=pjecz-consultas
+    GCP_BUCKET_EDICTOS=pjecz-consultas-edictos
+    GCP_BUCKET_GLOSAS=pjecz-consultas-glosas
+    GCP_BUCKET_LISTAS_DE_ACUERDOS=pjecz-consultas-listas-de-acuerdos
+    GCP_BUCKET_SENTENCIAS=pjecz-consultas-version-publica-sentencias
+
     # Salt sirve para cifrar el ID con HashID
     SALT=XXXXXXXXXXXXXXXX
 
@@ -106,6 +117,11 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo "   DB_NAME: ${DB_NAME}"
         echo "   DB_USER: ${DB_USER}"
         echo "   DB_PASS: ${DB_PASS}"
+        echo "   GCP_BUCKET: ${GCP_BUCKET}"
+        echo "   GCP_BUCKET_EDICTOS: ${GCP_BUCKET_EDICTOS}"
+        echo "   GCP_BUCKET_GLOSAS: ${GCP_BUCKET_GLOSAS}"
+        echo "   GCP_BUCKET_LISTAS_DE_ACUERDOS: ${GCP_BUCKET_LISTAS_DE_ACUERDOS}"
+        echo "   GCP_BUCKET_SENTENCIAS: ${GCP_BUCKET_SENTENCIAS}"
         echo "   ORIGINS: ${ORIGINS}"
         echo "   SALT: ${SALT}"
         echo "   TZ: ${TZ}"
@@ -185,57 +201,53 @@ Para ejecutar las pruebas arranque el servidor y ejecute
 
 ## Contenedores
 
-Esta incluido el archivo `Dockerfile` para construir la imagen con **podman**. Va a usar el puerto **8002**.
+Esta incluido el archivo `Dockerfile` para construir la imagen con **podman**. Va a usar el puerto **8000**.
 
 Construir la imagen
 
-```bash
-podman build -t pjecz_plataforma_web_api_key .
-```
+    podman build -t pjecz_plataforma_web_api_key .
 
 Escribir el archivo `.env` con las variables de entorno
 
-```ini
-DB_HOST=NNN.NNN.NNN.NNN
-DB_PORT=5432
-DB_NAME=pjecz_plataforma_web
-DB_USER=adminpjeczplataformaweb
-DB_PASS=XXXXXXXXXXXXXXXX
-ORIGINS=*
-SALT=XXXXXXXXXXXXXXXX
-```
+    DB_HOST=NNN.NNN.NNN.NNN
+    DB_PORT=5432
+    DB_NAME=pjecz_plataforma_web
+    DB_USER=adminpjeczplataformaweb
+    DB_PASS=XXXXXXXXXXXXXXXX
+    ORIGINS=*
+    SALT=XXXXXXXXXXXXXXXX
 
-Arrancar el contenedor donde el puerto 8002 del contenedor se dirige al puerto 7002 local
+Arrancar el contenedor donde el puerto 8000 del contenedor se dirige al puerto 7002 local
 
-```bash
-podman run --rm \
-    --name pjecz_plataforma_web_api_key \
-    -p 7002:8002 \
-    --env-file .env \
-    pjecz_plataforma_web_api_key
-```
+    podman run --rm \
+        --name pjecz_plataforma_web_api_key \
+        -p 7002:8000 \
+        --env-file .env \
+        pjecz_plataforma_web_api_key
 
 Arrancar el contenedor y dejar corriendo en el fondo
 
-```bash
-podman run -d \
-    --name pjecz_plataforma_web_api_key \
-    -p 7002:8002 \
-    --env-file .env \
-    pjecz_plataforma_web_api_key
-```
+    podman run -d \
+        --name pjecz_plataforma_web_api_key \
+        -p 7002:8000 \
+        --env-file .env \
+        pjecz_plataforma_web_api_key
 
 Detener contenedor
 
-```bash
-podman container stop pjecz_plataforma_web_api_key
-```
+    podman container stop pjecz_plataforma_web_api_key
+
+Arrancar contenedor
+
+    podman container start pjecz_plataforma_web_api_key
 
 Eliminar contenedor
 
-```bash
-podman container rm pjecz_plataforma_web_api_key
-```
+    podman container rm pjecz_plataforma_web_api_key
+
+Eliminar la imagen
+
+    podman image rm pjecz_plataforma_web_api_key
 
 ## Google Cloud deployment
 
@@ -244,7 +256,3 @@ Este proyecto usa **GitHub Actions** para subir a **Google Cloud**
 Para ello debe crear el archivo `requirements.txt`
 
     poetry export -f requirements.txt --output requirements.txt --without-hashes
-
-Y subir a Google Cloud con
-
-    gcloud app deploy

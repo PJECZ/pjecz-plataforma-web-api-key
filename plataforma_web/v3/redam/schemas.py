@@ -3,7 +3,7 @@ REDAM (Registro Estatal de Deudores Alimentarios Morosos) v3, esquemas de pydant
 """
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -24,11 +24,7 @@ class RedamOut(BaseModel):
     expediente: str | None
     fecha: date | None
     observaciones: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneRedamOut(RedamOut, OneBaseOut):

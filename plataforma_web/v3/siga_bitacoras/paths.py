@@ -1,26 +1,27 @@
 """
 SIGA Bitacoras v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_siga_bitacoras, get_siga_bitacora
-from .schemas import SIGABitacoraOut, OneSIGABitacoraOut
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_siga_bitacora, get_siga_bitacoras
+from .schemas import OneSIGABitacoraOut, SIGABitacoraOut
 
 siga_bitacoras = APIRouter(prefix="/v3/siga_bitacoras", tags=["siga"])
 
 
 @siga_bitacoras.get("", response_model=CustomPage[SIGABitacoraOut])
 async def listado_siga_bitacoras(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     accion: str = None,
     estado: str = None,
     siga_sala_id: int = None,
@@ -38,14 +39,14 @@ async def listado_siga_bitacoras(
             siga_sala_clave=siga_sala_clave,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @siga_bitacoras.get("/{siga_bitacora_id}", response_model=OneSIGABitacoraOut)
 async def detalle_siga_bitacora(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     siga_bitacora_id: int,
 ):
     """Detalle de una bitacora a partir de su id"""

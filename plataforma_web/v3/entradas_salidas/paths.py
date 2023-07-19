@@ -1,17 +1,18 @@
 """
 Entradas-Salidas v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_entradas_salidas, get_entrada_salida
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_entrada_salida, get_entradas_salidas
 from .schemas import EntradaSalidaOut, OneEntradaSalidaOut
 
 entradas_salidas = APIRouter(prefix="/v3/entradas_salidas", tags=["usuarios"])
@@ -19,8 +20,8 @@ entradas_salidas = APIRouter(prefix="/v3/entradas_salidas", tags=["usuarios"])
 
 @entradas_salidas.get("", response_model=CustomPage[EntradaSalidaOut])
 async def listado_entradas_salidas(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     usuario_id: int = None,
     usuario_email: str = None,
 ):
@@ -34,14 +35,14 @@ async def listado_entradas_salidas(
             usuario_email=usuario_email,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @entradas_salidas.get("/{entrada_salida_id}", response_model=OneEntradaSalidaOut)
 async def detalle_entrada_salida(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     entrada_salida_id: int,
 ):
     """Detalle de una entradas-salidas a partir de su id"""

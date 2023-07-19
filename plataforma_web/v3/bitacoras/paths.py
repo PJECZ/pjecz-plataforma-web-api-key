@@ -1,17 +1,18 @@
 """
 Bitacoras v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_bitacoras, get_bitacora
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_bitacora, get_bitacoras
 from .schemas import BitacoraOut, OneBitacoraOut
 
 bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
@@ -19,8 +20,8 @@ bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
 
 @bitacoras.get("", response_model=CustomPage[BitacoraOut])
 async def listado_bitacoras(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
     modulo_nombre: str = None,
     usuario_id: int = None,
@@ -38,14 +39,14 @@ async def listado_bitacoras(
             usuario_email=usuario_email,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @bitacoras.get("/{bitacora_id}", response_model=OneBitacoraOut)
 async def detalle_bitacora(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     bitacora_id: int,
 ):
     """Detalle de una bitacoras a partir de su id"""

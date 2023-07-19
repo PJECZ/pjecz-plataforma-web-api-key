@@ -3,7 +3,7 @@ Inventarios Custodias v3, esquemas de pydantic
 """
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -23,11 +23,7 @@ class InvCustodiaOut(BaseModel):
     oficina_clave: str | None
     usuario_id: int | None
     usuario_email: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneInvCustodiaOut(InvCustodiaOut, OneBaseOut):

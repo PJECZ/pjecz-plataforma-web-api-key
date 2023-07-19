@@ -3,7 +3,7 @@ SIGA Grabaciones, modelos
 """
 from collections import OrderedDict
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, JSON, Integer, String, Interval
+from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Integer, Interval, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base

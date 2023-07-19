@@ -1,30 +1,31 @@
 """
 SIGA Grabaciones v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
 from ...core.siga_grabaciones.models import SIGAGrabacion
 from ..autoridades.crud import get_autoridad_with_clave
 from ..materias.crud import get_materia_with_clave
 from ..siga_salas.crud import get_siga_sala_with_clave
-from .crud import get_siga_grabaciones, get_siga_grabacion, get_siga_grabacion_with_archivo_nombre, create_siga_grabacion
-from .schemas import SIGAGrabacionIn, SIGAGrabacionOut, OneSIGAGrabacionOut
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import create_siga_grabacion, get_siga_grabacion, get_siga_grabacion_with_archivo_nombre, get_siga_grabaciones
+from .schemas import OneSIGAGrabacionOut, SIGAGrabacionIn, SIGAGrabacionOut
 
 siga_grabaciones = APIRouter(prefix="/v3/siga_grabaciones", tags=["siga"])
 
 
 @siga_grabaciones.get("", response_model=CustomPage[SIGAGrabacionOut])
 async def listado_siga_grabaciones(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
@@ -50,14 +51,14 @@ async def listado_siga_grabaciones(
             siga_sala_clave=siga_sala_clave,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @siga_grabaciones.get("/archivo_nombre/{archivo_nombre}", response_model=OneSIGAGrabacionOut)
 async def detalle_siga_grabacion_con_archivo_nombre(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     archivo_nombre: str,
 ):
     """Detalle de una grabacion a partir de su id"""
@@ -72,8 +73,8 @@ async def detalle_siga_grabacion_con_archivo_nombre(
 
 @siga_grabaciones.get("/{siga_grabacion_id}", response_model=OneSIGAGrabacionOut)
 async def detalle_siga_grabacion(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     siga_grabacion_id: int,
 ):
     """Detalle de una grabacion a partir de su id"""
@@ -88,8 +89,8 @@ async def detalle_siga_grabacion(
 
 @siga_grabaciones.post("", response_model=OneSIGAGrabacionOut)
 async def crear_siga_grabacion(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     siga_grabacion_in: SIGAGrabacionIn,
 ):
     """Crear una grabacion"""

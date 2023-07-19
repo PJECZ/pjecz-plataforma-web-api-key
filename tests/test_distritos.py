@@ -31,8 +31,7 @@ class TestDistritos(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_distrito_judicial"], 1)
 
     def test_get_distritos_by_es_distrito(self):
@@ -46,8 +45,7 @@ class TestDistritos(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_distrito"], 1)
 
     def test_get_distritos_by_es_jurisdiccional(self):
@@ -61,8 +59,7 @@ class TestDistritos(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
-        result = data["result"]
-        for item in result["items"]:
+        for item in data["items"]:
             self.assertEqual(item["es_jurisdiccional"], 1)
 
 

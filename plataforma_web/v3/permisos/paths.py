@@ -1,26 +1,27 @@
 """
 Permisos v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_permisos, get_permiso
-from .schemas import PermisoOut, OnePermisoOut
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_permiso, get_permisos
+from .schemas import OnePermisoOut, PermisoOut
 
 permisos = APIRouter(prefix="/v3/permisos", tags=["usuarios"])
 
 
 @permisos.get("", response_model=CustomPage[PermisoOut])
 async def listado_permisos(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
     modulo_nombre: str = None,
     rol_id: int = None,
@@ -37,14 +38,14 @@ async def listado_permisos(
             rol_id=rol_id,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @permisos.get("/{permiso_id}", response_model=OnePermisoOut)
 async def detalle_permiso(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     permiso_id: int,
 ):
     """Detalle de una permisos a partir de su id"""

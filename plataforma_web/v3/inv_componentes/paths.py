@@ -1,17 +1,18 @@
 """
 Inventarios Componentes v3, rutas (paths)
 """
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
 
-from lib.database import DatabaseSession
+from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage, custom_page_success_false
+from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
-
-from .crud import get_inv_componentes, get_inv_componente
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from .crud import get_inv_componente, get_inv_componentes
 from .schemas import InvComponenteOut, OneInvComponenteOut
 
 inv_componentes = APIRouter(prefix="/v3/inv_componentes", tags=["inventarios"])
@@ -19,8 +20,8 @@ inv_componentes = APIRouter(prefix="/v3/inv_componentes", tags=["inventarios"])
 
 @inv_componentes.get("", response_model=CustomPage[InvComponenteOut])
 async def listado_inv_componentes(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     generacion: str = None,
     inv_categoria_id: int = None,
     inv_equipo_id: int = None,
@@ -36,14 +37,14 @@ async def listado_inv_componentes(
             inv_equipo_id=inv_equipo_id,
         )
     except MyAnyError as error:
-        return custom_page_success_false(error)
+        return CustomPage(success=False, message=str(error))
     return paginate(resultados)
 
 
 @inv_componentes.get("/{inv_componente_id}", response_model=OneInvComponenteOut)
 async def detalle_inv_componente(
-    current_user: CurrentUser,
-    db: DatabaseSession,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    db: Annotated[Session, Depends(get_db)],
     inv_componente_id: int,
 ):
     """Detalle de una componente a partir de su id"""

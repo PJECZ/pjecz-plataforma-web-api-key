@@ -3,7 +3,7 @@ Usuarios v3, esquemas de pydantic
 """
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -16,6 +16,7 @@ class UsuarioOut(BaseModel):
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
+    autoridad_id: int | None
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
@@ -30,11 +31,7 @@ class UsuarioOut(BaseModel):
     telefono: str | None
     extension: str | None
     workspace: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneUsuarioOut(UsuarioOut, OneBaseOut):

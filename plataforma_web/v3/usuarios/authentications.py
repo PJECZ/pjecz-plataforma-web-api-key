@@ -1,14 +1,13 @@
 """
 Autentificaciones
 """
-from typing import Annotated
-from datetime import datetime
 import re
+from datetime import datetime
 from typing import Optional
 
-from hashids import Hashids
-from fastapi import HTTPException, Depends
+from fastapi import Depends, HTTPException
 from fastapi.security.api_key import APIKeyHeader
+from hashids import Hashids
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 from unidecode import unidecode
@@ -25,13 +24,23 @@ X_API_KEY = APIKeyHeader(name="X-Api-Key")
 
 def get_user(
     usuario_id: int,
-    db: Session = Depends(get_db),
+    database: Session = Depends(get_db),
 ) -> Optional[UsuarioInDB]:
     """Consultar un usuario por su id"""
-    usuario = db.query(Usuario).get(usuario_id)
+    usuario = database.query(Usuario).get(usuario_id)
     if usuario:
         return UsuarioInDB(
             id=usuario.id,
+            distrito_id=usuario.distrito_id,
+            distrito_clave=usuario.distrito_clave,
+            distrito_nombre=usuario.distrito_nombre,
+            distrito_nombre_corto=usuario.distrito_nombre_corto,
+            autoridad_id=usuario.autoridad_id,
+            autoridad_clave=usuario.autoridad_clave,
+            autoridad_descripcion=usuario.autoridad_descripcion,
+            autoridad_descripcion_corta=usuario.autoridad_descripcion_corta,
+            oficina_id=usuario.oficina_id,
+            oficina_clave=usuario.oficina_clave,
             email=usuario.email,
             nombres=usuario.nombres,
             apellido_paterno=usuario.apellido_paterno,
@@ -53,7 +62,7 @@ def get_user(
 
 def authenticate_user(
     api_key: str,
-    db: Session,
+    database: Session,
 ) -> UsuarioInDB:
     """Autentificar un usuario por su api_key"""
 
@@ -71,7 +80,7 @@ def authenticate_user(
         raise MyAuthenticationError("No se pudo descifrar el ID")
 
     # Consultar
-    usuario = get_user(usuario_id, db)
+    usuario = get_user(usuario_id, database)
     if usuario is None:
         raise MyAuthenticationError("No se encontro el usuario")
 
@@ -97,18 +106,15 @@ def authenticate_user(
 
 async def get_current_active_user(
     api_key: str = Depends(X_API_KEY),
-    db: Session = Depends(get_db),
+    database: Session = Depends(get_db),
 ) -> UsuarioInDB:
     """Obtener el usuario activo actual"""
 
     # Try-except
     try:
-        usuario = authenticate_user(api_key, db)
+        usuario = authenticate_user(api_key, database)
     except MyAuthenticationError as error:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail=str(error)) from error
 
     # Entregar
     return usuario
-
-
-CurrentUser = Annotated[UsuarioInDB, Depends(get_current_active_user)]
