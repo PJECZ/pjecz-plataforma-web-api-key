@@ -61,6 +61,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="PJECZ Plataforma Web API Key",
         description="Bienvenido a PJECZ Plataforma Web API Key. Esta API es para trabajar con los datos de Plataforma Web. Se requiere tener una api-key para usarse.",
+        docs_url="/docs",
+        redoc_url=None,
     )
 
     # CORSMiddleware

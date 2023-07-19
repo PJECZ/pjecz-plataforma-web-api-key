@@ -3,7 +3,7 @@ Tesis Jurisprudencias v3, esquemas de pydantic
 """
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -39,11 +39,7 @@ class TesisJurisprudenciaOut(BaseModel):
     aprobacion_fecha: date | None
     publicacion_tiempo: datetime | None
     aplicacion_tiempo: datetime | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneTesisJurisprudenciaOut(TesisJurisprudenciaOut, OneBaseOut):

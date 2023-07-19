@@ -1,7 +1,7 @@
 """
 Oficinas v3, esquemas de pydantic
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -21,11 +21,7 @@ class OficinaOut(BaseModel):
     descripcion: str | None
     descripcion_corta: str | None
     es_jurisdiccional: bool | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneOficinaOut(OficinaOut, OneBaseOut):

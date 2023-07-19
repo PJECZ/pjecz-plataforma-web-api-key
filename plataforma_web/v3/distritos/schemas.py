@@ -1,7 +1,7 @@
 """
 Distritos v3, esquemas de pydantic
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -16,11 +16,7 @@ class DistritoOut(BaseModel):
     es_distrito_judicial: bool | None
     es_distrito: bool | None
     es_jurisdiccional: bool | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneDistritoOut(DistritoOut, OneBaseOut):

@@ -1,7 +1,7 @@
 """
 REPSVM Agresores v3, esquemas de pydantic
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -24,11 +24,7 @@ class RepsvmAgresorOut(BaseModel):
     sentencia_url: str | None
     tipo_juzgado: str | None
     tipo_sentencia: str | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneRepsvmAgresorOut(RepsvmAgresorOut, OneBaseOut):

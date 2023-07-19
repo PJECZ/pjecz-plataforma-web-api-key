@@ -3,7 +3,7 @@ Sentencias v3, esquemas de pydantic
 """
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
@@ -38,11 +38,7 @@ class SentenciaOut(SentenciaIn):
     materia_nombre: str | None
     materia_tipo_juicio_descripcion: str | None
     creado: datetime | None
-
-    class Config:
-        """SQLAlchemy config"""
-
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OneSentenciaOut(SentenciaOut, OneBaseOut):
