@@ -14,7 +14,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_categorias(self):
         """Test GET method for inv_categorias"""
         response = requests.get(
-            f"{config['host']}/v3/inv_categorias",
+            f"{config['host']}/v4/inv_categorias",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -23,7 +23,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_componentes(self):
         """Test GET method for inv_componentes"""
         response = requests.get(
-            f"{config['host']}/v3/inv_componentes",
+            f"{config['host']}/v4/inv_componentes",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -32,7 +32,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_custodias(self):
         """Test GET method for inv_custodias"""
         response = requests.get(
-            f"{config['host']}/v3/inv_custodias",
+            f"{config['host']}/v4/inv_custodias",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -41,7 +41,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_equipos(self):
         """Test GET method for inv_equipos"""
         response = requests.get(
-            f"{config['host']}/v3/inv_equipos",
+            f"{config['host']}/v4/inv_equipos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -50,7 +50,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_marcas(self):
         """Test GET method for inv_marcas"""
         response = requests.get(
-            f"{config['host']}/v3/inv_marcas",
+            f"{config['host']}/v4/inv_marcas",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -59,7 +59,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_modelos(self):
         """Test GET method for inv_modelos"""
         response = requests.get(
-            f"{config['host']}/v3/inv_modelos",
+            f"{config['host']}/v4/inv_modelos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -68,7 +68,7 @@ class TestInventarios(unittest.TestCase):
     def test_get_inv_redes(self):
         """Test GET method for inv_redes"""
         response = requests.get(
-            f"{config['host']}/v3/inv_redes",
+            f"{config['host']}/v4/inv_redes",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

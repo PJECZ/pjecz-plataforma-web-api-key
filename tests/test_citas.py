@@ -14,7 +14,7 @@ class TestCitas(unittest.TestCase):
     def test_get_cit_dias_inhabiles(self):
         """Test GET method for cit_dias_inhabiles"""
         response = requests.get(
-            f"{config['host']}/v3/cit_dias_inhabiles",
+            f"{config['host']}/v4/cit_dias_inhabiles",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

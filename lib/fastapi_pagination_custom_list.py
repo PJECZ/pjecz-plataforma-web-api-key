@@ -35,7 +35,7 @@ Usage:
 
     @examples.get("", response_model=CustomList[AutoridadOut])
     async def list_examples(
-        db: Annotated[Session, Depends(get_db)],
+        database: Annotated[Session, Depends(get_db)],
     ):
         try:
             query = get_examples(db=db)

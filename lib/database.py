@@ -32,7 +32,7 @@ async def get_db(settings: Annotated[Settings, Depends(get_settings)]) -> Sessio
     session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     try:
-        db = session_local()
-        yield db
+        database = session_local()
+        yield database
     finally:
-        db.close()
+        database.close()
