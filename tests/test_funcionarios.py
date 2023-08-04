@@ -14,7 +14,7 @@ class TestFuncionarios(unittest.TestCase):
     def test_get_centros_trabajos(self):
         """Test GET method for centros_trabajos"""
         response = requests.get(
-            f"{config['host']}/v3/centros_trabajos",
+            f"{config['host']}/v4/centros_trabajos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -23,7 +23,7 @@ class TestFuncionarios(unittest.TestCase):
     def test_get_funcionarios(self):
         """Test GET method for funcionarios"""
         response = requests.get(
-            f"{config['host']}/v3/funcionarios",
+            f"{config['host']}/v4/funcionarios",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

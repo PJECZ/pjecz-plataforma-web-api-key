@@ -14,7 +14,7 @@ class TestSiga(unittest.TestCase):
     def test_get_siga_salas(self):
         """Test GET method for siga_salas"""
         response = requests.get(
-            f"{config['host']}/v3/siga_salas",
+            f"{config['host']}/v4/siga_salas",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -23,7 +23,7 @@ class TestSiga(unittest.TestCase):
     def test_get_siga_grabaciones(self):
         """Test GET method for siga_grabaciones"""
         response = requests.get(
-            f"{config['host']}/v3/siga_grabaciones",
+            f"{config['host']}/v4/siga_grabaciones",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -32,7 +32,7 @@ class TestSiga(unittest.TestCase):
     def test_get_siga_bitacoras(self):
         """Test GET method for siga_bitacoras"""
         response = requests.get(
-            f"{config['host']}/v3/siga_bitacoras",
+            f"{config['host']}/v4/siga_bitacoras",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

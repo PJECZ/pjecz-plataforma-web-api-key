@@ -34,7 +34,7 @@ Usage:
 
     @examples.get("", response_model=CustomPage[ExampleOut])
     async def list_examples(
-        db: Annotated[Session, Depends(get_db)],
+        database: Annotated[Session, Depends(get_db)],
     ):
         query = get_examples(db=db)
         return paginate(query)

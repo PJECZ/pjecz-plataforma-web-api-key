@@ -14,7 +14,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_documentos(self):
         """Test GET method for arc_documentos"""
         response = requests.get(
-            f"{config['host']}/v3/arc_documentos",
+            f"{config['host']}/v4/arc_documentos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -23,7 +23,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_documentos_with_distrito_clave(self):
         """Test GET method for arc_documentos with distrito_clave"""
         response = requests.get(
-            f"{config['host']}/v3/arc_documentos",
+            f"{config['host']}/v4/arc_documentos",
             headers={"X-Api-Key": config["api_key"]},
             params={"distrito_clave": "DSLT"},
             timeout=config["timeout"],
@@ -37,7 +37,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_documentos_with_ubicacion(self):
         """Test GET method for arc_documentos with ubicacion"""
         response = requests.get(
-            f"{config['host']}/v3/arc_documentos",
+            f"{config['host']}/v4/arc_documentos",
             headers={"X-Api-Key": config["api_key"]},
             params={"ubicacion": "ARCHIVO"},
             timeout=config["timeout"],
@@ -51,7 +51,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_juzgados_extintos(self):
         """Test GET method for arc_juzgados_extintos"""
         response = requests.get(
-            f"{config['host']}/v3/arc_juzgados_extintos",
+            f"{config['host']}/v4/arc_juzgados_extintos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -60,7 +60,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_remesas(self):
         """Test GET method for arc_remesas"""
         response = requests.get(
-            f"{config['host']}/v3/arc_remesas",
+            f"{config['host']}/v4/arc_remesas",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -69,7 +69,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_remesas_documentos(self):
         """Test GET method for arc_remesas_documentos"""
         response = requests.get(
-            f"{config['host']}/v3/arc_remesas_documentos",
+            f"{config['host']}/v4/arc_remesas_documentos",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -78,7 +78,7 @@ class TestArchivo(unittest.TestCase):
     def test_get_arc_solicitudes(self):
         """Test GET method for arc_solicitudes"""
         response = requests.get(
-            f"{config['host']}/v3/arc_solicitudes",
+            f"{config['host']}/v4/arc_solicitudes",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
