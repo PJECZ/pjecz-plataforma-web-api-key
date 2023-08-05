@@ -20,7 +20,7 @@ from .schemas import GlosaIn, GlosaOut, OneGlosaOut
 glosas = APIRouter(prefix="/v4/glosas", tags=["glosas"])
 
 
-@glosas.get("", response_model=CustomPage[GlosaOut])
+@glosas.get("/paginado", response_model=CustomPage[GlosaOut])
 async def listado_glosas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

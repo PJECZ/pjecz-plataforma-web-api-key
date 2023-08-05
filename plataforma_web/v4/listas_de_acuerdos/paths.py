@@ -9,18 +9,35 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
+from lib.fastapi_pagination_custom_list import CustomList
 from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.listas_de_acuerdos.models import ListaDeAcuerdo
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import create_lista_de_acuerdo, delete_lista_de_acuerdo, get_lista_de_acuerdo, get_listas_de_acuerdos, update_lista_de_acuerdo
+from .crud import create_lista_de_acuerdo, delete_lista_de_acuerdo, elaborate_daily_report_listas_de_acuerdos, get_lista_de_acuerdo, get_listas_de_acuerdos, update_lista_de_acuerdo
 from .schemas import ListaDeAcuerdoIn, ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 
 listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de acuerdos"])
 
 
-@listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])
+@listas_de_acuerdos.get("/reporte_diario", response_model=CustomList[ListaDeAcuerdoOut])
+async def reporte_diario_listas_de_acuerdos(
+    creado: date,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Reporte diario de listas de acuerdos"""
+    if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = elaborate_daily_report_listas_de_acuerdos(database, creado)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    return CustomList(results=resultados)
+
+
+@listas_de_acuerdos.get("/paginado", response_model=CustomPage[ListaDeAcuerdoOut])
 async def listado_listas_de_acuerdos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

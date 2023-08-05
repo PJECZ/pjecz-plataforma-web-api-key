@@ -18,7 +18,7 @@ from .schemas import FuncionarioOut, OneFuncionarioOut
 funcionarios = APIRouter(prefix="/v4/funcionarios", tags=["funcionarios"])
 
 
-@funcionarios.get("", response_model=CustomPage[FuncionarioOut])
+@funcionarios.get("/paginado", response_model=CustomPage[FuncionarioOut])
 async def listado_funcionarios(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

@@ -20,7 +20,7 @@ from .schemas import EdictoIn, EdictoOut, OneEdictoOut
 edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])
 
 
-@edictos.get("", response_model=CustomPage[EdictoOut])
+@edictos.get("/paginado", response_model=CustomPage[EdictoOut])
 async def listado_edictos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

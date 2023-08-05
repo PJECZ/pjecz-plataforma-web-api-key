@@ -18,7 +18,7 @@ from .schemas import ArcRemesaOut, OneArcRemesaOut
 arc_remesas = APIRouter(prefix="/v4/arc_remesas", tags=["archivo"])
 
 
-@arc_remesas.get("", response_model=CustomPage[ArcRemesaOut])
+@arc_remesas.get("/paginado", response_model=CustomPage[ArcRemesaOut])
 async def listado_arc_remesas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

@@ -18,7 +18,7 @@ from .schemas import OneTesisJurisprudenciaOut, TesisJurisprudenciaOut
 tesis_jurisprudencias = APIRouter(prefix="/v4/tesis_jurisprudencias", tags=["tesis jurisprudencias"])
 
 
-@tesis_jurisprudencias.get("", response_model=CustomPage[TesisJurisprudenciaOut])
+@tesis_jurisprudencias.get("/paginado", response_model=CustomPage[TesisJurisprudenciaOut])
 async def listado_tesis_jurisprudencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

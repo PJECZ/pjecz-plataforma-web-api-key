@@ -22,7 +22,7 @@ from .schemas import OneSIGAGrabacionOut, SIGAGrabacionIn, SIGAGrabacionOut
 siga_grabaciones = APIRouter(prefix="/v4/siga_grabaciones", tags=["siga"])
 
 
-@siga_grabaciones.get("", response_model=CustomPage[SIGAGrabacionOut])
+@siga_grabaciones.get("/paginado", response_model=CustomPage[SIGAGrabacionOut])
 async def listado_siga_grabaciones(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

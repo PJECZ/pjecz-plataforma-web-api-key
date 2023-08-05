@@ -18,7 +18,7 @@ from .schemas import ArcDocumentoOut, OneArcDocumentoOut
 arc_documentos = APIRouter(prefix="/v4/arc_documentos", tags=["archivo"])
 
 
-@arc_documentos.get("", response_model=CustomPage[ArcDocumentoOut])
+@arc_documentos.get("/paginado", response_model=CustomPage[ArcDocumentoOut])
 async def listado_arc_documentos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

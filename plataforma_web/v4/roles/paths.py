@@ -18,7 +18,7 @@ from .schemas import OneRolOut, RolOut
 roles = APIRouter(prefix="/v4/roles", tags=["usuarios"])
 
 
-@roles.get("", response_model=CustomPage[RolOut])
+@roles.get("/paginado", response_model=CustomPage[RolOut])
 async def listado_roles(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

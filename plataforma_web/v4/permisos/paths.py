@@ -18,7 +18,7 @@ from .schemas import OnePermisoOut, PermisoOut
 permisos = APIRouter(prefix="/v4/permisos", tags=["usuarios"])
 
 
-@permisos.get("", response_model=CustomPage[PermisoOut])
+@permisos.get("/paginado", response_model=CustomPage[PermisoOut])
 async def listado_permisos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

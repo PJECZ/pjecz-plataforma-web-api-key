@@ -20,7 +20,7 @@ from .schemas import BoletinIn, BoletinOut, OneBoletinOut
 boletines = APIRouter(prefix="/v4/boletines", tags=["boletines"])
 
 
-@boletines.get("", response_model=CustomPage[BoletinOut])
+@boletines.get("/paginado", response_model=CustomPage[BoletinOut])
 async def listado_boletines(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

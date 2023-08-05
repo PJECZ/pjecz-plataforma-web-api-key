@@ -18,7 +18,7 @@ from .schemas import OneSIGASalaOut, SIGASalaOut
 siga_salas = APIRouter(prefix="/v4/siga_salas", tags=["siga"])
 
 
-@siga_salas.get("", response_model=CustomPage[SIGASalaOut])
+@siga_salas.get("/paginado", response_model=CustomPage[SIGASalaOut])
 async def listado_siga_salas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

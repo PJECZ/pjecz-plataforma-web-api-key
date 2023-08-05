@@ -20,7 +20,7 @@ from .schemas import OneSentenciaOut, SentenciaIn, SentenciaOut
 sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
 
 
-@sentencias.get("", response_model=CustomPage[SentenciaOut])
+@sentencias.get("/paginado", response_model=CustomPage[SentenciaOut])
 async def listado_sentencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

@@ -18,7 +18,7 @@ from .schemas import EntradaSalidaOut, OneEntradaSalidaOut
 entradas_salidas = APIRouter(prefix="/v4/entradas_salidas", tags=["usuarios"])
 
 
-@entradas_salidas.get("", response_model=CustomPage[EntradaSalidaOut])
+@entradas_salidas.get("/paginado", response_model=CustomPage[EntradaSalidaOut])
 async def listado_entradas_salidas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

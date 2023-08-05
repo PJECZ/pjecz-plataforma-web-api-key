@@ -19,7 +19,7 @@ from .schemas import InvCustodiaOut, OneInvCustodiaOut
 inv_custodias = APIRouter(prefix="/v4/inv_custodias", tags=["inventarios"])
 
 
-@inv_custodias.get("", response_model=CustomPage[InvCustodiaOut])
+@inv_custodias.get("/paginado", response_model=CustomPage[InvCustodiaOut])
 async def listado_inv_custodias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

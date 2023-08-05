@@ -18,7 +18,7 @@ from .schemas import OneUsuarioOut, UsuarioOut
 usuarios = APIRouter(prefix="/v4/usuarios", tags=["usuarios"])
 
 
-@usuarios.get("", response_model=CustomPage[UsuarioOut])
+@usuarios.get("/paginado", response_model=CustomPage[UsuarioOut])
 async def listado_usuarios(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

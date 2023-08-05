@@ -19,7 +19,7 @@ from .schemas import AbogadoIn, AbogadoOut, OneAbogadoOut
 abogados = APIRouter(prefix="/v4/abogados", tags=["abogados"])
 
 
-@abogados.get("", response_model=CustomPage[AbogadoOut])
+@abogados.get("/paginado", response_model=CustomPage[AbogadoOut])
 async def listado_abogados(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

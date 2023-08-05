@@ -18,7 +18,7 @@ from .schemas import InvRedOut, OneInvRedOut
 inv_redes = APIRouter(prefix="/v4/inv_redes", tags=["inventarios"])
 
 
-@inv_redes.get("", response_model=CustomPage[InvRedOut])
+@inv_redes.get("/paginado", response_model=CustomPage[InvRedOut])
 async def listado_inv_redes(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

@@ -18,7 +18,7 @@ from .schemas import OneSIGABitacoraOut, SIGABitacoraOut
 siga_bitacoras = APIRouter(prefix="/v4/siga_bitacoras", tags=["siga"])
 
 
-@siga_bitacoras.get("", response_model=CustomPage[SIGABitacoraOut])
+@siga_bitacoras.get("/paginado", response_model=CustomPage[SIGABitacoraOut])
 async def listado_siga_bitacoras(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

@@ -18,7 +18,7 @@ from .schemas import OneUbicacionExpedienteOut, UbicacionExpedienteOut
 ubicaciones_expedientes = APIRouter(prefix="/v4/ubicaciones_expedientes", tags=["ubicaciones de expedientes"])
 
 
-@ubicaciones_expedientes.get("", response_model=CustomPage[UbicacionExpedienteOut])
+@ubicaciones_expedientes.get("/paginado", response_model=CustomPage[UbicacionExpedienteOut])
 async def listado_ubicaciones_expedientes(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

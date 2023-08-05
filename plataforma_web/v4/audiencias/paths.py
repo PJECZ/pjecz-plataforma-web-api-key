@@ -20,7 +20,7 @@ from .schemas import AudienciaIn, AudienciaOut, OneAudienciaOut
 audiencias = APIRouter(prefix="/v4/audiencias", tags=["audiencias"])
 
 
-@audiencias.get("", response_model=CustomPage[AudienciaOut])
+@audiencias.get("/paginado", response_model=CustomPage[AudienciaOut])
 async def listado_audiencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

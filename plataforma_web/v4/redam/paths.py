@@ -18,7 +18,7 @@ from .schemas import OneRedamOut, RedamOut
 redam = APIRouter(prefix="/v4/redam", tags=["redam"])
 
 
-@redam.get("", response_model=CustomPage[RedamOut])
+@redam.get("/paginado", response_model=CustomPage[RedamOut])
 async def listado_redams(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

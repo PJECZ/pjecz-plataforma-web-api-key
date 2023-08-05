@@ -8,7 +8,7 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
-from lib.fastapi_pagination_custom_page import CustomPage
+from lib.fastapi_pagination_custom_list import CustomList
 
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
@@ -18,7 +18,7 @@ from .schemas import MateriaTipoJuicioOut, OneMateriaTipoJuicioOut
 materias_tipos_juicios = APIRouter(prefix="/v4/materias_tipos_juicios", tags=["materias"])
 
 
-@materias_tipos_juicios.get("", response_model=CustomPage[MateriaTipoJuicioOut])
+@materias_tipos_juicios.get("/listado", response_model=CustomList[MateriaTipoJuicioOut])
 async def listado_materias_tipos_juicios(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
@@ -35,7 +35,7 @@ async def listado_materias_tipos_juicios(
             materia_clave=materia_clave,
         )
     except MyAnyError as error:
-        return CustomPage(success=False, message=str(error))
+        return CustomList(success=False, message=str(error))
     return paginate(resultados)
 
 

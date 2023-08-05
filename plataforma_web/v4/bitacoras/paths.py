@@ -18,7 +18,7 @@ from .schemas import BitacoraOut, OneBitacoraOut
 bitacoras = APIRouter(prefix="/v4/bitacoras", tags=["usuarios"])
 
 
-@bitacoras.get("", response_model=CustomPage[BitacoraOut])
+@bitacoras.get("/paginado", response_model=CustomPage[BitacoraOut])
 async def listado_bitacoras(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

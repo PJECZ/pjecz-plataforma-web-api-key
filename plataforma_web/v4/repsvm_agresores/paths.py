@@ -18,7 +18,7 @@ from .schemas import OneRepsvmAgresorOut, RepsvmAgresorOut
 repsvm_agresores = APIRouter(prefix="/v4/repsvm_agresores", tags=["repsvm agresores"])
 
 
-@repsvm_agresores.get("", response_model=CustomPage[RepsvmAgresorOut])
+@repsvm_agresores.get("/paginado", response_model=CustomPage[RepsvmAgresorOut])
 async def listado_repsvm_agresores(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

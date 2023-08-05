@@ -18,7 +18,7 @@ from .schemas import OnePeritoOut, PeritoOut
 peritos = APIRouter(prefix="/v4/peritos", tags=["peritos"])
 
 
-@peritos.get("", response_model=CustomPage[PeritoOut])
+@peritos.get("/paginado", response_model=CustomPage[PeritoOut])
 async def listado_peritos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],

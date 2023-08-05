@@ -32,7 +32,7 @@ Usage:
 
     examples = APIRouter(prefix="/examples")
 
-    @examples.get("", response_model=CustomPage[ExampleOut])
+    @examples.get("/paginado", response_model=CustomPage[ExampleOut])
     async def list_examples(
         database: Annotated[Session, Depends(get_db)],
     ):
@@ -56,7 +56,7 @@ class CustomPageParams(LimitOffsetParams):
     """
 
     offset: int = Query(0, ge=0, description="Page offset")
-    limit: int = Query(10, ge=1, le=10, description="Page size limit")
+    limit: int = Query(10, ge=1, le=100, description="Page size limit")
 
 
 T = TypeVar("T")
