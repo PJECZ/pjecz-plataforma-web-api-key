@@ -52,4 +52,4 @@ async def detalle_arc_remesa_documento(
         arc_remesa_documento = get_arc_remesa_documento(database, arc_remesa_documento_id)
     except MyAnyError as error:
         return OneArcRemesaDocumentoOut(success=False, message=str(error))
-    return OneArcRemesaDocumentoOut.from_orm(arc_remesa_documento)
+    return OneArcRemesaDocumentoOut.model_validate(arc_remesa_documento)

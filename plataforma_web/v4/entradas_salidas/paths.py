@@ -52,4 +52,4 @@ async def detalle_entrada_salida(
         entrada_salida = get_entrada_salida(database, entrada_salida_id)
     except MyAnyError as error:
         return OneEntradaSalidaOut(success=False, message=str(error))
-    return OneEntradaSalidaOut.from_orm(entrada_salida)
+    return OneEntradaSalidaOut.model_validate(entrada_salida)

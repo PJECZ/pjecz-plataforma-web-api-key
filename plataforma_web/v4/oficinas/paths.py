@@ -56,4 +56,4 @@ async def detalle_oficina(
         oficina = get_oficina_with_clave(database, oficina_clave)
     except MyAnyError as error:
         return OneOficinaOut(success=False, message=str(error))
-    return OneOficinaOut.from_orm(oficina)
+    return OneOficinaOut.model_validate(oficina)

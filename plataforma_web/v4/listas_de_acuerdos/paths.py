@@ -83,7 +83,7 @@ async def detalle_lista_de_acuerdo(
         lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    return OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    return OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
 
 
 @listas_de_acuerdos.post("", response_model=OneListaDeAcuerdoOut)
@@ -99,7 +99,7 @@ async def crear_lista_de_acuerdo(
         lista_de_acuerdo = create_lista_de_acuerdo(database, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
     respuesta.message = "Lista de acuerdo creada correctamente"
     return respuesta
 
@@ -118,7 +118,7 @@ async def modificar_lista_de_acuerdo(
         lista_de_acuerdo = update_lista_de_acuerdo(database, lista_de_acuerdo_id, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
     respuesta.message = "Lista de acuerdo modificada correctamente"
     return respuesta
 
@@ -136,6 +136,6 @@ async def borrar_lista_de_acuerdo(
         lista_de_acuerdo = delete_lista_de_acuerdo(database, lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
-    respuesta = OneListaDeAcuerdoOut.from_orm(lista_de_acuerdo)
+    respuesta = OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
     respuesta.message = "Lista de Acuerdo borrada correctamente"
     return respuesta

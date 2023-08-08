@@ -46,4 +46,4 @@ async def detalle_inv_red(
         inv_red = get_inv_red(database, inv_red_id)
     except MyAnyError as error:
         return OneInvRedOut(success=False, message=str(error))
-    return OneInvRedOut.from_orm(inv_red)
+    return OneInvRedOut.model_validate(inv_red)

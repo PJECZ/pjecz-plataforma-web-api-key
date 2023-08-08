@@ -54,4 +54,4 @@ async def detalle_distrito(
         distrito = get_distrito_with_clave(database, distrito_clave)
     except MyAnyError as error:
         return OneDistritoOut(success=False, message=str(error))
-    return OneDistritoOut.from_orm(distrito)
+    return OneDistritoOut.model_validate(distrito)

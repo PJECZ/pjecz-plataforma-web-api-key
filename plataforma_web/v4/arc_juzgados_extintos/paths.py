@@ -46,4 +46,4 @@ async def detalle_arc_juzgado_extinto(
         arc_juzgado_extinto = get_arc_juzgado_extinto(database, arc_juzgado_extinto_id)
     except MyAnyError as error:
         return OneArcJuzgadoExtintoOut(success=False, message=str(error))
-    return OneArcJuzgadoExtintoOut.from_orm(arc_juzgado_extinto)
+    return OneArcJuzgadoExtintoOut.model_validate(arc_juzgado_extinto)

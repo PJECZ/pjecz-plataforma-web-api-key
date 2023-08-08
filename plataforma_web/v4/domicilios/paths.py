@@ -52,4 +52,4 @@ async def detalle_domicilio(
         domicilio = get_domicilio(database, domicilio_id)
     except MyAnyError as error:
         return OneDomicilioOut(success=False, message=str(error))
-    return OneDomicilioOut.from_orm(domicilio)
+    return OneDomicilioOut.model_validate(domicilio)

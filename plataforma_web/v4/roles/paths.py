@@ -46,4 +46,4 @@ async def detalle_rol(
         rol = get_rol(database, rol_id)
     except MyAnyError as error:
         return OneRolOut(success=False, message=str(error))
-    return OneRolOut.from_orm(rol)
+    return OneRolOut.model_validate(rol)

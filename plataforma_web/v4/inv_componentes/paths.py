@@ -54,4 +54,4 @@ async def detalle_inv_componente(
         inv_componente = get_inv_componente(database, inv_componente_id)
     except MyAnyError as error:
         return OneInvComponenteOut(success=False, message=str(error))
-    return OneInvComponenteOut.from_orm(inv_componente)
+    return OneInvComponenteOut.model_validate(inv_componente)

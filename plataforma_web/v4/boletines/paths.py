@@ -56,7 +56,7 @@ async def detalle_boletinget_boletin(
         boletinget_boletin = get_boletin(database, boletin_id)
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
-    return OneBoletinOut.from_orm(boletinget_boletin)
+    return OneBoletinOut.model_validate(boletinget_boletin)
 
 
 @boletines.post("", response_model=OneBoletinOut)
@@ -72,7 +72,7 @@ async def crear_boletin(
         boletin = create_boletin(database, Boletin(**boletin_in.dict()))
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
-    respuesta = OneBoletinOut.from_orm(boletin)
+    respuesta = OneBoletinOut.model_validate(boletin)
     respuesta.message = "Boletin creado correctamente"
     return respuesta
 
@@ -91,7 +91,7 @@ async def modificar_boletin(
         boletin = update_boletin(database, boletin_id, boletin_in)
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
-    respuesta = OneBoletinOut.from_orm(boletin)
+    respuesta = OneBoletinOut.model_validate(boletin)
     respuesta.message = "Boletin modificado correctamente"
     return respuesta
 
@@ -109,6 +109,6 @@ async def borrar_boletin(
         boletin = delete_boletin(database, boletin_id)
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
-    respuesta = OneBoletinOut.from_orm(boletin)
+    respuesta = OneBoletinOut.model_validate(boletin)
     respuesta.message = "Boletin borrado correctamente"
     return respuesta

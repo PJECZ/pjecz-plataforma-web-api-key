@@ -71,11 +71,11 @@ Verifique que este en True
 **Para desarrollo** hay que crear un archivo para las variables de entorno `.env`
 
     # Base de datos
-    DB_HOST=NNN.NNN.NNN.NNN
-    DB_PORT=5432
-    DB_NAME=pjecz_plataforma_web
-    DB_USER=adminpjeczplataformaweb
-    DB_PASS=XXXXXXXXXXXXXXXX
+    DB_HOST=
+    DB_PORT=
+    DB_NAME=
+    DB_USER=
+    DB_PASS=
 
     # CORS origins
     ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
@@ -88,7 +88,7 @@ Verifique que este en True
     GCP_BUCKET_SENTENCIAS=pjecz-consultas-version-publica-sentencias
 
     # Salt sirve para cifrar el ID con HashID
-    SALT=XXXXXXXXXXXXXXXX
+    SALT=
 
     # Huso horario
     TZ=America/Mexico_City

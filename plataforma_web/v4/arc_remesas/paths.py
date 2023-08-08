@@ -58,4 +58,4 @@ async def detalle_arc_remesa(
         arc_remesa = get_arc_remesa(database, arc_remesa_id)
     except MyAnyError as error:
         return OneArcRemesaOut(success=False, message=str(error))
-    return OneArcRemesaOut.from_orm(arc_remesa)
+    return OneArcRemesaOut.model_validate(arc_remesa)

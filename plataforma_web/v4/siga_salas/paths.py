@@ -56,4 +56,4 @@ async def detalle_siga_sala(
         siga_sala = get_siga_sala_with_clave(database, siga_sala_clave)
     except MyAnyError as error:
         return OneSIGASalaOut(success=False, message=str(error))
-    return OneSIGASalaOut.from_orm(siga_sala)
+    return OneSIGASalaOut.model_validate(siga_sala)

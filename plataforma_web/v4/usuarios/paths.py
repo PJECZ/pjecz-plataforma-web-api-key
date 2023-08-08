@@ -66,4 +66,4 @@ async def detalle_usuario(
         usuario = get_usuario_with_email(database, email)
     except MyAnyError as error:
         return OneUsuarioOut(success=False, message=str(error))
-    return OneUsuarioOut.from_orm(usuario)
+    return OneUsuarioOut.model_validate(usuario)

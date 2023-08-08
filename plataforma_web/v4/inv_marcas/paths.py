@@ -46,4 +46,4 @@ async def detalle_inv_marca(
         inv_marca = get_inv_marca(database, inv_marca_id)
     except MyAnyError as error:
         return OneInvMarcaOut(success=False, message=str(error))
-    return OneInvMarcaOut.from_orm(inv_marca)
+    return OneInvMarcaOut.model_validate(inv_marca)

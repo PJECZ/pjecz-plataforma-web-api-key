@@ -68,7 +68,7 @@ async def detalle_edicto(
         edicto = get_edicto(database, edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.from_orm(edicto)
+    return OneEdictoOut.model_validate(edicto)
 
 
 @edictos.post("", response_model=OneEdictoOut)
@@ -84,7 +84,7 @@ async def crear_edicto(
         edicto = create_edicto(database, Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto creado correctamente"
     return respuesta
 
@@ -103,7 +103,7 @@ async def modificar_edicto(
         edicto = update_edicto(database, edicto_id, edicto_in=Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto actualizado correctamente"
     return respuesta
 
@@ -121,6 +121,6 @@ async def borrar_edicto(
         edicto = delete_edicto(database, edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto borrado correctamente"
     return respuesta

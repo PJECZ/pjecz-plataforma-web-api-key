@@ -64,4 +64,4 @@ async def detalle_funcionario(
         funcionario = get_funcionario(database, funcionario_id)
     except MyAnyError as error:
         return OneFuncionarioOut(success=False, message=str(error))
-    return OneFuncionarioOut.from_orm(funcionario)
+    return OneFuncionarioOut.model_validate(funcionario)

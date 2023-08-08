@@ -65,4 +65,4 @@ async def detalle_inv_custodia(
         inv_custodia = get_inv_custodia(database, inv_custodia_id)
     except MyAnyError as error:
         return OneInvCustodiaOut(success=False, message=str(error))
-    return OneInvCustodiaOut.from_orm(inv_custodia)
+    return OneInvCustodiaOut.model_validate(inv_custodia)

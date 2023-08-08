@@ -54,4 +54,4 @@ async def detalle_ubicacion_expediente(
         ubicacion_expediente = get_ubicacion_expediente(database, ubicacion_expediente_id)
     except MyAnyError as error:
         return OneUbicacionExpedienteOut(success=False, message=str(error))
-    return OneUbicacionExpedienteOut.from_orm(ubicacion_expediente)
+    return OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)

@@ -55,4 +55,4 @@ async def detalle_permiso(
         permiso = get_permiso(database, permiso_id)
     except MyAnyError as error:
         return OnePermisoOut(success=False, message=str(error))
-    return OnePermisoOut.from_orm(permiso)
+    return OnePermisoOut.model_validate(permiso)

@@ -54,7 +54,7 @@ async def detalle_cit_dia_inhabil(
         cit_dia_inhabil = get_cit_dia_inhabil(database, cit_dia_inhabil_id)
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
-    return OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
+    return OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)
 
 
 @cit_dias_inhabiles.post("", response_model=OneCitDiaInhabilOut)
@@ -70,7 +70,7 @@ async def crear_cit_dia_inhabil(
         cit_dia_inhabil = create_cit_dia_inhabil(database, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
-    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
+    respuesta = OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)
     respuesta.message = "Dia inhabil creado correctamente"
     return respuesta
 
@@ -89,7 +89,7 @@ async def modificar_cit_dia_inhabil(
         cit_dia_inhabil = update_cit_dia_inhabil(database, cit_dia_inhabil_id, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
-    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
+    respuesta = OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)
     respuesta.message = "Dia inhabil modificado correctamente"
     return respuesta
 
@@ -107,6 +107,6 @@ async def borrar_cit_dia_inhabil(
         cit_dia_inhabil = delete_cit_dia_inhabil(database, cit_dia_inhabil_id)
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
-    respuesta = OneCitDiaInhabilOut.from_orm(cit_dia_inhabil)
+    respuesta = OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)
     respuesta.message = "Dia inhabil borrado correctamente"
     return respuesta

@@ -68,7 +68,7 @@ async def detalle_sentencia(
         sentencia = get_sentencia(database, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    return OneSentenciaOut.from_orm(sentencia)
+    return OneSentenciaOut.model_validate(sentencia)
 
 
 @sentencias.post("", response_model=OneSentenciaOut)
@@ -84,7 +84,7 @@ async def crear_sentencia(
         sentencia = create_sentencia(database, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia creada correctamente"
     return respuesta
 
@@ -103,7 +103,7 @@ async def modificar_sentencia(
         sentencia = update_sentencia(database, sentencia_id, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia actualizada correctamente"
     return respuesta
 
@@ -121,6 +121,6 @@ async def borrar_sentencia(
         sentencia = delete_sentencia(database, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia eliminada correctamente"
     return respuesta

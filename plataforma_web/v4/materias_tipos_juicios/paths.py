@@ -52,4 +52,4 @@ async def detalle_materia_tipo_juicio(
         materia_tipo_juicio = get_materia_tipo_juicio(database, materia_tipo_juicio_id)
     except MyAnyError as error:
         return OneMateriaTipoJuicioOut(success=False, message=str(error))
-    return OneMateriaTipoJuicioOut.from_orm(materia_tipo_juicio)
+    return OneMateriaTipoJuicioOut.model_validate(materia_tipo_juicio)

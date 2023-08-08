@@ -56,4 +56,4 @@ async def detalle_bitacora(
         bitacora = get_bitacora(database, bitacora_id)
     except MyAnyError as error:
         return OneBitacoraOut(success=False, message=str(error))
-    return OneBitacoraOut.from_orm(bitacora)
+    return OneBitacoraOut.model_validate(bitacora)

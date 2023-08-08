@@ -62,4 +62,4 @@ async def detalle_tesisjurisprudencia(
         tesisjurisprudencia = get_tesis_jurisprudencia(database, tesis_jurisprudencia_id)
     except MyAnyError as error:
         return OneTesisJurisprudenciaOut(success=False, message=str(error))
-    return OneTesisJurisprudenciaOut.from_orm(tesisjurisprudencia)
+    return OneTesisJurisprudenciaOut.model_validate(tesisjurisprudencia)

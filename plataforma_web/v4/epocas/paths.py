@@ -46,4 +46,4 @@ async def detalle_epoca(
         epoca = get_epoca(database, epoca_id)
     except MyAnyError as error:
         return OneEpocaOut(success=False, message=str(error))
-    return OneEpocaOut.from_orm(epoca)
+    return OneEpocaOut.model_validate(epoca)

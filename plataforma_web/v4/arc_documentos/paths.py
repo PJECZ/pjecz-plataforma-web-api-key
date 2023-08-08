@@ -58,4 +58,4 @@ async def detalle_arc_documento(
         arc_documento = get_arc_documento(database, arc_documento_id)
     except MyAnyError as error:
         return OneArcDocumentoOut(success=False, message=str(error))
-    return OneArcDocumentoOut.from_orm(arc_documento)
+    return OneArcDocumentoOut.model_validate(arc_documento)

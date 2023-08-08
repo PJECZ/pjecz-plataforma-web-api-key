@@ -46,4 +46,4 @@ async def detalle_modulo(
         modulo = get_modulo(database, modulo_id)
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
-    return OneModuloOut.from_orm(modulo)
+    return OneModuloOut.model_validate(modulo)

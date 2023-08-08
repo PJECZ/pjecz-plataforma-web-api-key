@@ -46,4 +46,4 @@ async def detalle_inv_categoria(
         inv_categoria = get_inv_categoria(database, inv_categoria_id)
     except MyAnyError as error:
         return OneInvCategoriaOut(success=False, message=str(error))
-    return OneInvCategoriaOut.from_orm(inv_categoria)
+    return OneInvCategoriaOut.model_validate(inv_categoria)

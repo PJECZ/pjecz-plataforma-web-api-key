@@ -54,4 +54,4 @@ async def detalle_repsvm_agresor(
         repsvm_agresor = get_repsvm_agresor(database, repsvm_agresor_id)
     except MyAnyError as error:
         return OneRepsvmAgresorOut(success=False, message=str(error))
-    return OneRepsvmAgresorOut.from_orm(repsvm_agresor)
+    return OneRepsvmAgresorOut.model_validate(repsvm_agresor)

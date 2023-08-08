@@ -54,4 +54,4 @@ async def detalle_centro_trabajo(
         centro_trabajo = get_centro_trabajo_with_clave(database, centro_trabajo_clave)
     except MyAnyError as error:
         return OneCentroTrabajoOut(success=False, message=str(error))
-    return OneCentroTrabajoOut.from_orm(centro_trabajo)
+    return OneCentroTrabajoOut.model_validate(centro_trabajo)

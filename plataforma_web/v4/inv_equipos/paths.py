@@ -75,4 +75,4 @@ async def detalle_inv_equipo(
         inv_equipo = get_inv_equipo(database, inv_equipo_id)
     except MyAnyError as error:
         return OneInvEquipoOut(success=False, message=str(error))
-    return OneInvEquipoOut.from_orm(inv_equipo)
+    return OneInvEquipoOut.model_validate(inv_equipo)

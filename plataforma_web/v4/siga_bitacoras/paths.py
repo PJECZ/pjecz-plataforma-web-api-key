@@ -56,4 +56,4 @@ async def detalle_siga_bitacora(
         siga_bitacora = get_siga_bitacora(database, siga_bitacora_id)
     except MyAnyError as error:
         return OneSIGABitacoraOut(success=False, message=str(error))
-    return OneSIGABitacoraOut.from_orm(siga_bitacora)
+    return OneSIGABitacoraOut.model_validate(siga_bitacora)
