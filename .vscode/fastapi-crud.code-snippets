@@ -4,7 +4,7 @@
     "prefix": "fcrud",
     "body": [
       "\"\"\"",
-      "${1:Modulos} v3, CRUD (create, read, update, and delete)",
+      "${1:Modulos} v4, CRUD (create, read, update, and delete)",
       "\"\"\"",
       "from typing import Any",
       "",
@@ -43,7 +43,7 @@
     "prefix": "fcrudclave",
     "body": [
       "\"\"\"",
-      "${1:Modulos} v3, CRUD (create, read, update, and delete)",
+      "${1:Modulos} v4, CRUD (create, read, update, and delete)",
       "\"\"\"",
       "from typing import Any",
       "",

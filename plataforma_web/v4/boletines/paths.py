@@ -20,15 +20,15 @@ from .schemas import BoletinIn, BoletinOut, OneBoletinOut
 boletines = APIRouter(prefix="/v4/boletines", tags=["boletines"])
 
 
-@boletines.get("/paginado", response_model=CustomPage[BoletinOut])
-async def listado_boletines(
+@boletines.get("", response_model=CustomPage[BoletinOut])
+async def paginado_boletines(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     estado: str = None,
     envio_programado_desde: date = None,
     envio_programado_hasta: date = None,
 ):
-    """Listado de boletines"""
+    """Paginado de boletines"""
     if current_user.permissions.get("BOLETINES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

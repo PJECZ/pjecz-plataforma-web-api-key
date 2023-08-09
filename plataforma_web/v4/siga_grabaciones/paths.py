@@ -22,8 +22,8 @@ from .schemas import OneSIGAGrabacionOut, SIGAGrabacionIn, SIGAGrabacionOut
 siga_grabaciones = APIRouter(prefix="/v4/siga_grabaciones", tags=["siga"])
 
 
-@siga_grabaciones.get("/paginado", response_model=CustomPage[SIGAGrabacionOut])
-async def listado_siga_grabaciones(
+@siga_grabaciones.get("", response_model=CustomPage[SIGAGrabacionOut])
+async def paginado_siga_grabaciones(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -35,7 +35,7 @@ async def listado_siga_grabaciones(
     siga_sala_id: int = None,
     siga_sala_clave: str = None,
 ):
-    """Listado de grabaciones"""
+    """Paginado de grabaciones"""
     if current_user.permissions.get("SIGA GRABACIONES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

@@ -18,8 +18,8 @@ from .schemas import ArcSolicitudOut, OneArcSolicitudOut
 arc_solicitudes = APIRouter(prefix="/v4/arc_solicitudes", tags=["archivo"])
 
 
-@arc_solicitudes.get("/paginado", response_model=CustomPage[ArcSolicitudOut])
-async def listado_arc_solicitudes(
+@arc_solicitudes.get("", response_model=CustomPage[ArcSolicitudOut])
+async def paginado_arc_solicitudes(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -28,7 +28,7 @@ async def listado_arc_solicitudes(
     distrito_clave: str = None,
     estado: str = None,
 ):
-    """Listado de solicitudes"""
+    """Paginado de solicitudes"""
     if current_user.permissions.get("ARC SOLICITUDES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

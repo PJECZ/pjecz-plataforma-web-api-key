@@ -6,10 +6,17 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class CentroTrabajoOut(BaseModel):
-    """Esquema para entregar centros de trabajo"""
+class CentroTrabajoListOut(BaseModel):
+    """Esquema para entregar centros de trabajo como listado"""
 
     id: int | None
+    clave: str | None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CentroTrabajoOut(CentroTrabajoListOut):
+    """Esquema para entregar centros de trabajo como paginado"""
+
     distrito_id: int | None
     distrito_clave: str | None
     distrito_nombre: str | None
@@ -17,10 +24,8 @@ class CentroTrabajoOut(BaseModel):
     domicilio_id: int | None
     domicilio_completo: str | None
     domicilio_edificio: str | None
-    clave: str | None
     nombre: str | None
     telefono: str | None
-    model_config = ConfigDict(from_attributes=True)
 
 
 class OneCentroTrabajoOut(CentroTrabajoOut, OneBaseOut):

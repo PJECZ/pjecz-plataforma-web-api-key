@@ -29,16 +29,16 @@ Usage:
     from lib.fastapi_pagination_custom_list import CustomList
 
     from .crud import get_examples
-    from .schemas import AutoridadOut
+    from .schemas import AutoridadListOut
 
     examples = APIRouter(prefix="/v4/examples")
 
-    @examples.get("/listado", response_model=CustomList[AutoridadOut])
+    @examples.get("/listado", response_model=CustomList[AutoridadListOut])
     async def list_examples(
         database: Annotated[Session, Depends(get_db)],
     ):
         try:
-            query = get_examples(db=db)
+            query = get_examples(database=database)
         except MyAnyError as error:
             return CustomList(success=False, message=str(error))
         return paginate(query)

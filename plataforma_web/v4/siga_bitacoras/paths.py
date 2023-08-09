@@ -18,8 +18,8 @@ from .schemas import OneSIGABitacoraOut, SIGABitacoraOut
 siga_bitacoras = APIRouter(prefix="/v4/siga_bitacoras", tags=["siga"])
 
 
-@siga_bitacoras.get("/paginado", response_model=CustomPage[SIGABitacoraOut])
-async def listado_siga_bitacoras(
+@siga_bitacoras.get("", response_model=CustomPage[SIGABitacoraOut])
+async def paginado_siga_bitacoras(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     accion: str = None,
@@ -27,7 +27,7 @@ async def listado_siga_bitacoras(
     siga_sala_id: int = None,
     siga_sala_clave: str = None,
 ):
-    """Listado de bitacoras"""
+    """Paginado de bitacoras"""
     if current_user.permissions.get("SIGA SALAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

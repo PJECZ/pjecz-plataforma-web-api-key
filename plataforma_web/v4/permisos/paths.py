@@ -18,8 +18,8 @@ from .schemas import OnePermisoOut, PermisoOut
 permisos = APIRouter(prefix="/v4/permisos", tags=["usuarios"])
 
 
-@permisos.get("/paginado", response_model=CustomPage[PermisoOut])
-async def listado_permisos(
+@permisos.get("", response_model=CustomPage[PermisoOut])
+async def paginado_permisos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
@@ -27,7 +27,7 @@ async def listado_permisos(
     rol_id: int = None,
     rol_nombre: str = None,
 ):
-    """Listado de permisos"""
+    """Paginado de permisos"""
     if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -36,6 +36,7 @@ async def listado_permisos(
             modulo_id=modulo_id,
             modulo_nombre=modulo_nombre,
             rol_id=rol_id,
+            rol_nombre=rol_nombre,
         )
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))

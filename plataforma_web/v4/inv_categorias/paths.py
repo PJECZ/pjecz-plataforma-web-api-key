@@ -18,12 +18,12 @@ from .schemas import InvCategoriaOut, OneInvCategoriaOut
 inv_categorias = APIRouter(prefix="/v4/inv_categorias", tags=["inventarios"])
 
 
-@inv_categorias.get("/paginado", response_model=CustomPage[InvCategoriaOut])
-async def listado_inv_categorias(
+@inv_categorias.get("", response_model=CustomPage[InvCategoriaOut])
+async def paginado_inv_categorias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
-    """Listado de categorias"""
+    """Paginado de categorias"""
     if current_user.permissions.get("INV CATEGORIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

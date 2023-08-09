@@ -20,8 +20,8 @@ from .schemas import GlosaIn, GlosaOut, OneGlosaOut
 glosas = APIRouter(prefix="/v4/glosas", tags=["glosas"])
 
 
-@glosas.get("/paginado", response_model=CustomPage[GlosaOut])
-async def listado_glosas(
+@glosas.get("", response_model=CustomPage[GlosaOut])
+async def paginado_glosas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -34,7 +34,7 @@ async def listado_glosas(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ):
-    """Listado de glosas"""
+    """Paginado de glosas"""
     if current_user.permissions.get("GLOSAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

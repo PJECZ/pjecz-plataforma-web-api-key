@@ -21,24 +21,8 @@ from .schemas import ListaDeAcuerdoIn, ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de acuerdos"])
 
 
-@listas_de_acuerdos.get("/reporte_diario", response_model=CustomList[ListaDeAcuerdoOut])
-async def reporte_diario_listas_de_acuerdos(
-    creado: date,
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-):
-    """Reporte diario de listas de acuerdos"""
-    if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        resultados = elaborate_daily_report_listas_de_acuerdos(database, creado)
-    except MyAnyError as error:
-        return CustomList(success=False, message=str(error))
-    return CustomList(results=resultados)
-
-
-@listas_de_acuerdos.get("/paginado", response_model=CustomPage[ListaDeAcuerdoOut])
-async def listado_listas_de_acuerdos(
+@listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])
+async def paginado_listas_de_acuerdos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -50,7 +34,7 @@ async def listado_listas_de_acuerdos(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ):
-    """Listado de listas de acuerdos"""
+    """Paginado de listas de acuerdos"""
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -68,6 +52,22 @@ async def listado_listas_de_acuerdos(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
+
+
+@listas_de_acuerdos.get("/reporte_diario", response_model=CustomList[ListaDeAcuerdoOut])
+async def reporte_diario_listas_de_acuerdos(
+    creado: date,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Reporte diario de listas de acuerdos"""
+    if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = elaborate_daily_report_listas_de_acuerdos(database, creado)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    return CustomList(results=resultados)
 
 
 @listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)

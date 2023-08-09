@@ -18,8 +18,8 @@ from .schemas import OneUsuarioOut, UsuarioOut
 usuarios = APIRouter(prefix="/v4/usuarios", tags=["usuarios"])
 
 
-@usuarios.get("/paginado", response_model=CustomPage[UsuarioOut])
-async def listado_usuarios(
+@usuarios.get("", response_model=CustomPage[UsuarioOut])
+async def paginado_usuarios(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     apellido_paterno: str = None,
@@ -32,7 +32,7 @@ async def listado_usuarios(
     oficina_clave: str = None,
     workspace: str = None,
 ):
-    """Listado de usuarios"""
+    """Paginado de usuarios"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

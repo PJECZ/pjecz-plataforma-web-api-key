@@ -18,14 +18,14 @@ from .schemas import ArcRemesaDocumentoOut, OneArcRemesaDocumentoOut
 arc_remesas_documentos = APIRouter(prefix="/v4/arc_remesas_documentos", tags=["archivo"])
 
 
-@arc_remesas_documentos.get("/paginado", response_model=CustomPage[ArcRemesaDocumentoOut])
-async def listado_arc_remesas_documentos(
+@arc_remesas_documentos.get("", response_model=CustomPage[ArcRemesaDocumentoOut])
+async def paginado_arc_remesas_documentos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     arc_documento_id: int = None,
     arc_remesa_id: int = None,
 ):
-    """Listado de documentos de remesas"""
+    """Paginado de documentos de remesas"""
     if current_user.permissions.get("ARC REMESAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

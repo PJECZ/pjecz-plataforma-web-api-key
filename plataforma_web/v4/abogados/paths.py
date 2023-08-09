@@ -19,15 +19,15 @@ from .schemas import AbogadoIn, AbogadoOut, OneAbogadoOut
 abogados = APIRouter(prefix="/v4/abogados", tags=["abogados"])
 
 
-@abogados.get("/paginado", response_model=CustomPage[AbogadoOut])
-async def listado_abogados(
+@abogados.get("", response_model=CustomPage[AbogadoOut])
+async def paginado_abogados(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     nombre: str = None,
     anio_desde: int = None,
     anio_hasta: int = None,
 ):
-    """Listado de abogados"""
+    """Paginado de abogados"""
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

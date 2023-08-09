@@ -18,15 +18,15 @@ from .schemas import OneRepsvmAgresorOut, RepsvmAgresorOut
 repsvm_agresores = APIRouter(prefix="/v4/repsvm_agresores", tags=["repsvm agresores"])
 
 
-@repsvm_agresores.get("/paginado", response_model=CustomPage[RepsvmAgresorOut])
-async def listado_repsvm_agresores(
+@repsvm_agresores.get("", response_model=CustomPage[RepsvmAgresorOut])
+async def paginado_repsvm_agresores(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
     distrito_clave: str = None,
     nombre: str = None,
 ):
-    """Listado de agresores"""
+    """Paginado de agresores"""
     if current_user.permissions.get("REPSVM AGRESORES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

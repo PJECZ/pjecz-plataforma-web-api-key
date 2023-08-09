@@ -32,11 +32,14 @@ Usage:
 
     examples = APIRouter(prefix="/examples")
 
-    @examples.get("/paginado", response_model=CustomPage[ExampleOut])
+    @examples.get("", response_model=CustomPage[ExampleOut])
     async def list_examples(
         database: Annotated[Session, Depends(get_db)],
     ):
-        query = get_examples(db=db)
+        try:
+            query = get_examples(database=database)
+        except MyAnyError as error:
+            return CustomList(success=False, message=str(error))
         return paginate(query)
 
 """

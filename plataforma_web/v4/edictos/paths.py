@@ -20,8 +20,8 @@ from .schemas import EdictoIn, EdictoOut, OneEdictoOut
 edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])
 
 
-@edictos.get("/paginado", response_model=CustomPage[EdictoOut])
-async def listado_edictos(
+@edictos.get("", response_model=CustomPage[EdictoOut])
+async def paginado_edictos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -34,7 +34,7 @@ async def listado_edictos(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ):
-    """Listado de edictos"""
+    """Paginado de edictos"""
     if current_user.permissions.get("EDICTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

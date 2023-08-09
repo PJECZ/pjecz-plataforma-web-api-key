@@ -6,17 +6,22 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class DistritoOut(BaseModel):
-    """Esquema para entregar distritos"""
+class DistritoListOut(BaseModel):
+    """Esquema para entregar distritos en listado"""
 
     id: int | None
     clave: str | None
-    nombre: str | None
     nombre_corto: str | None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DistritoOut(DistritoListOut):
+    """Esquema para entregar distritos en paginado"""
+
+    nombre: str | None
     es_distrito_judicial: bool | None
     es_distrito: bool | None
     es_jurisdiccional: bool | None
-    model_config = ConfigDict(from_attributes=True)
 
 
 class OneDistritoOut(DistritoOut, OneBaseOut):

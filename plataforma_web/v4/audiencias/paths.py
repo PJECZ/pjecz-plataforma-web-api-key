@@ -20,8 +20,8 @@ from .schemas import AudienciaIn, AudienciaOut, OneAudienciaOut
 audiencias = APIRouter(prefix="/v4/audiencias", tags=["audiencias"])
 
 
-@audiencias.get("/paginado", response_model=CustomPage[AudienciaOut])
-async def listado_audiencias(
+@audiencias.get("", response_model=CustomPage[AudienciaOut])
+async def paginado_audiencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -31,7 +31,7 @@ async def listado_audiencias(
     anio: int = None,
     fecha: date = None,
 ):
-    """Listado de audiencias"""
+    """Paginado de audiencias"""
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

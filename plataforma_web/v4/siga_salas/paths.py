@@ -18,8 +18,8 @@ from .schemas import OneSIGASalaOut, SIGASalaOut
 siga_salas = APIRouter(prefix="/v4/siga_salas", tags=["siga"])
 
 
-@siga_salas.get("/paginado", response_model=CustomPage[SIGASalaOut])
-async def listado_siga_salas(
+@siga_salas.get("", response_model=CustomPage[SIGASalaOut])
+async def paginado_siga_salas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
@@ -27,7 +27,7 @@ async def listado_siga_salas(
     domicilio_id: int = None,
     estado: str = None,
 ):
-    """Listado de salas"""
+    """Paginado de salas"""
     if current_user.permissions.get("SIGA SALAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

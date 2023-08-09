@@ -19,8 +19,8 @@ from .schemas import InvEquipoOut, OneInvEquipoOut
 inv_equipos = APIRouter(prefix="/v4/inv_equipos", tags=["inventarios"])
 
 
-@inv_equipos.get("/paginado", response_model=CustomPage[InvEquipoOut])
-async def listado_inv_equipos(
+@inv_equipos.get("", response_model=CustomPage[InvEquipoOut])
+async def paginado_inv_equipos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     creado: date = None,
@@ -37,7 +37,7 @@ async def listado_inv_equipos(
     oficina_clave: str = None,
     tipo: str = None,
 ):
-    """Listado de equipos"""
+    """Paginado de equipos"""
     if current_user.permissions.get("INV EQUIPOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

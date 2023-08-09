@@ -18,14 +18,14 @@ from .schemas import EntradaSalidaOut, OneEntradaSalidaOut
 entradas_salidas = APIRouter(prefix="/v4/entradas_salidas", tags=["usuarios"])
 
 
-@entradas_salidas.get("/paginado", response_model=CustomPage[EntradaSalidaOut])
-async def listado_entradas_salidas(
+@entradas_salidas.get("", response_model=CustomPage[EntradaSalidaOut])
+async def paginado_entradas_salidas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     usuario_id: int = None,
     usuario_email: str = None,
 ):
-    """Listado de entradas-salidas"""
+    """Paginado de entradas-salidas"""
     if current_user.permissions.get("ENTRADAS SALIDAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

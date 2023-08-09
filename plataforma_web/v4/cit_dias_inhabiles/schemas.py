@@ -15,11 +15,15 @@ class CitDiaInhabilIn(BaseModel):
     descripcion: str | None
 
 
-class CitDiaInhabilOut(CitDiaInhabilIn):
+class CitDiaInhabilListOut(CitDiaInhabilIn):
     """Esquema para entregar dias inhabiles"""
 
     id: int | None
     model_config = ConfigDict(from_attributes=True)
+
+
+class CitDiaInhabilOut(CitDiaInhabilListOut):
+    """Esquema para entregar dias inhabiles"""
 
 
 class OneCitDiaInhabilOut(CitDiaInhabilOut, OneBaseOut):

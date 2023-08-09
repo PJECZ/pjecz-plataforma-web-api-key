@@ -6,12 +6,16 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class PeritoTipoOut(BaseModel):
+class PeritoTipoListOut(BaseModel):
     """Esquema para entregar tipos de peritos"""
 
     id: int | None
     nombre: str | None
     model_config = ConfigDict(from_attributes=True)
+
+
+class PeritoTipoOut(PeritoTipoListOut):
+    """Esquema para entregar tipos de peritos"""
 
 
 class OnePeritoTipoOut(PeritoTipoOut, OneBaseOut):

@@ -18,8 +18,8 @@ from .schemas import BitacoraOut, OneBitacoraOut
 bitacoras = APIRouter(prefix="/v4/bitacoras", tags=["usuarios"])
 
 
-@bitacoras.get("/paginado", response_model=CustomPage[BitacoraOut])
-async def listado_bitacoras(
+@bitacoras.get("", response_model=CustomPage[BitacoraOut])
+async def paginado_bitacoras(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
@@ -27,7 +27,7 @@ async def listado_bitacoras(
     usuario_id: int = None,
     usuario_email: str = None,
 ):
-    """Listado de bitacoras"""
+    """Paginado de bitacoras"""
     if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
