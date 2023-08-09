@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pjecz_plataforma_web_api_key"
-version = "1.1.0"
+version = "2.0.0"
 description = "API con autentificación para realizar operaciones con la base de datos de Plataforma Web. Hecho con FastAPI."
 authors = ["Guillermo Valdes <guillermo@movimientolibre.com>"]
 license = "AGPL3"

@@ -19,11 +19,11 @@ roles = APIRouter(prefix="/v4/roles", tags=["usuarios"])
 
 
 @roles.get("", response_model=CustomPage[RolOut])
-async def listado_roles(
+async def paginado_roles(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
-    """Listado de roles"""
+    """Paginado de roles"""
     if current_user.permissions.get("ROLES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -46,4 +46,4 @@ async def detalle_rol(
         rol = get_rol(database, rol_id)
     except MyAnyError as error:
         return OneRolOut(success=False, message=str(error))
-    return OneRolOut.from_orm(rol)
+    return OneRolOut.model_validate(rol)

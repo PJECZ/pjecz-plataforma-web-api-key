@@ -19,11 +19,11 @@ inv_categorias = APIRouter(prefix="/v4/inv_categorias", tags=["inventarios"])
 
 
 @inv_categorias.get("", response_model=CustomPage[InvCategoriaOut])
-async def listado_inv_categorias(
+async def paginado_inv_categorias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
-    """Listado de categorias"""
+    """Paginado de categorias"""
     if current_user.permissions.get("INV CATEGORIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -46,4 +46,4 @@ async def detalle_inv_categoria(
         inv_categoria = get_inv_categoria(database, inv_categoria_id)
     except MyAnyError as error:
         return OneInvCategoriaOut(success=False, message=str(error))
-    return OneInvCategoriaOut.from_orm(inv_categoria)
+    return OneInvCategoriaOut.model_validate(inv_categoria)

@@ -19,13 +19,13 @@ arc_remesas_documentos = APIRouter(prefix="/v4/arc_remesas_documentos", tags=["a
 
 
 @arc_remesas_documentos.get("", response_model=CustomPage[ArcRemesaDocumentoOut])
-async def listado_arc_remesas_documentos(
+async def paginado_arc_remesas_documentos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     arc_documento_id: int = None,
     arc_remesa_id: int = None,
 ):
-    """Listado de documentos de remesas"""
+    """Paginado de documentos de remesas"""
     if current_user.permissions.get("ARC REMESAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -52,4 +52,4 @@ async def detalle_arc_remesa_documento(
         arc_remesa_documento = get_arc_remesa_documento(database, arc_remesa_documento_id)
     except MyAnyError as error:
         return OneArcRemesaDocumentoOut(success=False, message=str(error))
-    return OneArcRemesaDocumentoOut.from_orm(arc_remesa_documento)
+    return OneArcRemesaDocumentoOut.model_validate(arc_remesa_documento)

@@ -19,11 +19,11 @@ inv_redes = APIRouter(prefix="/v4/inv_redes", tags=["inventarios"])
 
 
 @inv_redes.get("", response_model=CustomPage[InvRedOut])
-async def listado_inv_redes(
+async def paginado_inv_redes(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
-    """Listado de redes"""
+    """Paginado de redes"""
     if current_user.permissions.get("INV REDES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -46,4 +46,4 @@ async def detalle_inv_red(
         inv_red = get_inv_red(database, inv_red_id)
     except MyAnyError as error:
         return OneInvRedOut(success=False, message=str(error))
-    return OneInvRedOut.from_orm(inv_red)
+    return OneInvRedOut.model_validate(inv_red)

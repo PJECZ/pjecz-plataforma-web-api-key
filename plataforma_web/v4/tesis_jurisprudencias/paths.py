@@ -19,7 +19,7 @@ tesis_jurisprudencias = APIRouter(prefix="/v4/tesis_jurisprudencias", tags=["tes
 
 
 @tesis_jurisprudencias.get("", response_model=CustomPage[TesisJurisprudenciaOut])
-async def listado_tesis_jurisprudencias(
+async def paginado_tesis_jurisprudencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -30,7 +30,7 @@ async def listado_tesis_jurisprudencias(
     materia_id: int = None,
     materia_clave: str = None,
 ):
-    """Listado de tesis jurisprudencias"""
+    """Paginado de tesis jurisprudencias"""
     if current_user.permissions.get("TESIS JURISPRUDENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -62,4 +62,4 @@ async def detalle_tesisjurisprudencia(
         tesisjurisprudencia = get_tesis_jurisprudencia(database, tesis_jurisprudencia_id)
     except MyAnyError as error:
         return OneTesisJurisprudenciaOut(success=False, message=str(error))
-    return OneTesisJurisprudenciaOut.from_orm(tesisjurisprudencia)
+    return OneTesisJurisprudenciaOut.model_validate(tesisjurisprudencia)

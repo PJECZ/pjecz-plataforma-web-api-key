@@ -21,7 +21,7 @@ sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
 
 
 @sentencias.get("", response_model=CustomPage[SentenciaOut])
-async def listado_sentencias(
+async def paginado_sentencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     anio: int = None,
@@ -34,7 +34,7 @@ async def listado_sentencias(
     materia_tipo_juicio_id: int = None,
     sentencia: str = None,
 ):
-    """Listado de sentencias"""
+    """Paginado de sentencias"""
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -68,7 +68,7 @@ async def detalle_sentencia(
         sentencia = get_sentencia(database, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    return OneSentenciaOut.from_orm(sentencia)
+    return OneSentenciaOut.model_validate(sentencia)
 
 
 @sentencias.post("", response_model=OneSentenciaOut)
@@ -84,7 +84,7 @@ async def crear_sentencia(
         sentencia = create_sentencia(database, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia creada correctamente"
     return respuesta
 
@@ -103,7 +103,7 @@ async def modificar_sentencia(
         sentencia = update_sentencia(database, sentencia_id, Sentencia(**sentencia_in.dict()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia actualizada correctamente"
     return respuesta
 
@@ -121,6 +121,6 @@ async def borrar_sentencia(
         sentencia = delete_sentencia(database, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
-    respuesta = OneSentenciaOut.from_orm(sentencia)
+    respuesta = OneSentenciaOut.model_validate(sentencia)
     respuesta.message = "Sentencia eliminada correctamente"
     return respuesta

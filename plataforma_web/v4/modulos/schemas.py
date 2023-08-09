@@ -6,16 +6,21 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class ModuloOut(BaseModel):
+class ModuloListOut(BaseModel):
     """Esquema para entregar modulos"""
 
     id: int | None
-    nombre: str | None
     nombre_corto: str | None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ModuloOut(ModuloListOut):
+    """Esquema para entregar modulos"""
+
+    nombre: str | None
     icono: str | None
     ruta: str | None
     en_navegacion: bool | None
-    model_config = ConfigDict(from_attributes=True)
 
 
 class OneModuloOut(ModuloOut, OneBaseOut):

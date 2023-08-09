@@ -19,7 +19,7 @@ siga_salas = APIRouter(prefix="/v4/siga_salas", tags=["siga"])
 
 
 @siga_salas.get("", response_model=CustomPage[SIGASalaOut])
-async def listado_siga_salas(
+async def paginado_siga_salas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
@@ -27,7 +27,7 @@ async def listado_siga_salas(
     domicilio_id: int = None,
     estado: str = None,
 ):
-    """Listado de salas"""
+    """Paginado de salas"""
     if current_user.permissions.get("SIGA SALAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -56,4 +56,4 @@ async def detalle_siga_sala(
         siga_sala = get_siga_sala_with_clave(database, siga_sala_clave)
     except MyAnyError as error:
         return OneSIGASalaOut(success=False, message=str(error))
-    return OneSIGASalaOut.from_orm(siga_sala)
+    return OneSIGASalaOut.model_validate(siga_sala)

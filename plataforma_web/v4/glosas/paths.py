@@ -21,7 +21,7 @@ glosas = APIRouter(prefix="/v4/glosas", tags=["glosas"])
 
 
 @glosas.get("", response_model=CustomPage[GlosaOut])
-async def listado_glosas(
+async def paginado_glosas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -34,7 +34,7 @@ async def listado_glosas(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ):
-    """Listado de glosas"""
+    """Paginado de glosas"""
     if current_user.permissions.get("GLOSAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -68,7 +68,7 @@ async def detalle_glosa(
         glosa = get_glosa(database, glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    return OneGlosaOut.from_orm(glosa)
+    return OneGlosaOut.model_validate(glosa)
 
 
 @glosas.post("", response_model=OneGlosaOut)
@@ -84,7 +84,7 @@ async def crear_glosa(
         glosa = create_glosa(database, Glosa(**glosa_in.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.model_validate(glosa)
     respuesta.message = "Glosa creada correctamente"
     return respuesta
 
@@ -103,7 +103,7 @@ async def modificar_glosa(
         glosa = update_glosa(database, glosa_id, Glosa(**glosa_in.dict()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.model_validate(glosa)
     respuesta.message = "Glosa actualizada correctamente"
     return respuesta
 
@@ -121,6 +121,6 @@ async def borrar_glosa(
         glosa = delete_glosa(database, glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
-    respuesta = OneGlosaOut.from_orm(glosa)
+    respuesta = OneGlosaOut.model_validate(glosa)
     respuesta.message = "Glosa borrada correctamente"
     return respuesta

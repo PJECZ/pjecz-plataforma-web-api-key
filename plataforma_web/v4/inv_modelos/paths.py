@@ -19,12 +19,12 @@ inv_modelos = APIRouter(prefix="/v4/inv_modelos", tags=["inventarios"])
 
 
 @inv_modelos.get("", response_model=CustomPage[InvModeloOut])
-async def listado_inv_modelos(
+async def paginado_inv_modelos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     inv_marca_id: int = None,
 ):
-    """Listado de modelos"""
+    """Paginado de modelos"""
     if current_user.permissions.get("INV MODELOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -50,4 +50,4 @@ async def detalle_inv_modelo(
         inv_modelo = get_inv_modelo(database, inv_modelo_id)
     except MyAnyError as error:
         return OneInvModeloOut(success=False, message=str(error))
-    return OneInvModeloOut.from_orm(inv_modelo)
+    return OneInvModeloOut.model_validate(inv_modelo)

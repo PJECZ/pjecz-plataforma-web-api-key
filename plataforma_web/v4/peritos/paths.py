@@ -19,7 +19,7 @@ peritos = APIRouter(prefix="/v4/peritos", tags=["peritos"])
 
 
 @peritos.get("", response_model=CustomPage[PeritoOut])
-async def listado_peritos(
+async def paginado_peritos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
@@ -27,7 +27,7 @@ async def listado_peritos(
     nombre: str = None,
     perito_tipo_id: int = None,
 ):
-    """Listado de peritos"""
+    """Paginado de peritos"""
     if current_user.permissions.get("PERITOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -56,4 +56,4 @@ async def detalle_perito(
         perito = get_perito(database, perito_id)
     except MyAnyError as error:
         return OnePeritoOut(success=False, message=str(error))
-    return OnePeritoOut.from_orm(perito)
+    return OnePeritoOut.model_validate(perito)

@@ -36,7 +36,10 @@ Usage:
     async def list_examples(
         database: Annotated[Session, Depends(get_db)],
     ):
-        query = get_examples(db=db)
+        try:
+            query = get_examples(database=database)
+        except MyAnyError as error:
+            return CustomList(success=False, message=str(error))
         return paginate(query)
 
 """
@@ -56,7 +59,7 @@ class CustomPageParams(LimitOffsetParams):
     """
 
     offset: int = Query(0, ge=0, description="Page offset")
-    limit: int = Query(10, ge=1, le=10, description="Page size limit")
+    limit: int = Query(10, ge=1, le=100, description="Page size limit")
 
 
 T = TypeVar("T")

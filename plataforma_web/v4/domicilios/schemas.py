@@ -6,15 +6,21 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class DomicilioOut(BaseModel):
+class DomicilioListOut(BaseModel):
     """Esquema para entregar domicilios"""
 
     id: int | None
+    edificio: str | None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DomicilioOut(DomicilioListOut):
+    """Esquema para entregar domicilios"""
+
     distrito_id: int | None
     distrito_clave: str | None
     distrito_nombre: str | None
     distrito_nombre_corto: str | None
-    edificio: str | None
     estado: str | None
     municipio: str | None
     calle: str | None
@@ -23,7 +29,6 @@ class DomicilioOut(BaseModel):
     colonia: str | None
     cp: int | None
     completo: str | None
-    model_config = ConfigDict(from_attributes=True)
 
 
 class OneDomicilioOut(DomicilioOut, OneBaseOut):

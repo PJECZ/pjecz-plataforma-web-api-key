@@ -19,7 +19,7 @@ redam = APIRouter(prefix="/v4/redam", tags=["redam"])
 
 
 @redam.get("", response_model=CustomPage[RedamOut])
-async def listado_redams(
+async def paginado_redams(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -29,7 +29,7 @@ async def listado_redams(
     nombre: str = None,
     expediente: str = None,
 ):
-    """Listado de Deudores Alimentarios Morosos"""
+    """Paginado de Deudores Alimentarios Morosos"""
     if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -60,4 +60,4 @@ async def detalle_redam(
         deudor = get_redam(database, redam_id)
     except MyAnyError as error:
         return OneRedamOut(success=False, message=str(error))
-    return OneRedamOut.from_orm(deudor)
+    return OneRedamOut.model_validate(deudor)

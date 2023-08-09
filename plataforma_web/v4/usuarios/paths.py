@@ -19,7 +19,7 @@ usuarios = APIRouter(prefix="/v4/usuarios", tags=["usuarios"])
 
 
 @usuarios.get("", response_model=CustomPage[UsuarioOut])
-async def listado_usuarios(
+async def paginado_usuarios(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     apellido_paterno: str = None,
@@ -32,7 +32,7 @@ async def listado_usuarios(
     oficina_clave: str = None,
     workspace: str = None,
 ):
-    """Listado de usuarios"""
+    """Paginado de usuarios"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -66,4 +66,4 @@ async def detalle_usuario(
         usuario = get_usuario_with_email(database, email)
     except MyAnyError as error:
         return OneUsuarioOut(success=False, message=str(error))
-    return OneUsuarioOut.from_orm(usuario)
+    return OneUsuarioOut.model_validate(usuario)

@@ -21,7 +21,7 @@ edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])
 
 
 @edictos.get("", response_model=CustomPage[EdictoOut])
-async def listado_edictos(
+async def paginado_edictos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -34,7 +34,7 @@ async def listado_edictos(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ):
-    """Listado de edictos"""
+    """Paginado de edictos"""
     if current_user.permissions.get("EDICTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -68,7 +68,7 @@ async def detalle_edicto(
         edicto = get_edicto(database, edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.from_orm(edicto)
+    return OneEdictoOut.model_validate(edicto)
 
 
 @edictos.post("", response_model=OneEdictoOut)
@@ -84,7 +84,7 @@ async def crear_edicto(
         edicto = create_edicto(database, Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto creado correctamente"
     return respuesta
 
@@ -103,7 +103,7 @@ async def modificar_edicto(
         edicto = update_edicto(database, edicto_id, edicto_in=Edicto(**edicto_in.dict()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto actualizado correctamente"
     return respuesta
 
@@ -121,6 +121,6 @@ async def borrar_edicto(
         edicto = delete_edicto(database, edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
-    respuesta = OneEdictoOut.from_orm(edicto)
+    respuesta = OneEdictoOut.model_validate(edicto)
     respuesta.message = "Edicto borrado correctamente"
     return respuesta

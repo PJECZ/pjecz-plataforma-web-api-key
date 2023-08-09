@@ -21,7 +21,7 @@ audiencias = APIRouter(prefix="/v4/audiencias", tags=["audiencias"])
 
 
 @audiencias.get("", response_model=CustomPage[AudienciaOut])
-async def listado_audiencias(
+async def paginado_audiencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
@@ -31,7 +31,7 @@ async def listado_audiencias(
     anio: int = None,
     fecha: date = None,
 ):
-    """Listado de audiencias"""
+    """Paginado de audiencias"""
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -62,7 +62,7 @@ async def detalle_audiencia(
         audiencia = get_audiencia(database, audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    return OneAudienciaOut.from_orm(audiencia)
+    return OneAudienciaOut.model_validate(audiencia)
 
 
 @audiencias.post("", response_model=OneAudienciaOut)
@@ -78,7 +78,7 @@ async def crear_audiencia(
         audiencia = create_audiencia(database, Audiencia(**audiencia_in.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.model_validate(audiencia)
     respuesta.message = "Audiencia creada correctamente"
     return respuesta
 
@@ -97,7 +97,7 @@ async def modificar_audiencia(
         audiencia = update_audiencia(database, audiencia_id, Audiencia(**audiencia_in.dict()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.model_validate(audiencia)
     respuesta.message = "Audiencia actualizada correctamente"
     return respuesta
 
@@ -115,6 +115,6 @@ async def borrar_audiencia(
         audiencia = delete_audiencia(database, audiencia_id)
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
-    respuesta = OneAudienciaOut.from_orm(audiencia)
+    respuesta = OneAudienciaOut.model_validate(audiencia)
     respuesta.message = "Audiencia borrada correctamente"
     return respuesta

@@ -20,7 +20,7 @@ inv_custodias = APIRouter(prefix="/v4/inv_custodias", tags=["inventarios"])
 
 
 @inv_custodias.get("", response_model=CustomPage[InvCustodiaOut])
-async def listado_inv_custodias(
+async def paginado_inv_custodias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
@@ -32,7 +32,7 @@ async def listado_inv_custodias(
     usuario_id: int = None,
     usuario_email: str = None,
 ):
-    """Listado de custodias"""
+    """Paginado de custodias"""
     if current_user.permissions.get("INV CUSTODIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -65,4 +65,4 @@ async def detalle_inv_custodia(
         inv_custodia = get_inv_custodia(database, inv_custodia_id)
     except MyAnyError as error:
         return OneInvCustodiaOut(success=False, message=str(error))
-    return OneInvCustodiaOut.from_orm(inv_custodia)
+    return OneInvCustodiaOut.model_validate(inv_custodia)

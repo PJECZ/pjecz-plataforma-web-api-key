@@ -19,14 +19,14 @@ ubicaciones_expedientes = APIRouter(prefix="/v4/ubicaciones_expedientes", tags=[
 
 
 @ubicaciones_expedientes.get("", response_model=CustomPage[UbicacionExpedienteOut])
-async def listado_ubicaciones_expedientes(
+async def paginado_ubicaciones_expedientes(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
     expediente: str = None,
 ):
-    """Listado de ubicaciones de expedientes"""
+    """Paginado de ubicaciones de expedientes"""
     if current_user.permissions.get("UBICACIONES EXPEDIENTES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
@@ -54,4 +54,4 @@ async def detalle_ubicacion_expediente(
         ubicacion_expediente = get_ubicacion_expediente(database, ubicacion_expediente_id)
     except MyAnyError as error:
         return OneUbicacionExpedienteOut(success=False, message=str(error))
-    return OneUbicacionExpedienteOut.from_orm(ubicacion_expediente)
+    return OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)

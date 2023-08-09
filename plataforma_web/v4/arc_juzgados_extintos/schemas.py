@@ -6,14 +6,19 @@ from pydantic import BaseModel, ConfigDict
 from lib.schemas_base import OneBaseOut
 
 
-class ArcJuzgadoExtintoOut(BaseModel):
-    """Esquema para entregar juzgados extintos"""
+class ArcJuzgadoExtintoListOut(BaseModel):
+    """Esquema para entregar juzgados extintos como listado"""
 
     id: int | None
     clave: str | None
-    descripcion: str | None
     descripcion_corta: str | None
     model_config = ConfigDict(from_attributes=True)
+
+
+class ArcJuzgadoExtintoOut(ArcJuzgadoExtintoListOut):
+    """Esquema para entregar juzgados extintos como paginado"""
+
+    descripcion: str | None
 
 
 class OneArcJuzgadoExtintoOut(ArcJuzgadoExtintoOut, OneBaseOut):
