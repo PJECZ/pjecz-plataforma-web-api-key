@@ -24,6 +24,11 @@ GET {{baseUrl}}/distritos/listado
     ?es_jurisdiccional=true
 X-Api-Key: {{api_key}}
 
+### Distritos NO es_jurisdiccional
+GET {{baseUrl}}/distritos/listado
+    ?es_jurisdiccional=false
+X-Api-Key: {{api_key}}
+
 ### Distrito Torreon
 GET {{baseUrl}}/distritos/dtrc
 X-Api-Key: {{api_key}}
