@@ -1,6 +1,8 @@
 """
 Ubicaciones de Expedientes v3, esquemas de pydantic
 """
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
@@ -20,6 +22,7 @@ class UbicacionExpedienteOut(BaseModel):
     autoridad_descripcion_corta: str | None
     expediente: str | None
     ubicacion: str | None
+    creado: datetime | None
     model_config = ConfigDict(from_attributes=True)
 
 

@@ -16,6 +16,7 @@ from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 def get_listas_de_acuerdos(
     database: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     creado: date = None,
@@ -23,7 +24,6 @@ def get_listas_de_acuerdos(
     creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,

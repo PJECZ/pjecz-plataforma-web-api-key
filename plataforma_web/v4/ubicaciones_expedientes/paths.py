@@ -1,6 +1,7 @@
 """
 Ubicaciones de Expedientes v3, rutas (paths)
 """
+from datetime import date
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -24,6 +25,9 @@ async def paginado_ubicaciones_expedientes(
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     expediente: str = None,
 ):
     """Paginado de ubicaciones de expedientes"""
@@ -34,6 +38,9 @@ async def paginado_ubicaciones_expedientes(
             database=database,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
+            creado=creado,
+            creado_desde=creado_desde,
+            creado_hasta=creado_hasta,
             expediente=expediente,
         )
     except MyAnyError as error:
