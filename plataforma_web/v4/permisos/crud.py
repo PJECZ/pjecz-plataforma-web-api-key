@@ -33,7 +33,7 @@ def get_permisos(
     elif rol_nombre is not None:
         rol = (database, rol_nombre)
         consulta = consulta.filter(rol == rol)
-    return consulta.filter_by(estatus="A").order_by(Permiso.id)
+    return consulta.filter_by(estatus="A").order_by(Permiso.id.desc())
 
 
 def get_permiso(database: Session, permiso_id: int) -> Permiso:

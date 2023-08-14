@@ -63,7 +63,7 @@ def get_listas_de_acuerdos(
             consulta = consulta.filter(ListaDeAcuerdo.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(ListaDeAcuerdo.fecha <= fecha_hasta)
-    return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id)
+    return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id.desc())
 
 
 def get_lista_de_acuerdo(

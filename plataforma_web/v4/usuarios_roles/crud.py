@@ -33,7 +33,7 @@ def get_usuarios_roles(
     elif usuario_email is not None:
         usuario = get_usuario_with_email(database, usuario_email)
         consulta = consulta.filter(usuario == usuario)
-    return consulta.filter_by(estatus="A").order_by(UsuarioRol.id)
+    return consulta.filter_by(estatus="A").order_by(UsuarioRol.id.desc())
 
 
 def get_usuario_rol(database: Session, usuario_rol_id: int) -> UsuarioRol:

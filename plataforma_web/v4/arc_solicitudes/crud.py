@@ -42,7 +42,7 @@ def get_arc_solicitudes(
             consulta = consulta.filter_by(estado=estado)
         else:
             raise MyNotValidParamError("No es válido el estado")
-    return consulta.filter_by(estatus="A").order_by(ArcSolicitud.id)
+    return consulta.filter_by(estatus="A").order_by(ArcSolicitud.id.desc())
 
 
 def get_arc_solicitud(database: Session, arc_solicitud_id: int) -> ArcSolicitud:

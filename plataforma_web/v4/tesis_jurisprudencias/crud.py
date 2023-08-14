@@ -48,7 +48,7 @@ def get_tesis_jurisprudencias(
     elif materia_clave is not None:
         materia = get_materia_with_clave(database, materia_clave)
         consulta = consulta.filter_by(materia_id=materia.id)
-    return consulta.filter_by(estatus="A").order_by(TesisJurisprudencia.id)
+    return consulta.filter_by(estatus="A").order_by(TesisJurisprudencia.id.desc())
 
 
 def get_tesis_jurisprudencia(database: Session, tesis_jurisprudencia_id: int) -> TesisJurisprudencia:

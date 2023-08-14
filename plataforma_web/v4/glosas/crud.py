@@ -71,7 +71,7 @@ def get_glosas(
             consulta = consulta.filter(Glosa.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Glosa.fecha <= fecha_hasta)
-    return consulta.filter_by(estatus="A").order_by(Glosa.id)
+    return consulta.filter_by(estatus="A").order_by(Glosa.id.desc())
 
 
 def get_glosa(database: Session, glosa_id: int) -> Glosa:

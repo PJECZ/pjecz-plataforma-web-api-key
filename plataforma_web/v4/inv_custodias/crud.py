@@ -57,7 +57,7 @@ def get_inv_custodias(
     elif usuario_email is not None:
         usuario = get_usuario_with_email(database, email=usuario_email)
         consulta = consulta.filter(InvCustodia.usuario == usuario)
-    return consulta.filter_by(estatus="A").order_by(InvCustodia.id)
+    return consulta.filter_by(estatus="A").order_by(InvCustodia.id.desc())
 
 
 def get_inv_custodia(database: Session, inv_custodia_id: int) -> InvCustodia:

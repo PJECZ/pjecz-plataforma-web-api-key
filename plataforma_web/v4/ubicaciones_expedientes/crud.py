@@ -46,7 +46,7 @@ def get_ubicaciones_expedientes(
         except (IndexError, ValueError) as error:
             raise MyNotValidParamError("El expediente no es válido") from error
         consulta = consulta.filter_by(expediente=expediente)
-    return consulta.filter_by(estatus="A").order_by(UbicacionExpediente.id)
+    return consulta.filter_by(estatus="A").order_by(UbicacionExpediente.id.desc())
 
 
 def get_ubicacion_expediente(database: Session, ubicacion_expediente_id: int) -> UbicacionExpediente:

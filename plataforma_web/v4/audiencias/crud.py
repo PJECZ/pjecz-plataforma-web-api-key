@@ -67,7 +67,7 @@ def get_audiencias(
         if fecha_hasta is not None:
             hasta = datetime(year=anio, month=12, day=31, hour=23, minute=59, second=59)
             consulta = consulta.filter(Audiencia.tiempo <= hasta)
-    return consulta.filter_by(estatus="A").order_by(Audiencia.id)
+    return consulta.filter_by(estatus="A").order_by(Audiencia.id.desc())
 
 
 def get_audiencia(database: Session, audiencia_id: int) -> Audiencia:

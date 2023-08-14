@@ -31,7 +31,7 @@ def get_repsvm_agresores(
         if nombre == "":
             raise MyNotValidParamError("El nombre no es válido")
         consulta = consulta.filter(RepsvmAgresor.nombre.contains(nombre))
-    return consulta.filter_by(estatus="A").order_by(RepsvmAgresor.id)
+    return consulta.filter_by(estatus="A").order_by(RepsvmAgresor.nombre)
 
 
 def get_repsvm_agresor(database: Session, repsvm_agresor_id: int) -> RepsvmAgresor:

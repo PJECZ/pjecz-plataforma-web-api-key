@@ -48,7 +48,7 @@ def get_funcionarios(
         consulta = consulta.filter_by(en_soportes=en_soportes)
     if en_tesis_jurisprudencias is not None:
         consulta = consulta.filter_by(en_tesis_jurisprudencias=en_tesis_jurisprudencias)
-    return consulta.filter_by(estatus="A").order_by(Funcionario.id)
+    return consulta.filter_by(estatus="A").order_by(Funcionario.id.desc())
 
 
 def get_funcionario(database: Session, funcionario_id: int) -> Funcionario:
