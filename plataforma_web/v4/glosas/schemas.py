@@ -1,7 +1,7 @@
 """
 Glosas v3, esquemas de pydantic
 """
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict
 
@@ -31,6 +31,7 @@ class GlosaOut(GlosaIn):
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
+    creado: datetime | None
     model_config = ConfigDict(from_attributes=True)
 
 

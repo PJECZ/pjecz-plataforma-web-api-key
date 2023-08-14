@@ -24,11 +24,14 @@ audiencias = APIRouter(prefix="/v4/audiencias", tags=["audiencias"])
 async def paginado_audiencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     fecha: date = None,
 ):
     """Paginado de audiencias"""
@@ -39,6 +42,9 @@ async def paginado_audiencias(
             database=database,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
+            creado=creado,
+            creado_desde=creado_desde,
+            creado_hasta=creado_hasta,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
             anio=anio,

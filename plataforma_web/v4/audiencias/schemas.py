@@ -38,6 +38,7 @@ class AudienciaOut(AudienciaIn):
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
+    creado: datetime | None
     model_config = ConfigDict(from_attributes=True)
 
 

@@ -1,8 +1,8 @@
 """
 Edictos v3, CRUD (create, read, update, and delete)
 """
-from datetime import date
-from typing import Any
+from datetime import date, datetime
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
@@ -11,17 +11,20 @@ from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.edictos.models import Edicto
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_edictos(
     database: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     expediente: str = None,
     fecha: date = None,
     fecha_desde: date = None,
@@ -41,6 +44,16 @@ def get_edictos(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
+    if creado is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Edicto.creado >= desde_dt).filter(Edicto.creado <= hasta_dt)
+    if creado is None and creado_desde is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        consulta = consulta.filter(Edicto.creado >= desde_dt)
+    if creado is None and creado_hasta is not None:
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Edicto.creado <= hasta_dt)
     if anio is not None:
         desde = date(year=anio, month=1, day=1)
         hasta = date(year=anio, month=12, day=31)
@@ -58,7 +71,7 @@ def get_edictos(
         except (IndexError, ValueError) as error:
             raise MyNotValidParamError("El expediente no es válido") from error
         consulta = consulta.filter_by(expediente=expediente)
-    return consulta.filter_by(estatus="A").order_by(Edicto.id)
+    return consulta.filter_by(estatus="A").order_by(Edicto.id.desc())
 
 
 def get_edicto(database: Session, edicto_id: int) -> Edicto:
@@ -122,3 +135,16 @@ def delete_edicto(database: Session, edicto_id: int) -> Edicto:
     database.commit()
     database.refresh(edicto)
     return edicto
+
+
+def elaborate_daily_report_edictos(
+    database: Session,
+    fecha: date,
+) -> List[Edicto]:
+    """Elaborar reporte diario de edictos"""
+    resultados = []
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
+        existentes = get_edictos(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        if existentes:
+            resultados.extend(existentes)
+    return resultados

@@ -89,7 +89,7 @@ def get_inv_equipos(
         tipo = safe_string(tipo)
         if tipo in InvEquipo.TIPOS:
             consulta = consulta.filter(InvEquipo.tipo == tipo)
-    return consulta.filter_by(estatus="A").order_by(InvEquipo.id)
+    return consulta.filter_by(estatus="A").order_by(InvEquipo.id.desc())
 
 
 def get_inv_equipo(database: Session, inv_equipo_id: int) -> InvEquipo:

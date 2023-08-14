@@ -16,12 +16,17 @@ from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 def get_audiencias(
     database: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     fecha: date = None,
+    fecha_desde: date = None,
+    fecha_hasta: date = None,
 ) -> Any:
     """Consultar las audiencias activas"""
     consulta = database.query(Audiencia)
@@ -37,15 +42,32 @@ def get_audiencias(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
-    if fecha is not None:
-        desde = datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=0, minute=0, second=0)
-        hasta = datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=23, minute=59, second=59)
-        consulta = consulta.filter(Audiencia.tiempo >= desde).filter(Audiencia.tiempo <= hasta)
-    elif anio is not None:
+    if creado is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Audiencia.creado >= desde_dt).filter(Audiencia.creado <= hasta_dt)
+    if creado is None and creado_desde is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        consulta = consulta.filter(Audiencia.creado >= desde_dt)
+    if creado is None and creado_hasta is not None:
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Audiencia.creado <= hasta_dt)
+    if anio is not None:
         desde = datetime(year=anio, month=1, day=1, hour=0, minute=0, second=0)
         hasta = datetime(year=anio, month=12, day=31, hour=23, minute=59, second=59)
         consulta = consulta.filter(Audiencia.tiempo >= desde).filter(Audiencia.tiempo <= hasta)
-    return consulta.filter_by(estatus="A").order_by(Audiencia.id)
+    elif fecha is not None:
+        desde = datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=0, minute=0, second=0)
+        hasta = datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Audiencia.tiempo >= desde).filter(Audiencia.tiempo <= hasta)
+    else:
+        if fecha_desde is not None:
+            desde = datetime(year=anio, month=1, day=1, hour=0, minute=0, second=0)
+            consulta = consulta.filter(Audiencia.tiempo >= desde)
+        if fecha_hasta is not None:
+            hasta = datetime(year=anio, month=12, day=31, hour=23, minute=59, second=59)
+            consulta = consulta.filter(Audiencia.tiempo <= hasta)
+    return consulta.filter_by(estatus="A").order_by(Audiencia.id.desc())
 
 
 def get_audiencia(database: Session, audiencia_id: int) -> Audiencia:

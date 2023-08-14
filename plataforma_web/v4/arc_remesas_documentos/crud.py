@@ -25,7 +25,7 @@ def get_arc_remesas_documentos(
     if arc_remesa_id is not None:
         arc_remesa = get_arc_remesa(database, arc_remesa_id)
         consulta = consulta.filter_by(arc_remesa_id=arc_remesa.id)
-    return consulta.filter_by(estatus="A").order_by(ArcRemesaDocumento.id)
+    return consulta.filter_by(estatus="A").order_by(ArcRemesaDocumento.id.desc())
 
 
 def get_arc_remesa_documento(database: Session, arc_remesa_documento_id: int) -> ArcRemesaDocumento:

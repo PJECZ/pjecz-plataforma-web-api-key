@@ -30,7 +30,7 @@ def get_centros_trabajos(
     if domicilio_id is not None:
         domicilio = get_domicilio(database, domicilio_id)
         consulta = consulta.filter_by(domicilio_id=domicilio.id)
-    return consulta.filter_by(estatus="A").order_by(CentroTrabajo.id)
+    return consulta.filter_by(estatus="A").order_by(CentroTrabajo.id.desc())
 
 
 def get_centro_trabajo(database: Session, centro_trabajo_id: int) -> CentroTrabajo:

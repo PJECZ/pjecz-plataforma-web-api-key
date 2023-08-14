@@ -16,6 +16,7 @@ from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 def get_listas_de_acuerdos(
     database: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     creado: date = None,
@@ -23,7 +24,6 @@ def get_listas_de_acuerdos(
     creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -63,7 +63,7 @@ def get_listas_de_acuerdos(
             consulta = consulta.filter(ListaDeAcuerdo.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(ListaDeAcuerdo.fecha <= fecha_hasta)
-    return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id)
+    return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id.desc())
 
 
 def get_lista_de_acuerdo(
@@ -142,26 +142,25 @@ def delete_lista_de_acuerdo(
 
 def elaborate_daily_report_listas_de_acuerdos(
     database: Session,
-    creado: date,
+    fecha: date,
 ) -> List[ListaDeAcuerdo]:
     """Elaborar reporte diario de listas de acuerdos"""
-    listado = []
+    resultados = []
     for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_listas_de_acuerdos(database=database, autoridad_id=autoridad.id, fecha=creado).all()
+        existentes = get_listas_de_acuerdos(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
         if existentes:
-            for lista_de_acuerdo in existentes:
-                listado.append(ListaDeAcuerdo(**lista_de_acuerdo.dict()))
+            resultados.extend(existentes)
         else:
-            listado.append(
+            resultados.append(
                 ListaDeAcuerdo(
                     id=0,
                     autoridad_id=autoridad.id,
                     autoridad=autoridad,
-                    fecha=creado,
-                    descripcion="ND",
+                    fecha=fecha,
+                    descripcion="No se publicó la lista de acuerdos",
                     archivo="",
                     url="",
-                    creado=datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0),
+                    creado=datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=0, minute=0, second=0),
                 )
             )
-    return listado
+    return resultados

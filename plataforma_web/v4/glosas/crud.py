@@ -1,8 +1,8 @@
 """
 Glosas v3, CRUD (create, read, update, and delete)
 """
-from datetime import date
-from typing import Any
+from datetime import date, datetime
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
@@ -11,18 +11,21 @@ from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.glosas.models import Glosa
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_glosas(
     database: Session,
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
     expediente: str = None,
-    anio: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -41,6 +44,16 @@ def get_glosas(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
+    if creado is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Glosa.creado >= desde_dt).filter(Glosa.creado <= hasta_dt)
+    if creado is None and creado_desde is not None:
+        desde_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0)
+        consulta = consulta.filter(Glosa.creado >= desde_dt)
+    if creado is None and creado_hasta is not None:
+        hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
+        consulta = consulta.filter(Glosa.creado <= hasta_dt)
     if expediente is not None:
         try:
             expediente = safe_expediente(expediente)
@@ -58,7 +71,7 @@ def get_glosas(
             consulta = consulta.filter(Glosa.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Glosa.fecha <= fecha_hasta)
-    return consulta.filter_by(estatus="A").order_by(Glosa.id)
+    return consulta.filter_by(estatus="A").order_by(Glosa.id.desc())
 
 
 def get_glosa(database: Session, glosa_id: int) -> Glosa:
@@ -122,3 +135,16 @@ def delete_glosa(database: Session, glosa_id: int) -> Glosa:
     database.commit()
     database.refresh(glosa)
     return glosa
+
+
+def elaborate_daily_report_glosas(
+    database: Session,
+    fecha: date,
+) -> List[Glosa]:
+    """Elaborar reporte diario de edictos"""
+    resultados = []
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
+        existentes = get_glosas(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        if existentes:
+            resultados.extend(existentes)
+    return resultados

@@ -35,7 +35,7 @@ def get_abogados(
         if nombre == "":
             raise MyNotValidParamError("El nombre es incorrecto.")
         consulta = consulta.filter(Abogado.nombre.contains(nombre))
-    return consulta.filter_by(estatus="A").order_by(Abogado.id)
+    return consulta.filter_by(estatus="A").order_by(Abogado.id.desc())
 
 
 def get_abogado(database: Session, abogado_id: int) -> Abogado:

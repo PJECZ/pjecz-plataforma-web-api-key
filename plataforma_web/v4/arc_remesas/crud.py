@@ -42,7 +42,7 @@ def get_arc_remesas(
             consulta = consulta.filter_by(estado=estado)
         else:
             raise MyNotValidParamError("No es válido el estado")
-    return consulta.filter_by(estatus="A").order_by(ArcRemesa.id)
+    return consulta.filter_by(estatus="A").order_by(ArcRemesa.id.desc())
 
 
 def get_arc_remesa(database: Session, arc_remesa_id: int) -> ArcRemesa:

@@ -25,11 +25,14 @@ listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de
 async def paginado_listas_de_acuerdos(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
+    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
+    creado: date = None,
+    creado_desde: date = None,
+    creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    anio: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -42,6 +45,9 @@ async def paginado_listas_de_acuerdos(
             database=database,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
+            creado=creado,
+            creado_desde=creado_desde,
+            creado_hasta=creado_hasta,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
             anio=anio,
@@ -56,7 +62,7 @@ async def paginado_listas_de_acuerdos(
 
 @listas_de_acuerdos.get("/reporte_diario", response_model=CustomList[ListaDeAcuerdoOut])
 async def reporte_diario_listas_de_acuerdos(
-    creado: date,
+    fecha: date,
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
@@ -64,10 +70,20 @@ async def reporte_diario_listas_de_acuerdos(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = elaborate_daily_report_listas_de_acuerdos(database, creado)
+        resultados = elaborate_daily_report_listas_de_acuerdos(database, fecha)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
-    return CustomList(results=resultados)
+    if not resultados:
+        return CustomList(success=True, message="No hay listas de acuerdos para la fecha indicada", total=0)
+    return CustomList(
+        success=True,
+        message="Sucess",
+        total=len(resultados),
+        items=resultados,
+        page=1,
+        size=len(resultados),
+        pages=1,
+    )
 
 
 @listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
