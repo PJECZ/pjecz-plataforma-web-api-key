@@ -2,7 +2,7 @@
 Edictos v3, CRUD (create, read, update, and delete)
 """
 from datetime import date, datetime
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
@@ -11,7 +11,7 @@ from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.edictos.models import Edicto
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
@@ -135,3 +135,16 @@ def delete_edicto(database: Session, edicto_id: int) -> Edicto:
     database.commit()
     database.refresh(edicto)
     return edicto
+
+
+def elaborate_daily_report_edictos(
+    database: Session,
+    fecha: date,
+) -> List[Edicto]:
+    """Elaborar reporte diario de edictos"""
+    resultados = []
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
+        existentes = get_edictos(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        if existentes:
+            resultados.extend(existentes)
+    return resultados

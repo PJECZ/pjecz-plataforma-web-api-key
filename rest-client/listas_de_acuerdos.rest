@@ -9,6 +9,11 @@ GET {{root}}
 GET {{baseUrl}}/listas_de_acuerdos
 X-Api-Key: {{api_key}}
 
+### Reporte Diario de Listas de Acuerdos
+GET {{baseUrl}}/listas_de_acuerdos/reporte_diario
+    ?fecha=2023-08-01
+X-Api-Key: {{api_key}}
+
 ### Listas de Acuerdos de la autoridad 37
 GET {{baseUrl}}/listas_de_acuerdos
     ?autoridad_id=37

@@ -2,7 +2,7 @@
 Sentencias v3, CRUD (create, read, update, and delete)
 """
 from datetime import date, datetime
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
@@ -11,7 +11,7 @@ from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
@@ -157,3 +157,16 @@ def delete_sentencia(database: Session, sentencia_id: int) -> Sentencia:
     database.commit()
     database.refresh(sentencia)
     return sentencia
+
+
+def elaborate_daily_report_sentencias(
+    database: Session,
+    fecha: date,
+) -> List[Sentencia]:
+    """Elaborar reporte diario de edictos"""
+    resultados = []
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
+        existentes = get_sentencias(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        if existentes:
+            resultados.extend(existentes)
+    return resultados

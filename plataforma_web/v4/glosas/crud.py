@@ -2,7 +2,7 @@
 Glosas v3, CRUD (create, read, update, and delete)
 """
 from datetime import date, datetime
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
@@ -11,7 +11,7 @@ from lib.safe_string import safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.glosas.models import Glosa
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
+from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
 from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
@@ -135,3 +135,16 @@ def delete_glosa(database: Session, glosa_id: int) -> Glosa:
     database.commit()
     database.refresh(glosa)
     return glosa
+
+
+def elaborate_daily_report_glosas(
+    database: Session,
+    fecha: date,
+) -> List[Glosa]:
+    """Elaborar reporte diario de edictos"""
+    resultados = []
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
+        existentes = get_glosas(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        if existentes:
+            resultados.extend(existentes)
+    return resultados

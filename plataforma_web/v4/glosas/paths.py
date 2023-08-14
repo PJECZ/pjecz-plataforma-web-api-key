@@ -9,12 +9,13 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
+from lib.fastapi_pagination_custom_list import CustomList
 from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.glosas.models import Glosa
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import create_glosa, delete_glosa, get_glosa, get_glosas, update_glosa
+from .crud import create_glosa, delete_glosa, elaborate_daily_report_glosas, get_glosa, get_glosas, update_glosa
 from .schemas import GlosaIn, GlosaOut, OneGlosaOut
 
 glosas = APIRouter(prefix="/v4/glosas", tags=["glosas"])
@@ -59,6 +60,32 @@ async def paginado_glosas(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
+
+
+@glosas.get("/reporte_diario", response_model=CustomList[GlosaOut])
+async def reporte_diario_glosas(
+    fecha: date,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Reporte diario de glosas"""
+    if current_user.permissions.get("GLOSAS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = elaborate_daily_report_glosas(database, fecha)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    if not resultados:
+        return CustomList(success=True, message="No hay glosas para la fecha indicada", total=0)
+    return CustomList(
+        success=True,
+        message="Sucess",
+        total=len(resultados),
+        items=resultados,
+        page=1,
+        size=len(resultados),
+        pages=1,
+    )
 
 
 @glosas.get("/{glosa_id}", response_model=OneGlosaOut)

@@ -52,7 +52,7 @@ def get_autoridades(
     elif materia_clave is not None:
         materia = get_materia_with_clave(database, materia_clave)
         consulta = consulta.filter_by(materia_id=materia.id)
-    return consulta.filter_by(estatus="A").order_by(Autoridad.id.desc())
+    return consulta.filter_by(estatus="A").order_by(Autoridad.clave)
 
 
 def get_autoridad(database: Session, autoridad_id: int) -> Autoridad:

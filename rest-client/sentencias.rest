@@ -9,6 +9,11 @@ GET {{root}}
 GET {{baseUrl}}/sentencias
 X-Api-Key: {{api_key}}
 
+### Reporte diario de Sentencias
+GET {{baseUrl}}/sentencias/reporte_diario
+    ?fecha=2023-08-01
+X-Api-Key: {{api_key}}
+
 ### Sentencias de la autoridad 37
 GET {{baseUrl}}/sentencias
     ?autoridad_id=37

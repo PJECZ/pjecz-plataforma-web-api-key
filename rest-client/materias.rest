@@ -9,6 +9,10 @@ GET {{root}}
 GET {{baseUrl}}/materias
 X-Api-Key: {{api_key}}
 
+### Listado de Materias
+GET {{baseUrl}}/materias/listado
+X-Api-Key: {{api_key}}
+
 ### Materia Familiar
 GET {{baseUrl}}/materias/fam
 X-Api-Key: {{api_key}}
