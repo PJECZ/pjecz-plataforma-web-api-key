@@ -64,7 +64,7 @@ async def paginado_sentencias(
 
 @sentencias.get("/reporte_diario", response_model=CustomList[SentenciaOut])
 async def reporte_diario_sentencias(
-    fecha: date,
+    creado: date,
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
@@ -72,11 +72,11 @@ async def reporte_diario_sentencias(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = elaborate_daily_report_sentencias(database, fecha)
+        resultados = elaborate_daily_report_sentencias(database, creado)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     if not resultados:
-        return CustomList(success=True, message="No hay sentencias para la fecha indicada", total=0)
+        return CustomList(success=True, message="No hay sentencias creadas en la fecha indicada", total=0)
     return CustomList(
         success=True,
         message="Sucess",

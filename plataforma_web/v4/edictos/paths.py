@@ -64,7 +64,7 @@ async def paginado_edictos(
 
 @edictos.get("/reporte_diario", response_model=CustomList[EdictoOut])
 async def reporte_diario_edictos(
-    fecha: date,
+    creado: date,
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
@@ -72,11 +72,11 @@ async def reporte_diario_edictos(
     if current_user.permissions.get("EDICTOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = elaborate_daily_report_edictos(database, fecha)
+        resultados = elaborate_daily_report_edictos(database, creado)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     if not resultados:
-        return CustomList(success=True, message="No hay edictos para la fecha indicada", total=0)
+        return CustomList(success=True, message="No hay edictos creados en la fecha indicada", total=0)
     return CustomList(
         success=True,
         message="Sucess",

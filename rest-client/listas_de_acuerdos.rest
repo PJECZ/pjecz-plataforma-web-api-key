@@ -11,7 +11,7 @@ X-Api-Key: {{api_key}}
 
 ### Reporte Diario de Listas de Acuerdos
 GET {{baseUrl}}/listas_de_acuerdos/reporte_diario
-    ?fecha=2023-08-01
+    ?creado=2023-08-01
 X-Api-Key: {{api_key}}
 
 ### Listas de Acuerdos de la autoridad 37
