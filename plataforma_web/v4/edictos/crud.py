@@ -139,12 +139,12 @@ def delete_edicto(database: Session, edicto_id: int) -> Edicto:
 
 def elaborate_daily_report_edictos(
     database: Session,
-    fecha: date,
+    creado: date,
 ) -> List[Edicto]:
     """Elaborar reporte diario de edictos"""
     resultados = []
-    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_edictos(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+    for autoridad in get_autoridades(database=database, es_jurisdiccional=True).all():
+        existentes = get_edictos(database=database, autoridad_id=autoridad.id, creado=creado).all()
         if existentes:
             resultados.extend(existentes)
     return resultados

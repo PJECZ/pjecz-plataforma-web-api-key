@@ -139,12 +139,12 @@ def delete_glosa(database: Session, glosa_id: int) -> Glosa:
 
 def elaborate_daily_report_glosas(
     database: Session,
-    fecha: date,
+    creado: date,
 ) -> List[Glosa]:
     """Elaborar reporte diario de edictos"""
     resultados = []
     for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_glosas(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        existentes = get_glosas(database=database, autoridad_id=autoridad.id, creado=creado).all()
         if existentes:
             resultados.extend(existentes)
     return resultados

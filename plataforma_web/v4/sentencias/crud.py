@@ -161,12 +161,12 @@ def delete_sentencia(database: Session, sentencia_id: int) -> Sentencia:
 
 def elaborate_daily_report_sentencias(
     database: Session,
-    fecha: date,
+    creado: date,
 ) -> List[Sentencia]:
     """Elaborar reporte diario de edictos"""
     resultados = []
     for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_sentencias(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        existentes = get_sentencias(database=database, autoridad_id=autoridad.id, creado=creado).all()
         if existentes:
             resultados.extend(existentes)
     return resultados

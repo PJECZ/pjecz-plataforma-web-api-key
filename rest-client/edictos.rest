@@ -11,7 +11,7 @@ X-Api-Key: {{api_key}}
 
 ### Reporte diario de Edictos
 GET {{baseUrl}}/edictos/reporte_diario
-    ?fecha=2023-08-01
+    ?creado=2023-08-01
 X-Api-Key: {{api_key}}
 
 ### Edictos de la autoridad 37

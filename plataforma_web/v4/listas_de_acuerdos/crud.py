@@ -142,12 +142,12 @@ def delete_lista_de_acuerdo(
 
 def elaborate_daily_report_listas_de_acuerdos(
     database: Session,
-    fecha: date,
+    creado: date,
 ) -> List[ListaDeAcuerdo]:
     """Elaborar reporte diario de listas de acuerdos"""
     resultados = []
     for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_listas_de_acuerdos(database=database, autoridad_id=autoridad.id, fecha=fecha).all()
+        existentes = get_listas_de_acuerdos(database=database, autoridad_id=autoridad.id, creado=creado).all()
         if existentes:
             resultados.extend(existentes)
         else:
@@ -156,11 +156,11 @@ def elaborate_daily_report_listas_de_acuerdos(
                     id=0,
                     autoridad_id=autoridad.id,
                     autoridad=autoridad,
-                    fecha=fecha,
-                    descripcion="No se publicó la lista de acuerdos",
+                    fecha=creado,
+                    descripcion="No se publicó",
                     archivo="",
                     url="",
-                    creado=datetime(year=fecha.year, month=fecha.month, day=fecha.day, hour=0, minute=0, second=0),
+                    creado=datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0),
                 )
             )
     return resultados
