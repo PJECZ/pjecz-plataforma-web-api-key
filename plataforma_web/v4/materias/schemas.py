@@ -12,6 +12,7 @@ class MateriaListOut(BaseModel):
     id: int | None
     clave: str | None
     nombre: str | None
+    en_sentencias: bool | None
     model_config = ConfigDict(from_attributes=True)
 
 
