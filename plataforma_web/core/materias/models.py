@@ -1,7 +1,7 @@
 """
 Materias, modelos
 """
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -20,6 +20,7 @@ class Materia(Base, UniversalMixin):
     # Columnas
     clave = Column(String(16), nullable=False, unique=True)
     nombre = Column(String(64), unique=True, nullable=False)
+    en_sentencias = Column(Boolean, nullable=False, default=False)
 
     # Hijos
     autoridades = relationship("Autoridad", back_populates="materia")
