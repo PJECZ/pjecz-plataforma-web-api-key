@@ -16,6 +16,7 @@ class ListaDeAcuerdoIn(BaseModel):
     descripcion: str | None
     archivo: str | None
     url: str | None
+    descargar_url: str | None
 
 
 class ListaDeAcuerdoOut(ListaDeAcuerdoIn):

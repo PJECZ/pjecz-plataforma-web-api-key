@@ -18,6 +18,7 @@ class GlosaIn(BaseModel):
     expediente: str | None
     archivo: str | None
     url: str | None
+    descargar_url: str | None
 
 
 class GlosaOut(GlosaIn):

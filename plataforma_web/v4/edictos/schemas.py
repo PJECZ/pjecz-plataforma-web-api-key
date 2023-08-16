@@ -18,6 +18,7 @@ class EdictoIn(BaseModel):
     numero_publicacion: str | None
     archivo: str | None
     url: str | None
+    descargar_url: str | None
 
 
 class EdictoOut(EdictoIn):

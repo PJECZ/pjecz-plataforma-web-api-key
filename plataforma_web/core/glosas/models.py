@@ -48,6 +48,13 @@ class Glosa(Base, UniversalMixin):
     url = Column(String(512), nullable=False, default="", server_default="")
 
     @property
+    def descargar_url(self):
+        """URL para descargar el archivo desde el sitio web"""
+        if self.id:
+            return f"https://www.pjecz.gob.mx/consultas/glosas/descargar/?id={self.id}"
+        return ""
+
+    @property
     def distrito_id(self):
         """Distrito ID"""
         return self.autoridad.distrito_id
