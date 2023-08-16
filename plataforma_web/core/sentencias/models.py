@@ -34,6 +34,13 @@ class Sentencia(Base, UniversalMixin):
     url = Column(String(512), nullable=False)
 
     @property
+    def descargar_url(self):
+        """URL para descargar el archivo desde el sitio web"""
+        if self.id:
+            return f"https://www.pjecz.gob.mx/consultas/sentencias/descargar/?id={self.id}"
+        return ""
+
+    @property
     def distrito_id(self):
         """Distrito ID"""
         return self.autoridad.distrito_id

@@ -21,6 +21,7 @@ class SentenciaIn(BaseModel):
     es_perspectiva_genero: bool | None
     archivo: str | None
     url: str | None
+    descargar_url: str | None
 
 
 class SentenciaOut(SentenciaIn):
