@@ -27,6 +27,8 @@ class Sentencia(Base, UniversalMixin):
     sentencia = Column(String(16), nullable=False)
     sentencia_fecha = Column(Date, index=True, nullable=True)
     expediente = Column(String(16), nullable=False)
+    expediente_anio = Column(Integer)
+    expediente_num = Column(Integer)
     fecha = Column(Date, index=True, nullable=False)
     descripcion = Column(String(1024), nullable=False)
     es_perspectiva_genero = Column(Boolean, nullable=False, default=False)

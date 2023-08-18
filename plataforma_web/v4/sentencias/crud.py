@@ -7,7 +7,7 @@ from typing import Any, List
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
-from lib.safe_string import safe_expediente
+from lib.safe_string import extract_expediente_anio, extract_expediente_num, safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
@@ -18,7 +18,6 @@ from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
 def get_sentencias(
     database: Session,
-    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     creado: date = None,
@@ -26,7 +25,8 @@ def get_sentencias(
     creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    expediente: str = None,
+    expediente_anio: int = None,
+    expediente_num: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -57,23 +57,17 @@ def get_sentencias(
     if creado is None and creado_hasta is not None:
         hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
         consulta = consulta.filter(Sentencia.creado <= hasta_dt)
-    if anio is not None:
-        desde = date(year=anio, month=1, day=1)
-        hasta = date(year=anio, month=12, day=31)
-        consulta = consulta.filter(Sentencia.fecha >= desde).filter(Sentencia.fecha <= hasta)
-    elif fecha is not None:
+    if fecha is not None:
         consulta = consulta.filter(Sentencia.fecha == fecha)
     else:
         if fecha_desde is not None:
             consulta = consulta.filter(Sentencia.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Sentencia.fecha <= fecha_hasta)
-    if expediente is not None:
-        try:
-            expediente = safe_expediente(expediente)
-        except (IndexError, ValueError) as error:
-            raise MyNotValidParamError("El expediente no es válido") from error
-        consulta = consulta.filter_by(expediente=expediente)
+    if expediente_anio is not None:
+        consulta = consulta.filter_by(expediente_anio=expediente_anio)
+    if expediente_num is not None:
+        consulta = consulta.filter_by(expediente_num=expediente_num)
     if materia_tipo_juicio_id is not None:
         materia_tipo_juicio = get_materia_tipo_juicio(database, materia_tipo_juicio_id)
         consulta = consulta.filter_by(materia_tipo_juicio_id=materia_tipo_juicio.id)
@@ -105,6 +99,14 @@ def create_sentencia(database: Session, sentencia: Sentencia) -> Sentencia:
     # Validar materia_tipo_juicio
     get_materia_tipo_juicio(database, sentencia.materia_tipo_juicio_id)
 
+    # Validar expediente
+    try:
+        expediente = safe_expediente(sentencia.expediente)
+        sentencia.expediente_anio = extract_expediente_anio(expediente)
+        sentencia.expediente_num = extract_expediente_num(expediente)
+    except (IndexError, ValueError) as error:
+        raise MyNotValidParamError("El expediente no es válido") from error
+
     # Guardar
     database.add(sentencia)
     database.commit()
@@ -134,6 +136,8 @@ def update_sentencia(database: Session, sentencia_id: int, sentencia_in: Sentenc
     sentencia.sentencia = sentencia_in.sentencia
     sentencia.sentencia_fecha = sentencia_in.sentencia_fecha
     sentencia.expediente = sentencia_in.expediente
+    sentencia.expediente_anio = extract_expediente_anio(sentencia_in.expediente)
+    sentencia.expediente_num = extract_expediente_num(sentencia_in.expediente)
     sentencia.fecha = sentencia_in.fecha
     sentencia.descripcion = sentencia_in.descripcion
     sentencia.es_perspectiva_genero = sentencia_in.es_perspectiva_genero

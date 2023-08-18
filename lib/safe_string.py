@@ -12,6 +12,26 @@ PASSWORD_REGEXP = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,24}$"
 TELEFONO_REGEXP = r"^[1-9]\d{9}$"
 
 
+def extract_expediente_anio(input_str: str) -> int:
+    """Extraer el anio AAAA del expediente NN/AAAA-XX como un entero"""
+    # Validar que comience con un numero/anio
+    inicio_str = re.match(r"^\d+\/[12]\d\d\d", input_str)
+    if inicio_str is None:
+        return 0
+    # Entregar el anio como entero
+    return int(inicio_str.group(0).split("/")[1])
+
+
+def extract_expediente_num(input_str: str) -> int:
+    """Extraer el numero NN del expediente NN/AAAA-XX como un entero"""
+    # Validar que comience con un numero/anio
+    inicio_str = re.match(r"^\d+\/[12]\d\d\d", input_str)
+    if inicio_str is None:
+        return 0
+    # Entregar el numero como entero
+    return int(inicio_str.group(0).split("/")[0])
+
+
 def safe_clave(input_str):
     """Safe clave"""
     if not isinstance(input_str, str):
