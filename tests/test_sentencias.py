@@ -39,7 +39,7 @@ class TestSentencias(unittest.TestCase):
         response = requests.get(
             f"{config['host']}/v4/sentencias",
             headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_id": 37, "expediente": "197/2019"},
+            params={"autoridad_id": 37, "expediente_anio": 2019, "expediente_num": 197},
             timeout=config["timeout"],
         )
         self.assertEqual(response.status_code, 200)
@@ -83,7 +83,7 @@ class TestSentencias(unittest.TestCase):
         response = requests.get(
             f"{config['host']}/v4/sentencias",
             headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_clave": "SLT-J2-CIV", "expediente": "197/2019"},
+            params={"autoridad_clave": "SLT-J2-CIV", "expediente_anio": 2019, "expediente_num": 197},
             timeout=config["timeout"],
         )
         self.assertEqual(response.status_code, 200)

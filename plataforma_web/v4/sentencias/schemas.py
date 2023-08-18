@@ -35,6 +35,8 @@ class SentenciaOut(SentenciaIn):
     autoridad_clave: str | None
     autoridad_descripcion: str | None
     autoridad_descripcion_corta: str | None
+    expediente_anio: int | None
+    expediente_num: int | None
     materia_id: int | None
     materia_nombre: str | None
     materia_tipo_juicio_descripcion: str | None

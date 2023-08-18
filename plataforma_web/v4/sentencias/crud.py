@@ -18,7 +18,6 @@ from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
 def get_sentencias(
     database: Session,
-    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     creado: date = None,
@@ -26,7 +25,8 @@ def get_sentencias(
     creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    expediente: str = None,
+    expediente_anio: int = None,
+    expediente_num: int = None,
     fecha: date = None,
     fecha_desde: date = None,
     fecha_hasta: date = None,
@@ -57,23 +57,17 @@ def get_sentencias(
     if creado is None and creado_hasta is not None:
         hasta_dt = datetime(year=creado.year, month=creado.month, day=creado.day, hour=23, minute=59, second=59)
         consulta = consulta.filter(Sentencia.creado <= hasta_dt)
-    if anio is not None:
-        desde = date(year=anio, month=1, day=1)
-        hasta = date(year=anio, month=12, day=31)
-        consulta = consulta.filter(Sentencia.fecha >= desde).filter(Sentencia.fecha <= hasta)
-    elif fecha is not None:
+    if fecha is not None:
         consulta = consulta.filter(Sentencia.fecha == fecha)
     else:
         if fecha_desde is not None:
             consulta = consulta.filter(Sentencia.fecha >= fecha_desde)
         if fecha_hasta is not None:
             consulta = consulta.filter(Sentencia.fecha <= fecha_hasta)
-    if expediente is not None:
-        try:
-            expediente = safe_expediente(expediente)
-        except (IndexError, ValueError) as error:
-            raise MyNotValidParamError("El expediente no es válido") from error
-        consulta = consulta.filter_by(expediente=expediente)
+    if expediente_anio is not None:
+        consulta = consulta.filter_by(expediente_anio=expediente_anio)
+    if expediente_num is not None:
+        consulta = consulta.filter_by(expediente_num=expediente_num)
     if materia_tipo_juicio_id is not None:
         materia_tipo_juicio = get_materia_tipo_juicio(database, materia_tipo_juicio_id)
         consulta = consulta.filter_by(materia_tipo_juicio_id=materia_tipo_juicio.id)

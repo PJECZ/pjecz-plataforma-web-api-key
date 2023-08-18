@@ -25,7 +25,6 @@ sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
 async def paginado_sentencias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
-    anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     creado: date = None,
@@ -33,7 +32,8 @@ async def paginado_sentencias(
     creado_hasta: date = None,
     distrito_id: int = None,
     distrito_clave: str = None,
-    expediente: str = None,
+    expediente_anio: int = None,
+    expediente_num: int = None,
     fecha: date = None,
     materia_tipo_juicio_id: int = None,
     sentencia: str = None,
@@ -44,7 +44,6 @@ async def paginado_sentencias(
     try:
         resultados = get_sentencias(
             database=database,
-            anio=anio,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
             creado=creado,
@@ -52,7 +51,8 @@ async def paginado_sentencias(
             creado_hasta=creado_hasta,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
-            expediente=expediente,
+            expediente_anio=expediente_anio,
+            expediente_num=expediente_num,
             fecha=fecha,
             materia_tipo_juicio_id=materia_tipo_juicio_id,
             sentencia=sentencia,
