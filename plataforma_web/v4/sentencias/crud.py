@@ -7,7 +7,7 @@ from typing import Any, List
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
-from lib.safe_string import safe_expediente
+from lib.safe_string import extract_expediente_anio, extract_expediente_num, safe_expediente
 
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
@@ -99,6 +99,14 @@ def create_sentencia(database: Session, sentencia: Sentencia) -> Sentencia:
     # Validar materia_tipo_juicio
     get_materia_tipo_juicio(database, sentencia.materia_tipo_juicio_id)
 
+    # Validar expediente
+    try:
+        expediente = safe_expediente(sentencia.expediente)
+        sentencia.expediente_anio = extract_expediente_anio(expediente)
+        sentencia.expediente_num = extract_expediente_num(expediente)
+    except (IndexError, ValueError) as error:
+        raise MyNotValidParamError("El expediente no es válido") from error
+
     # Guardar
     database.add(sentencia)
     database.commit()
@@ -128,6 +136,8 @@ def update_sentencia(database: Session, sentencia_id: int, sentencia_in: Sentenc
     sentencia.sentencia = sentencia_in.sentencia
     sentencia.sentencia_fecha = sentencia_in.sentencia_fecha
     sentencia.expediente = sentencia_in.expediente
+    sentencia.expediente_anio = extract_expediente_anio(sentencia_in.expediente)
+    sentencia.expediente_num = extract_expediente_num(sentencia_in.expediente)
     sentencia.fecha = sentencia_in.fecha
     sentencia.descripcion = sentencia_in.descripcion
     sentencia.es_perspectiva_genero = sentencia_in.es_perspectiva_genero
