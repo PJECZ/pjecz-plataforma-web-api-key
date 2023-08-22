@@ -9,15 +9,15 @@ from lib.schemas_base import OneBaseOut
 class InvComponenteOut(BaseModel):
     """Esquema para entregar componentes"""
 
-    id: int | None
-    inv_categoria_id: int | None
-    inv_categoria_nombre: str | None
-    inv_equipo_id: int | None
-    inv_equipo_descripcion: str | None
-    descripcion: str | None
-    cantidad: int | None
-    generacion: str | None
-    version: str | None
+    id: int | None = None
+    inv_categoria_id: int | None = None
+    inv_categoria_nombre: str | None = None
+    inv_equipo_id: int | None = None
+    inv_equipo_descripcion: str | None = None
+    descripcion: str | None = None
+    cantidad: int | None = None
+    generacion: str | None = None
+    version: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

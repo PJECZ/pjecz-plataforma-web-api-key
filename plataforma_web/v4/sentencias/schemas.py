@@ -11,36 +11,36 @@ from lib.schemas_base import OneBaseOut
 class SentenciaIn(BaseModel):
     """Esquema para recibir una sentencia"""
 
-    autoridad_id: int | None
-    materia_tipo_juicio_id: int | None
-    sentencia: str | None
-    sentencia_fecha: date | None
-    expediente: str | None
-    fecha: date | None
-    descripcion: str | None
-    es_perspectiva_genero: bool | None
-    archivo: str | None
-    url: str | None
-    descargar_url: str | None
+    autoridad_id: int | None = None
+    materia_tipo_juicio_id: int | None = None
+    sentencia: str | None = None
+    sentencia_fecha: date | None = None
+    expediente: str | None = None
+    fecha: date | None = None
+    descripcion: str | None = None
+    es_perspectiva_genero: bool | None = None
+    archivo: str | None = None
+    url: str | None = None
+    descargar_url: str | None = None
 
 
 class SentenciaOut(SentenciaIn):
     """Esquema para entregar sentencias"""
 
-    id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
-    autoridad_clave: str | None
-    autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
-    expediente_anio: int | None
-    expediente_num: int | None
-    materia_id: int | None
-    materia_nombre: str | None
-    materia_tipo_juicio_descripcion: str | None
-    creado: datetime | None
+    id: int | None = None
+    distrito_id: int | None = None
+    distrito_clave: str | None = None
+    distrito_nombre: str | None = None
+    distrito_nombre_corto: str | None = None
+    autoridad_clave: str | None = None
+    autoridad_descripcion: str | None = None
+    autoridad_descripcion_corta: str | None = None
+    expediente_anio: int | None = None
+    expediente_num: int | None = None
+    materia_id: int | None = None
+    materia_nombre: str | None = None
+    materia_tipo_juicio_descripcion: str | None = None
+    creado: datetime | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

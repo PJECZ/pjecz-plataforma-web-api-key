@@ -11,14 +11,14 @@ from lib.schemas_base import OneBaseOut
 class CitDiaInhabilIn(BaseModel):
     """Esquema para recibir un dia inhabil"""
 
-    fecha: date | None
-    descripcion: str | None
+    fecha: date | None = None
+    descripcion: str | None = None
 
 
 class CitDiaInhabilListOut(CitDiaInhabilIn):
     """Esquema para entregar dias inhabiles"""
 
-    id: int | None
+    id: int | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

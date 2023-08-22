@@ -9,16 +9,16 @@ from lib.schemas_base import OneBaseOut
 class ArcJuzgadoExtintoListOut(BaseModel):
     """Esquema para entregar juzgados extintos como listado"""
 
-    id: int | None
-    clave: str | None
-    descripcion_corta: str | None
+    id: int | None = None
+    clave: str | None = None
+    descripcion_corta: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
 class ArcJuzgadoExtintoOut(ArcJuzgadoExtintoListOut):
     """Esquema para entregar juzgados extintos como paginado"""
 
-    descripcion: str | None
+    descripcion: str | None = None
 
 
 class OneArcJuzgadoExtintoOut(ArcJuzgadoExtintoOut, OneBaseOut):

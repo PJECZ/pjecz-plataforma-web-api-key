@@ -9,19 +9,19 @@ from lib.schemas_base import OneBaseOut
 class PeritoOut(BaseModel):
     """Esquema para entregar peritos"""
 
-    id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
-    perito_tipo_id: int | None
-    perito_tipo_nombre: str | None
-    nombre: str | None
-    domicilio: str | None
-    telefono_fijo: str | None
-    telefono_celular: str | None
-    email: str | None
-    notas: str | None
+    id: int | None = None
+    distrito_id: int | None = None
+    distrito_clave: str | None = None
+    distrito_nombre: str | None = None
+    distrito_nombre_corto: str | None = None
+    perito_tipo_id: int | None = None
+    perito_tipo_nombre: str | None = None
+    nombre: str | None = None
+    domicilio: str | None = None
+    telefono_fijo: str | None = None
+    telefono_celular: str | None = None
+    email: str | None = None
+    notas: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

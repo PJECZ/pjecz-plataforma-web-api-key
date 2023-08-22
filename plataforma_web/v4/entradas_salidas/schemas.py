@@ -11,13 +11,13 @@ from lib.schemas_base import OneBaseOut
 class EntradaSalidaOut(BaseModel):
     """Esquema para entregar entradas-salidas"""
 
-    id: int | None
-    usuario_id: int | None
-    usuario_email: str | None
-    usuario_nombre: str | None
-    tipo: str | None
-    direccion_ip: str | None
-    creado: datetime | None
+    id: int | None = None
+    usuario_id: int | None = None
+    usuario_email: str | None = None
+    usuario_nombre: str | None = None
+    tipo: str | None = None
+    direccion_ip: str | None = None
+    creado: datetime | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

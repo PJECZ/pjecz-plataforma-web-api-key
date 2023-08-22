@@ -9,17 +9,17 @@ from lib.schemas_base import OneBaseOut
 class SIGASalaOut(BaseModel):
     """Esquema para entregar salas"""
 
-    id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
-    domicilio_id: int | None
-    domicilio_edificio: str | None
-    clave: str | None
-    direccion_ip: str | None
-    direccion_nvr: str | None
-    estado: str | None
-    descripcion: str | None
+    id: int | None = None
+    distrito_clave: str | None = None
+    distrito_nombre: str | None = None
+    distrito_nombre_corto: str | None = None
+    domicilio_id: int | None = None
+    domicilio_edificio: str | None = None
+    clave: str | None = None
+    direccion_ip: str | None = None
+    direccion_nvr: str | None = None
+    estado: str | None = None
+    descripcion: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
