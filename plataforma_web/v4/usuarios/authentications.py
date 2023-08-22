@@ -50,7 +50,7 @@ def get_user(
             telefono=usuario.telefono,
             extension=usuario.extension,
             workspace=usuario.workspace,
-            username=usuario.nombres,
+            username=usuario.email,
             permissions=usuario.permissions,
             hashed_password=usuario.contrasena,
             disabled=usuario.estatus != "A",

@@ -59,7 +59,7 @@ async def detalle_usuario(
     database: Annotated[Session, Depends(get_db)],
     email: str,
 ):
-    """Detalle de una usuarios a partir de su id"""
+    """Detalle de una usuarios a partir de su e-mail"""
     if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:

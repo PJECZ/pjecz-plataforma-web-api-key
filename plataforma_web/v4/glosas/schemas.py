@@ -11,28 +11,28 @@ from lib.schemas_base import OneBaseOut
 class GlosaIn(BaseModel):
     """Esquema para recibir una glosa"""
 
-    autoridad_id: int | None
-    fecha: date | None
-    tipo_juicio: str | None
-    descripcion: str | None
-    expediente: str | None
-    archivo: str | None
-    url: str | None
-    descargar_url: str | None
+    autoridad_id: int | None = None
+    fecha: date | None = None
+    tipo_juicio: str | None = None
+    descripcion: str | None = None
+    expediente: str | None = None
+    archivo: str | None = None
+    url: str | None = None
+    descargar_url: str | None = None
 
 
 class GlosaOut(GlosaIn):
     """Esquema para entregar glosas"""
 
-    id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
-    autoridad_clave: str | None
-    autoridad_descripcion: str | None
-    autoridad_descripcion_corta: str | None
-    creado: datetime | None
+    id: int | None = None
+    distrito_id: int | None = None
+    distrito_clave: str | None = None
+    distrito_nombre: str | None = None
+    distrito_nombre_corto: str | None = None
+    autoridad_clave: str | None = None
+    autoridad_descripcion: str | None = None
+    autoridad_descripcion_corta: str | None = None
+    creado: datetime | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

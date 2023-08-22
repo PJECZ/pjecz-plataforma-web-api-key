@@ -9,9 +9,9 @@ from lib.schemas_base import OneBaseOut
 class InvRedOut(BaseModel):
     """Esquema para entregar redes"""
 
-    id: int | None
-    nombre: str | None
-    tipo: str | None
+    id: int | None = None
+    nombre: str | None = None
+    tipo: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

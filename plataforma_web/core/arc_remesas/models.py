@@ -25,18 +25,6 @@ class ArcRemesa(Base, UniversalMixin):
         ]
     )
 
-    TIPOS_DOCUMENTOS = OrderedDict(
-        [
-            ("CUADERNILLO", "Cuadernillo"),
-            ("ENCOMIENDA", "Encomienda"),
-            ("EXHORTO", "Exhorto"),
-            ("EXPEDIENTE", "Expediente"),
-            ("EXPEDIENTILLO", "Expedientillo"),
-            ("FOLIO", "Folio"),
-            ("LIBRO", "Libro"),
-        ]
-    )
-
     RAZONES = OrderedDict(
         [
             ("SIN ORDEN CRONOLÓGICO", "Sin orden cronológico."),
@@ -62,11 +50,6 @@ class ArcRemesa(Base, UniversalMixin):
     rechazo = Column(String(256))
     observaciones = Column(String(256))
     tiempo_enviado = Column(DateTime)
-    tipo_documentos = Column(
-        Enum(*TIPOS_DOCUMENTOS, name="tipos", native_enum=False),
-        index=True,
-        nullable=False,
-    )
     num_documentos = Column(Integer, nullable=False)
     num_anomalias = Column(Integer, nullable=False)
     razon = Column(

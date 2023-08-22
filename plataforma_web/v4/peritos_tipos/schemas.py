@@ -9,8 +9,8 @@ from lib.schemas_base import OneBaseOut
 class PeritoTipoListOut(BaseModel):
     """Esquema para entregar tipos de peritos"""
 
-    id: int | None
-    nombre: str | None
+    id: int | None = None
+    nombre: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

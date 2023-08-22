@@ -11,26 +11,26 @@ from lib.schemas_base import OneBaseOut
 class ArcSolicitudOut(BaseModel):
     """Esquema para entregar solicitudes"""
 
-    id: int | None
-    arc_documento_id: int | None
-    distrito_id: int | None
-    distrito_clave: str | None
-    distrito_nombre: str | None
-    distrito_nombre_corto: str | None
-    autoridad_clave: str | None
-    autoridad_descripcion: str | None
-    usuario_asignado_id: int | None
-    usuario_asignado_email: str | None
-    usuario_asignado_nombre: str | None
-    usuario_receptor_id: int | None
-    esta_archivado: bool | None
-    num_folio: str | None
-    tiempo_recepcion: datetime | None
-    fojas: int | None
-    estado: str | None
-    razon: str | None
-    observaciones_solicitud: str | None
-    observaciones_razon: str | None
+    id: int | None = None
+    arc_documento_id: int | None = None
+    distrito_id: int | None = None
+    distrito_clave: str | None = None
+    distrito_nombre: str | None = None
+    distrito_nombre_corto: str | None = None
+    autoridad_clave: str | None = None
+    autoridad_descripcion: str | None = None
+    usuario_asignado_id: int | None = None
+    usuario_asignado_email: str | None = None
+    usuario_asignado_nombre: str | None = None
+    usuario_receptor_id: int | None = None
+    esta_archivado: bool | None = None
+    num_folio: str | None = None
+    tiempo_recepcion: datetime | None = None
+    fojas: int | None = None
+    estado: str | None = None
+    razon: str | None = None
+    observaciones_solicitud: str | None = None
+    observaciones_razon: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

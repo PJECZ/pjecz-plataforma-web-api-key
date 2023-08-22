@@ -13,12 +13,20 @@ X-Api-Key: {{api_key}}
 GET {{baseUrl}}/modulos/27
 X-Api-Key: {{api_key}}
 
+### Modulo con id 999999 que no existe
+GET {{baseUrl}}/modulos/999999
+X-Api-Key: {{api_key}}
+
 ### Roles
 GET {{baseUrl}}/roles
 X-Api-Key: {{api_key}}
 
 ### Rol con id 1 que es el ADMINISTRADOR
 GET {{baseUrl}}/roles/1
+X-Api-Key: {{api_key}}
+
+### Rol con id 999999 que no existe
+GET {{baseUrl}}/roles/999999
 X-Api-Key: {{api_key}}
 
 ### Usuarios
@@ -32,4 +40,8 @@ X-Api-Key: {{api_key}}
 
 ### Usuario slt.mercantil.2do@pjecz.gob.mx
 GET {{baseUrl}}/usuarios/slt.mercantil.2do@pjecz.gob.mx
+X-Api-Key: {{api_key}}
+
+### Usuario no.existe.999999@pjecz.gob.mx
+GET {{baseUrl}}/usuarios/no.existe.999999@pjecz.gob.mx
 X-Api-Key: {{api_key}}
