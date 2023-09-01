@@ -44,7 +44,7 @@ class ArcRemesa(Base, UniversalMixin):
     usuario_asignado = relationship("Usuario", back_populates="arc_remesas_asignadas")
 
     # Columnas
-    anio = Column(Integer, nullable=False)
+    anio = Column(String(16), nullable=False)
     esta_archivado = Column(Boolean, nullable=False, default=False)
     num_oficio = Column(String(16))
     rechazo = Column(String(256))
@@ -52,16 +52,8 @@ class ArcRemesa(Base, UniversalMixin):
     tiempo_enviado = Column(DateTime)
     num_documentos = Column(Integer, nullable=False)
     num_anomalias = Column(Integer, nullable=False)
-    razon = Column(
-        Enum(*RAZONES, name="razones", native_enum=False),
-        index=True,
-        nullable=False,
-    )
-    estado = Column(
-        Enum(*ESTADOS, name="estados", native_enum=False),
-        index=True,
-        nullable=False,
-    )
+    razon = Column(Enum(*RAZONES, name="razones", native_enum=False), index=True, nullable=False)
+    estado = Column(Enum(*ESTADOS, name="estados", native_enum=False), index=True, nullable=False)
 
     # Hijos
     arc_remesas_documentos = relationship("ArcRemesaDocumento", back_populates="arc_remesa")
