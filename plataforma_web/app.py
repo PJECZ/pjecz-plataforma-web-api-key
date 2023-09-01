@@ -60,7 +60,7 @@ def create_app() -> FastAPI:
     # FastAPI
     app = FastAPI(
         title="PJECZ Plataforma Web API Key",
-        description="Bienvenido a PJECZ Plataforma Web API Key. Esta API es para trabajar con los datos de Plataforma Web. Se requiere tener una api-key para usarse.",
+        description="API con autentificación para realizar operaciones con la base de datos de Plataforma Web. Hecho con FastAPI.",
         docs_url="/docs",
         redoc_url=None,
     )
@@ -129,7 +129,7 @@ def create_app() -> FastAPI:
     @app.get("/")
     async def root():
         """Mensaje de Bienvenida"""
-        return {"message": "Bienvenido a PJECZ Plataforma Web API Key. Esta API es para trabajar con los datos de Plataforma Web. Se requiere tener una api-key para usarse."}
+        return {"message": "API con autentificación para realizar operaciones con la base de datos de Plataforma Web. Hecho con FastAPI."}
 
     # Entregar
     return app

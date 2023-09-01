@@ -5,13 +5,11 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
-from lib.safe_string import safe_email
+from lib.exceptions import MyIsDeletedError, MyNotExistsError
 
 from ...core.bitacoras.models import Bitacora
-from ...core.usuarios.models import Usuario
 from ..modulos.crud import get_modulo, get_modulo_with_nombre
-from ..usuarios.crud import get_usuario
+from ..usuarios.crud import get_usuario, get_usuario_with_email
 
 
 def get_bitacoras(
@@ -31,13 +29,10 @@ def get_bitacoras(
         consulta = consulta.filter_by(modulo_id=modulo.id)
     if usuario_id is not None:
         usuario = get_usuario(database, usuario_id)
-        consulta = consulta.filter(usuario == usuario)
-    if usuario_email is not None:
-        try:
-            usuario_email = safe_email(usuario_email, search_fragment=True)
-        except ValueError as error:
-            raise MyNotValidParamError("El email no es válido") from error
-        consulta = consulta.join(Usuario).filter(Usuario.email.ilike(usuario_email))
+        consulta = consulta.filter_by(usuario_id=usuario.id)
+    elif usuario_email is not None:
+        usuario = get_usuario_with_email(database, usuario_email)
+        consulta = consulta.filter_by(usuario_id=usuario.id)
     return consulta.filter_by(estatus="A").order_by(Bitacora.id.desc())
 
 

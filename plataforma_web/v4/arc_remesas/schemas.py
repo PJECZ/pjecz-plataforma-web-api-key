@@ -22,7 +22,7 @@ class ArcRemesaOut(BaseModel):
     usuario_asignado_id: int | None = None
     usuario_asignado_email: str | None = None
     usuario_asignado_nombre: str | None = None
-    anio: int | None = None
+    anio: str | None = None
     esta_archivado: bool | None = None
     num_oficio: str | None = None
     rechazo: str | None = None

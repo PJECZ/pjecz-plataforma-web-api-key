@@ -20,10 +20,10 @@ def get_entradas_salidas(
     consulta = database.query(EntradaSalida)
     if usuario_id is not None:
         usuario = get_usuario(database, usuario_id)
-        consulta = consulta.filter(usuario == usuario)
+        consulta = consulta.filter_by(usuario_id=usuario.id)
     elif usuario_email is not None:
         usuario = get_usuario_with_email(database, usuario_email)
-        consulta = consulta.filter(usuario == usuario)
+        consulta = consulta.filter_by(usuario_id=usuario.id)
     return consulta.filter_by(estatus="A").order_by(EntradaSalida.id.desc())
 
 

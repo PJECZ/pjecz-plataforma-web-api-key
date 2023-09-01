@@ -76,10 +76,10 @@ def get_usuario(database: Session, usuario_id: int) -> Usuario:
     return usuario
 
 
-def get_usuario_with_email(database: Session, email: str) -> Usuario:
+def get_usuario_with_email(database: Session, usuario_email: str) -> Usuario:
     """Consultar un usuario por su email"""
     try:
-        email = safe_email(email)
+        email = safe_email(usuario_email)
     except ValueError as error:
         raise MyNotValidParamError("El email no es válido") from error
     usuario = database.query(Usuario).filter_by(email=email).first()
