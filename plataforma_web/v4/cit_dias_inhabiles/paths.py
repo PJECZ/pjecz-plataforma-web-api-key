@@ -15,7 +15,13 @@ from lib.fastapi_pagination_custom_page import CustomPage
 from ...core.cit_dias_inhabiles.models import CitDiaInhabil
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import create_cit_dia_inhabil, delete_cit_dia_inhabil, get_cit_dia_inhabil, get_cit_dias_inhabiles, update_cit_dia_inhabil
+from .crud import (
+    create_cit_dia_inhabil,
+    delete_cit_dia_inhabil,
+    get_cit_dia_inhabil,
+    get_cit_dias_inhabiles,
+    update_cit_dia_inhabil,
+)
 from .schemas import CitDiaInhabilIn, CitDiaInhabilListOut, CitDiaInhabilOut, OneCitDiaInhabilOut
 
 cit_dias_inhabiles = APIRouter(prefix="/v4/cit_dias_inhabiles", tags=["citas"])
@@ -89,7 +95,7 @@ async def crear_cit_dia_inhabil(
     if current_user.permissions.get("CIT DIAS INHABILES", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        cit_dia_inhabil = create_cit_dia_inhabil(database, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
+        cit_dia_inhabil = create_cit_dia_inhabil(database, CitDiaInhabil(**cit_dia_inhabil_in.model_dump()))
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
     respuesta = OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)
@@ -108,7 +114,7 @@ async def modificar_cit_dia_inhabil(
     if current_user.permissions.get("CIT DIAS INHABILES", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        cit_dia_inhabil = update_cit_dia_inhabil(database, cit_dia_inhabil_id, CitDiaInhabil(**cit_dia_inhabil_in.dict()))
+        cit_dia_inhabil = update_cit_dia_inhabil(database, cit_dia_inhabil_id, CitDiaInhabil(**cit_dia_inhabil_in.model_dump()))
     except MyAnyError as error:
         return OneCitDiaInhabilOut(success=False, message=str(error))
     respuesta = OneCitDiaInhabilOut.model_validate(cit_dia_inhabil)

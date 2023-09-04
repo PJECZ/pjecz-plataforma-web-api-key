@@ -81,7 +81,7 @@ async def crear_audiencia(
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = create_audiencia(database, Audiencia(**audiencia_in.dict()))
+        audiencia = create_audiencia(database, Audiencia(**audiencia_in.model_dump()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     respuesta = OneAudienciaOut.model_validate(audiencia)
@@ -100,7 +100,7 @@ async def modificar_audiencia(
     if current_user.permissions.get("AUDIENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        audiencia = update_audiencia(database, audiencia_id, Audiencia(**audiencia_in.dict()))
+        audiencia = update_audiencia(database, audiencia_id, Audiencia(**audiencia_in.model_dump()))
     except MyAnyError as error:
         return OneAudienciaOut(success=False, message=str(error))
     respuesta = OneAudienciaOut.model_validate(audiencia)

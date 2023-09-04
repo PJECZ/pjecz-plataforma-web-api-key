@@ -15,7 +15,14 @@ from lib.fastapi_pagination_custom_page import CustomPage
 from ...core.permisos.models import Permiso
 from ...core.sentencias.models import Sentencia
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import create_sentencia, delete_sentencia, elaborate_daily_report_sentencias, get_sentencia, get_sentencias, update_sentencia
+from .crud import (
+    create_sentencia,
+    delete_sentencia,
+    elaborate_daily_report_sentencias,
+    get_sentencia,
+    get_sentencias,
+    update_sentencia,
+)
 from .schemas import OneSentenciaOut, SentenciaIn, SentenciaOut
 
 sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
@@ -114,7 +121,7 @@ async def crear_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = create_sentencia(database, Sentencia(**sentencia_in.dict()))
+        sentencia = create_sentencia(database, Sentencia(**sentencia_in.model_dump()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     respuesta = OneSentenciaOut.model_validate(sentencia)
@@ -133,7 +140,7 @@ async def modificar_sentencia(
     if current_user.permissions.get("SENTENCIAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        sentencia = update_sentencia(database, sentencia_id, Sentencia(**sentencia_in.dict()))
+        sentencia = update_sentencia(database, sentencia_id, Sentencia(**sentencia_in.model_dump()))
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     respuesta = OneSentenciaOut.model_validate(sentencia)
