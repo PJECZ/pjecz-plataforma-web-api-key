@@ -68,7 +68,7 @@ async def crear_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = create_abogado(database, Abogado(**abogado_in.dict()))
+        abogado = create_abogado(database, Abogado(**abogado_in.model_dump()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     respuesta = OneAbogadoOut.model_validate(abogado)
@@ -87,7 +87,7 @@ async def modificar_abogado(
     if current_user.permissions.get("ABOGADOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        abogado = update_abogado(database, abogado_id, Abogado(**abogado_in.dict()))
+        abogado = update_abogado(database, abogado_id, Abogado(**abogado_in.model_dump()))
     except MyAnyError as error:
         return OneAbogadoOut(success=False, message=str(error))
     respuesta = OneAbogadoOut.model_validate(abogado)

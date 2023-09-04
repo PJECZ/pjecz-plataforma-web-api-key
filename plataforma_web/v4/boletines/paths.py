@@ -69,7 +69,7 @@ async def crear_boletin(
     if current_user.permissions.get("BOLETINES", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        boletin = create_boletin(database, Boletin(**boletin_in.dict()))
+        boletin = create_boletin(database, Boletin(**boletin_in.model_dump()))
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
     respuesta = OneBoletinOut.model_validate(boletin)
@@ -88,7 +88,7 @@ async def modificar_boletin(
     if current_user.permissions.get("BOLETINES", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        boletin = update_boletin(database, boletin_id, boletin_in)
+        boletin = update_boletin(database, boletin_id, Boletin(**boletin_in.model_dump()))
     except MyAnyError as error:
         return OneBoletinOut(success=False, message=str(error))
     respuesta = OneBoletinOut.model_validate(boletin)

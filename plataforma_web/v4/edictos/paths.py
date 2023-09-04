@@ -114,7 +114,7 @@ async def crear_edicto(
     if current_user.permissions.get("EDICTOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        edicto = create_edicto(database, Edicto(**edicto_in.dict()))
+        edicto = create_edicto(database, Edicto(**edicto_in.model_dump()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
     respuesta = OneEdictoOut.model_validate(edicto)
@@ -133,7 +133,7 @@ async def modificar_edicto(
     if current_user.permissions.get("EDICTOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        edicto = update_edicto(database, edicto_id, edicto_in=Edicto(**edicto_in.dict()))
+        edicto = update_edicto(database, edicto_id, edicto_in=Edicto(**edicto_in.model_dump()))
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
     respuesta = OneEdictoOut.model_validate(edicto)

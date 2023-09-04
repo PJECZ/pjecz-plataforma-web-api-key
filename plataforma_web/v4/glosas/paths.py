@@ -114,7 +114,7 @@ async def crear_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = create_glosa(database, Glosa(**glosa_in.dict()))
+        glosa = create_glosa(database, Glosa(**glosa_in.model_dump()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     respuesta = OneGlosaOut.model_validate(glosa)
@@ -133,7 +133,7 @@ async def modificar_glosa(
     if current_user.permissions.get("GLOSAS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        glosa = update_glosa(database, glosa_id, Glosa(**glosa_in.dict()))
+        glosa = update_glosa(database, glosa_id, Glosa(**glosa_in.model_dump()))
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     respuesta = OneGlosaOut.model_validate(glosa)

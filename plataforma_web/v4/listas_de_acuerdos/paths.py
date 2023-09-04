@@ -15,7 +15,14 @@ from lib.fastapi_pagination_custom_page import CustomPage
 from ...core.listas_de_acuerdos.models import ListaDeAcuerdo
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import create_lista_de_acuerdo, delete_lista_de_acuerdo, elaborate_daily_report_listas_de_acuerdos, get_lista_de_acuerdo, get_listas_de_acuerdos, update_lista_de_acuerdo
+from .crud import (
+    create_lista_de_acuerdo,
+    delete_lista_de_acuerdo,
+    elaborate_daily_report_listas_de_acuerdos,
+    get_lista_de_acuerdo,
+    get_listas_de_acuerdos,
+    update_lista_de_acuerdo,
+)
 from .schemas import ListaDeAcuerdoIn, ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 
 listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de acuerdos"])
@@ -112,7 +119,7 @@ async def crear_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.CREAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = create_lista_de_acuerdo(database, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
+        lista_de_acuerdo = create_lista_de_acuerdo(database, ListaDeAcuerdo(**lista_de_acuerdo_in.model_dump()))
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
@@ -131,7 +138,9 @@ async def modificar_lista_de_acuerdo(
     if current_user.permissions.get("LISTAS DE ACUERDOS", 0) < Permiso.MODIFICAR:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        lista_de_acuerdo = update_lista_de_acuerdo(database, lista_de_acuerdo_id, ListaDeAcuerdo(**lista_de_acuerdo_in.dict()))
+        lista_de_acuerdo = update_lista_de_acuerdo(
+            database, lista_de_acuerdo_id, ListaDeAcuerdo(**lista_de_acuerdo_in.model_dump())
+        )
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     respuesta = OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
