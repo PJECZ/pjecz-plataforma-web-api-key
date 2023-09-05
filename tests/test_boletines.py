@@ -14,7 +14,7 @@ class TestBoletines(unittest.TestCase):
     def test_get_boletines(self):
         """Test GET method for boletines"""
         response = requests.get(
-            f"{config['host']}/v4/boletines",
+            f"{config['api_base_url']}/boletines",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
