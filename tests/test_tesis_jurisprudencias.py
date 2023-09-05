@@ -14,7 +14,7 @@ class TestTesisJurisprudencias(unittest.TestCase):
     def test_get_epocas(self):
         """Test GET method for epocas"""
         response = requests.get(
-            f"{config['host']}/v4/epocas",
+            f"{config['api_base_url']}/epocas",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )
@@ -23,7 +23,7 @@ class TestTesisJurisprudencias(unittest.TestCase):
     def test_get_tesis_jurisprudencias(self):
         """Test GET method for tesis_jurisprudencias"""
         response = requests.get(
-            f"{config['host']}/v4/tesis_jurisprudencias",
+            f"{config['api_base_url']}/tesis_jurisprudencias",
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

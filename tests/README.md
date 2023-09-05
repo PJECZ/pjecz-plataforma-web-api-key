@@ -6,8 +6,8 @@ First create a `.env` file here with
 
 ```ini
 API_KEY=XXXXXXXX.XXXXXXXX.XXXXXXXXXXXXXXXXXXXXXXXX
-HOST=http://127.0.0.1:8002
-TIMEOUT=2
+API_BASE_URL=http://127.0.0.1:8002/v4
+TIMEOUT=10
 ```
 
 ## Running the tests
