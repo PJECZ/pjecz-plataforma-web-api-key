@@ -15,13 +15,13 @@ class ArcRemesa(Base, UniversalMixin):
 
     ESTADOS = OrderedDict(
         [
-            ("PENDIENTE", "Pendiente"),  # El SOLICITANTE comienza una solicitud de Remesa
-            ("CANCELADO", "Cancelado"),  # El SOLICITANTE se arrepiente de crear una Remesa
-            ("ENVIADO", "Enviado"),  # El SOLICITANTE pide que recojan la remesa. El JEFE_REMESA ve el pedido
-            ("RECHAZADO", "Rechazado"),  # El JEFE_REMESA rechaza la remesa
-            ("ASIGNADO", "Asignado"),  # El JEFE_REMESA acepta la remesa y la asigna a un ARCHIVISTA
-            ("ARCHIVADO", "Archivado"),  # El ARCHIVISTA termina de procesar la remesa
-            ("ARCHIVADO CON ANOMALIA", "Archivado con Anomalía"),  # El ARCHIVISTA termina de procesar la remesa pero almenos un documento presentó anomalía
+            ("PENDIENTE", "Pendiente"),
+            ("CANCELADO", "Cancelado"),
+            ("ENVIADO", "Enviado"),
+            ("RECHAZADO", "Rechazado"),
+            ("ASIGNADO", "Asignado"),
+            ("ARCHIVADO", "Archivado"),
+            ("ARCHIVADO CON ANOMALIA", "Archivado con Anomalía"),
         ]
     )
 
@@ -48,7 +48,6 @@ class ArcRemesa(Base, UniversalMixin):
     esta_archivado = Column(Boolean, nullable=False, default=False)
     num_oficio = Column(String(16))
     rechazo = Column(String(256))
-    observaciones = Column(String(256))
     tiempo_enviado = Column(DateTime)
     num_documentos = Column(Integer, nullable=False)
     num_anomalias = Column(Integer, nullable=False)

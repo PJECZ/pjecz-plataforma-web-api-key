@@ -26,7 +26,6 @@ class ArcRemesaOut(BaseModel):
     esta_archivado: bool | None = None
     num_oficio: str | None = None
     rechazo: str | None = None
-    observaciones: str | None = None
     tiempo_enviado: datetime | None = None
     num_documentos: int | None = None
     num_anomalias: int | None = None
