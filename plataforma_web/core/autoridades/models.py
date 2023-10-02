@@ -48,17 +48,22 @@ class Autoridad(Base, UniversalMixin):
     # Columnas
     clave = Column(String(16), nullable=False, unique=True)
     descripcion = Column(String(256), nullable=False)
-    descripcion_corta = Column(String(64), nullable=False, default="")
-    es_archivo_solicitante = Column(Boolean, nullable=False, default=False)
-    es_cemasc = Column(Boolean, nullable=False, default=False)
-    es_defensoria = Column(Boolean, nullable=False, default=False)
-    es_jurisdiccional = Column(Boolean(), nullable=False, default=False)
-    es_notaria = Column(Boolean(), nullable=False, default=False)
+    descripcion_corta = Column(String(64), nullable=False)
+    es_cemasc = Column(Boolean, nullable=False)
+    es_defensoria = Column(Boolean, nullable=False)
+    es_extinto = Column(Boolean, nullable=False)
+    es_jurisdiccional = Column(Boolean, nullable=False)
+    es_notaria = Column(Boolean, nullable=False)
+    es_organo_especializado = Column(Boolean, nullable=False)
     organo_jurisdiccional = Column(
         Enum(*ORGANOS_JURISDICCIONALES, name="tipos_organos_jurisdiccionales", native_enum=False),
         index=True,
         nullable=False,
     )
+    directorio_edictos = Column(String(256), nullable=False)
+    directorio_glosas = Column(String(256), nullable=False)
+    directorio_listas_de_acuerdos = Column(String(256), nullable=False)
+    directorio_sentencias = Column(String(256), nullable=False)
     audiencia_categoria = Column(
         Enum(*AUDIENCIAS_CATEGORIAS, name="tipos_audiencias_categorias", native_enum=False),
         index=True,

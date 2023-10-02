@@ -34,20 +34,6 @@ class TestAutoridades(unittest.TestCase):
         for item in data["items"]:
             self.assertEqual(item["es_cemasc"], 1)
 
-    def test_get_autoridades_by_es_creador_glosas(self):
-        """Test GET method for autoridades by es_creador_glosas"""
-        response = requests.get(
-            f"{config['api_base_url']}/autoridades",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"es_creador_glosas": 1},
-            timeout=config["timeout"],
-        )
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(data["success"], True)
-        for item in data["items"]:
-            self.assertEqual(item["es_creador_glosas"], 1)
-
     def test_get_autoridades_by_es_defensoria(self):
         """Test GET method for autoridades by es_defensoria"""
         response = requests.get(
@@ -61,6 +47,20 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(data["success"], True)
         for item in data["items"]:
             self.assertEqual(item["es_defensoria"], 1)
+
+    def test_get_autoridades_by_es_extinto(self):
+        """Test GET method for autoridades by es_extinto"""
+        response = requests.get(
+            f"{config['api_base_url']}/autoridades",
+            headers={"X-Api-Key": config["api_key"]},
+            params={"es_extinto": 1},
+            timeout=config["timeout"],
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["success"], True)
+        for item in data["items"]:
+            self.assertEqual(item["es_extinto"], 1)
 
     def test_get_autoridades_by_es_jurisdiccional(self):
         """Test GET method for autoridades by es_jurisdiccional"""
@@ -89,6 +89,20 @@ class TestAutoridades(unittest.TestCase):
         self.assertEqual(data["success"], True)
         for item in data["items"]:
             self.assertEqual(item["es_notaria"], 1)
+
+    def test_get_autoridades_by_es_organo_especializado(self):
+        """Test GET method for autoridades by es_organo_especializado"""
+        response = requests.get(
+            f"{config['api_base_url']}/autoridades",
+            headers={"X-Api-Key": config["api_key"]},
+            params={"es_organo_especializado": 1},
+            timeout=config["timeout"],
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["success"], True)
+        for item in data["items"]:
+            self.assertEqual(item["es_organo_especializado"], 1)
 
 
 if __name__ == "__main__":
