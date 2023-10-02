@@ -17,12 +17,12 @@ def get_autoridades(
     database: Session,
     distrito_id: int = None,
     distrito_clave: str = None,
-    es_archivo_solicitante: bool = None,
     es_cemasc: bool = None,
-    es_creador_glosas: bool = None,
     es_defensoria: bool = None,
+    es_extinto: bool = None,
     es_jurisdiccional: bool = None,
     es_notaria: bool = None,
+    es_organo_especializado: bool = None,
     materia_id: int = None,
     materia_clave: str = None,
 ) -> Any:
@@ -34,18 +34,18 @@ def get_autoridades(
     elif distrito_clave is not None:
         distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.filter_by(distrito_id=distrito.id)
-    if es_archivo_solicitante is not None:
-        consulta = consulta.filter_by(es_archivo_solicitante=es_archivo_solicitante)
     if es_cemasc is not None:
         consulta = consulta.filter_by(es_cemasc=es_cemasc)
-    if es_creador_glosas is True:
-        consulta = consulta.filter(Autoridad.organo_jurisdiccional.in_(["PLENO O SALA DEL TSJ", "TRIBUNAL DE CONCILIACION Y ARBITRAJE"]))
     if es_defensoria is not None:
         consulta = consulta.filter_by(es_defensoria=es_defensoria)
+    if es_extinto is not None:
+        consulta = consulta.filter_by(es_extinto=es_extinto)
     if es_jurisdiccional is not None:
         consulta = consulta.filter_by(es_jurisdiccional=es_jurisdiccional)
     if es_notaria is not None:
         consulta = consulta.filter_by(es_notaria=es_notaria)
+    if es_organo_especializado is not None:
+        consulta = consulta.filter_by(es_organo_especializado=es_organo_especializado)
     if materia_id is not None:
         materia = get_materia(database, materia_id)
         consulta = consulta.filter_by(materia_id=materia.id)
