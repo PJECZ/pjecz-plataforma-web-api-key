@@ -63,12 +63,16 @@ Por defecto, con **poetry** el entorno se guarda en un directorio en `~/.cache/p
 
 Modifique para que el entorno se guarde en el mismo directorio que el proyecto
 
-    poetry config --list
-    poetry config virtualenvs.in-project true
+```bash
+poetry config --list
+poetry config virtualenvs.in-project true
+```
 
 Verifique que este en True
 
-    poetry config virtualenvs.in-project
+```bash
+poetry config virtualenvs.in-project
+```
 
 ## Configuracion
 
@@ -104,7 +108,6 @@ TZ=America/Mexico_City
 Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
 
 ```bash
-
 if [ -f ~/.bashrc ]
 then
     . ~/.bashrc
