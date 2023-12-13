@@ -42,7 +42,7 @@ def get_arc_documentos(
             consulta = consulta.filter_by(ubicacion=ubicacion)
         else:
             raise MyNotValidParamError("No es válida la ubicación")
-    return consulta.filter_by(estatus="A").order_by(ArcDocumento.id.desc())
+    return consulta.filter(ArcDocumento.estatus == "A").order_by(ArcDocumento.id.desc())
 
 
 def get_arc_documento(database: Session, arc_documento_id: int) -> ArcDocumento:
