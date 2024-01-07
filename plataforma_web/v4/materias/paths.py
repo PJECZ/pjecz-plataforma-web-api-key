@@ -39,12 +39,13 @@ async def paginado_materias(
 async def listado_materias(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
+    en_sentencias: bool = None,
 ):
     """Listado de materias"""
     if current_user.permissions.get("MATERIAS", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_materias(database)
+        resultados = get_materias(database, en_sentencias)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)
