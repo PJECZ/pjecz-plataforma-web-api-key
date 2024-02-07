@@ -39,13 +39,15 @@ class Usuario(Base, UniversalMixin):
 
     # Columnas
     email = Column(String(256), nullable=False, unique=True, index=True)
-    nombres = Column(String(256), nullable=False)
-    apellido_paterno = Column(String(256), nullable=False)
+    email_personal = Column(String(256), nullable=False, default="", server_default="")
+    nombres = Column(String(256), nullable=False, default="", server_default="")
+    apellido_paterno = Column(String(256), nullable=False, default="", server_default="")
     apellido_materno = Column(String(256))
     curp = Column(String(18))
     puesto = Column(String(256))
-    telefono = Column(String(48), nullable=False)
-    extension = Column(String(24), nullable=False)
+    telefono = Column(String(48), nullable=False, default="", server_default="")
+    telefono_celular = Column(String(48), nullable=False, default="", server_default="")
+    extension = Column(String(24), nullable=False, default="", server_default="")
     workspace = Column(
         Enum(*WORKSPACES, name="tipos_workspaces", native_enum=False),
         index=True,

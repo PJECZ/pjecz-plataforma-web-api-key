@@ -25,12 +25,14 @@ class UsuarioOut(BaseModel):
     oficina_id: int | None = None
     oficina_clave: str | None = None
     email: str | None = None
+    email_personal: str | None = None
     nombres: str | None = None
     apellido_paterno: str | None = None
     apellido_materno: str | None = None
     curp: str | None = None
     puesto: str | None = None
     telefono: str | None = None
+    telefono_celular: str | None = None
     extension: str | None = None
     workspace: str | None = None
     model_config = ConfigDict(from_attributes=True)
