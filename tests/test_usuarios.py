@@ -20,11 +20,11 @@ class TestUsuarios(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_get_bitacoras_with_modulo_clave(self):
-        """Test GET method for bitacoras with modulo_clave USUARIOS"""
+    def test_get_bitacoras_with_modulo_nombre(self):
+        """Test GET method for bitacoras with modulo_nombre USUARIOS"""
         response = requests.get(
             f"{config['api_base_url']}/bitacoras",
-            params={"modulo_clave": "USUARIOS"},
+            params={"modulo_nombre": "USUARIOS"},
             headers={"X-Api-Key": config["api_key"]},
             timeout=config["timeout"],
         )

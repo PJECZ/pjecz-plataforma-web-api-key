@@ -1,6 +1,7 @@
 """
 Usuarios, modelos
 """
+
 from collections import OrderedDict
 
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
@@ -106,6 +107,11 @@ class Usuario(Base, UniversalMixin):
     def autoridad_descripcion_corta(self):
         """Autoridad descripción corta"""
         return self.autoridad.descripcion_corta
+
+    @property
+    def autoridad_directorio_edictos(self):
+        """Autoridad directorio edictos"""
+        return self.autoridad.directorio_edictos
 
     @property
     def oficina_clave(self):

@@ -1,6 +1,7 @@
 """
 Usuarios v3, esquemas de pydantic
 """
+
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
@@ -20,6 +21,7 @@ class UsuarioOut(BaseModel):
     autoridad_clave: str | None = None
     autoridad_descripcion: str | None = None
     autoridad_descripcion_corta: str | None = None
+    autoridad_directorio_edictos: str | None = None
     oficina_id: int | None = None
     oficina_clave: str | None = None
     email: str | None = None
