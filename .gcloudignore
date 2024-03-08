@@ -11,11 +11,11 @@
 *.xlsx
 
 __pycache__/
-
 /.git
 /.github
 /.venv
 /.vscode
+/poetry.lock
 /rest-client
 /tests
 /venv
