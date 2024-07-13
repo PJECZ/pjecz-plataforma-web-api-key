@@ -1,10 +1,12 @@
 """
 Inventarios Equipos, modelos
 """
-from collections import OrderedDict
 
-from sqlalchemy import Column, Date, Enum, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from datetime import date
+from typing import List, Optional
+
+from sqlalchemy import Enum, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -13,49 +15,47 @@ from lib.universal_mixin import UniversalMixin
 class InvEquipo(Base, UniversalMixin):
     """InvEquipo"""
 
-    TIPOS = OrderedDict(
-        [
-            ("COMPUTADORA", "COMPUTADORA"),
-            ("LAPTOP", "LAPTOP"),
-            ("IMPRESORA", "IMPRESORA"),
-            ("MULTIFUNCIONAL", "MULTIFUNCIONAL"),
-            ("TELEFONIA", "TELEFONIA"),
-            ("SERVIDOR", "SERVIDOR"),
-            ("SCANNER", "SCANNER"),
-            ("SWITCH", "SWITCH"),
-            ("VIDEOGRABACION", "VIDEOGRABACION"),
-            ("OTROS", "OTROS"),
-        ]
-    )
+    TIPOS = {
+        "COMPUTADORA": "COMPUTADORA",
+        "LAPTOP": "LAPTOP",
+        "IMPRESORA": "IMPRESORA",
+        "MULTIFUNCIONAL": "MULTIFUNCIONAL",
+        "TELEFONIA": "TELEFONIA",
+        "SERVIDOR": "SERVIDOR",
+        "SCANNER": "SCANNER",
+        "SWITCH": "SWITCH",
+        "VIDEOGRABACION": "VIDEOGRABACION",
+        "OTROS": "OTROS",
+    }
 
     # Nombre de la tabla
     __tablename__ = "inv_equipos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    inv_custodia_id = Column(Integer, ForeignKey("inv_custodias.id"), index=True, nullable=False)
-    inv_custodia = relationship("InvCustodia", back_populates="inv_equipos")
-    inv_modelo_id = Column(Integer, ForeignKey("inv_modelos.id"), index=True, nullable=False)
-    inv_modelo = relationship("InvModelo", back_populates="inv_equipos")
-    inv_red_id = Column(Integer, ForeignKey("inv_redes.id"), index=True, nullable=False)
-    inv_red = relationship("InvRed", back_populates="inv_equipos")
+    inv_custodia_id: Mapped[int] = mapped_column(ForeignKey("inv_custodias.id"))
+    inv_custodia: Mapped["InvCustodia"] = relationship(back_populates="inv_equipos")
+    inv_modelo_id: Mapped[int] = mapped_column(ForeignKey("inv_modelos.id"))
+    inv_modelo: Mapped["InvModelo"] = relationship(back_populates="inv_equipos")
+    inv_red_id: Mapped[int] = mapped_column(ForeignKey("inv_redes.id"))
+    inv_red: Mapped["InvRed"] = relationship(back_populates="inv_equipos")
 
     # Columnas
-    fecha_fabricacion = Column(Date())
-    numero_serie = Column(String(256))
-    numero_inventario = Column(Integer())
-    descripcion = Column(String(256), nullable=False)
-    tipo = Column(Enum(*TIPOS, name="tipos", native_enum=False), index=True, nullable=False)
-    direccion_ip = Column(String(256))
-    direccion_mac = Column(String(256))
-    numero_nodo = Column(Integer())
-    numero_switch = Column(Integer())
-    numero_puerto = Column(Integer())
+    fecha_fabricacion: Mapped[Optional[date]]
+    numero_serie: Mapped[Optional[str]] = mapped_column(String(256))
+    numero_inventario: Mapped[Optional[str]]
+    descripcion: Mapped[str] = mapped_column(String(256))
+    tipo: Mapped[str] = mapped_column(Enum(*TIPOS, name="tipos", native_enum=False), index=True)
+    direccion_ip: Mapped[Optional[str]] = mapped_column(String(256))
+    direccion_mac: Mapped[Optional[str]] = mapped_column(String(256))
+    numero_nodo: Mapped[Optional[int]]
+    numero_switch: Mapped[Optional[int]]
+    numero_puerto: Mapped[Optional[int]]
 
     # Hijos
-    inv_componentes = relationship("InvComponente", back_populates="inv_equipo")
+    inv_componentes: Mapped[List["InvComponente"]] = relationship("InvComponente", back_populates="inv_equipo", lazy="dynamic")
 
     @property
     def inv_custodia_nombre_completo(self):

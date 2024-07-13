@@ -1,8 +1,11 @@
 """
 Materias-Tipos de Juicios, modelos
 """
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,17 +18,17 @@ class MateriaTipoJuicio(Base, UniversalMixin):
     __tablename__ = "materias_tipos_juicios"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Clave foránea
-    materia_id = Column(Integer, ForeignKey("materias.id"), index=True, nullable=False)
-    materia = relationship("Materia", back_populates="materias_tipos_juicios")
+    materia_id: Mapped[int] = mapped_column(ForeignKey("materias.id"))
+    materia: Mapped["Materia"] = relationship(back_populates="materias_tipos_juicios")
 
     # Columnas
-    descripcion = Column(String(256), nullable=False)
+    descripcion: Mapped[str] = mapped_column(String(256))
 
     # Hijos
-    sentencias = relationship("Sentencia", back_populates="materia_tipo_juicio")
+    sentencias: Mapped[List["Sentencia"]] = relationship("Sentencia", back_populates="materia_tipo_juicio")
 
     @property
     def materia_clave(self):

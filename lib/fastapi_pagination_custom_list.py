@@ -60,7 +60,7 @@ class CustomListParams(Params):
     """
 
     page: int = Query(1, ge=1, description="Page number")
-    size: int = Query(500, ge=1, le=1000, description="Page size")
+    size: int = Query(10, ge=1, le=1000, description="Page size")
 
 
 T = TypeVar("T")

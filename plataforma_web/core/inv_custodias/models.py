@@ -1,13 +1,15 @@
 """
 Inventarios Custodias, modelos
 """
-from sqlalchemy import Column, Date, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from datetime import date
+from typing import List
+
+from sqlalchemy import Date, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
-
-from ..distritos.models import Distrito
 
 
 class InvCustodia(Base, UniversalMixin):
@@ -17,19 +19,19 @@ class InvCustodia(Base, UniversalMixin):
     __tablename__ = "inv_custodias"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Clave foránea
-    usuario_id = Column(Integer, ForeignKey("usuarios.id"), index=True, nullable=False)
-    usuario = relationship("Usuario", back_populates="inv_custodias")
+    usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"))
+    usuario: Mapped["Usuario"] = relationship(back_populates="inv_custodias")
 
     # Columnas
-    fecha = Column(Date, nullable=False, index=True)
-    curp = Column(String(256), nullable=True)
-    nombre_completo = Column(String(256))
+    fecha: Mapped[date] = mapped_column(Date(), index=True)
+    curp: Mapped[str] = mapped_column(String(256))
+    nombre_completo: Mapped[str] = mapped_column(String(256))
 
     # Hijos
-    inv_equipos = relationship("InvEquipo", back_populates="inv_custodia")
+    inv_equipos: Mapped[List["InvEquipo"]] = relationship("InvEquipo", back_populates="inv_custodia", lazy="dynamic")
 
     @property
     def distrito_id(self):

@@ -1,10 +1,11 @@
 """
 Inventarios Redes, modelos
 """
-from collections import OrderedDict
 
-from sqlalchemy import Column, Enum, Integer, String
-from sqlalchemy.orm import relationship
+from typing import List
+
+from sqlalchemy import Enum, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -13,25 +14,23 @@ from lib.universal_mixin import UniversalMixin
 class InvRed(Base, UniversalMixin):
     """InvRed"""
 
-    TIPOS = OrderedDict(
-        [
-            ("LAN", "Lan"),
-            ("WIRELESS", "Wireless"),
-        ]
-    )
+    TIPOS = {
+        "LAN": "Lan",
+        "WIRELESS": "Wireless",
+    }
 
     # Nombre de la tabla
     __tablename__ = "inv_redes"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Columnas
-    nombre = Column(String(256), unique=True, nullable=False)
-    tipo = Column(Enum(*TIPOS, name="tipos_redes", native_enum=False), index=True, nullable=False)
+    nombre: Mapped[str] = mapped_column(String(256), unique=True)
+    tipo: Mapped[str] = mapped_column(Enum(*TIPOS, name="tipos_redes", native_enum=False), index=True)
 
     # Hijos
-    inv_equipos = relationship("InvEquipo", back_populates="inv_red")
+    inv_equipos: Mapped[List["InvEquipo"]] = relationship("InvEquipo", back_populates="inv_red", lazy="dynamic")
 
     def __repr__(self):
         """Representación"""

@@ -1,8 +1,11 @@
 """
 Materias, modelos
 """
-from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,18 +18,18 @@ class Materia(Base, UniversalMixin):
     __tablename__ = "materias"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Columnas
-    clave = Column(String(16), nullable=False, unique=True)
-    nombre = Column(String(64), unique=True, nullable=False)
-    en_sentencias = Column(Boolean, nullable=False, default=False)
+    clave: Mapped[str] = mapped_column(String(16), unique=True)
+    nombre: Mapped[str] = mapped_column(String(256), unique=True)
+    descripcion: Mapped[str] = mapped_column(String(1024))
+    en_sentencias: Mapped[bool] = mapped_column(default=False)
 
     # Hijos
-    autoridades = relationship("Autoridad", back_populates="materia")
-    materias_tipos_juicios = relationship("MateriaTipoJuicio", back_populates="materia")
-    siga_grabaciones = relationship("SIGAGrabacion", back_populates="materia")
-    tesis_jurisprudencias = relationship("TesisJurisprudencia", back_populates="materia")
+    autoridades: Mapped[List["Autoridad"]] = relationship("Autoridad", back_populates="materia")
+    materias_tipos_juicios: Mapped[List["MateriaTipoJuicio"]] = relationship("MateriaTipoJuicio", back_populates="materia")
+    tesis_jurisprudencias: Mapped[List["TesisJurisprudencia"]] = relationship("TesisJurisprudencia", back_populates="materia")
 
     def __repr__(self):
         """Representación"""

@@ -1,8 +1,9 @@
 """
 Peritos, modelos
 """
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,21 +16,21 @@ class Perito(Base, UniversalMixin):
     __tablename__ = "peritos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    distrito_id = Column(Integer, ForeignKey("distritos.id"), index=True, nullable=False)
-    distrito = relationship("Distrito", back_populates="peritos")
-    perito_tipo_id = Column(Integer, ForeignKey("peritos_tipos.id"), index=True, nullable=False)
-    perito_tipo = relationship("PeritoTipo", back_populates="peritos")
+    distrito_id: Mapped[int] = mapped_column(ForeignKey("distritos.id"))
+    distrito: Mapped["Distrito"] = relationship(back_populates="peritos")
+    perito_tipo_id: Mapped[int] = mapped_column(ForeignKey("peritos_tipos.id"))
+    perito_tipo: Mapped["PeritoTipo"] = relationship(back_populates="peritos")
 
     # Columnas
-    nombre = Column(String(256), nullable=False)
-    domicilio = Column(String(256), nullable=False)
-    telefono_fijo = Column(String(64))
-    telefono_celular = Column(String(64))
-    email = Column(String(256))
-    notas = Column(String(256))
+    nombre: Mapped[str] = mapped_column(String(256))
+    domicilio: Mapped[str] = mapped_column(String(256))
+    telefono_fijo: Mapped[str] = mapped_column(String(64))
+    telefono_celular: Mapped[str] = mapped_column(String(64))
+    email: Mapped[str] = mapped_column(String(256))
+    notas: Mapped[str] = mapped_column(String(256))
 
     @property
     def distrito_clave(self):

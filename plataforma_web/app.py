@@ -1,6 +1,7 @@
 """
 PJECZ Plataforma Web API Key
 """
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
@@ -8,17 +9,10 @@ from fastapi_pagination import add_pagination
 from config.settings import get_settings
 
 from .v4.abogados.paths import abogados
-from .v4.arc_documentos.paths import arc_documentos
-from .v4.arc_juzgados_extintos.paths import arc_juzgados_extintos
-from .v4.arc_remesas.paths import arc_remesas
-from .v4.arc_remesas_documentos.paths import arc_remesas_documentos
-from .v4.arc_solicitudes.paths import arc_solicitudes
 from .v4.audiencias.paths import audiencias
 from .v4.autoridades.paths import autoridades
 from .v4.bitacoras.paths import bitacoras
-from .v4.boletines.paths import boletines
 from .v4.centros_trabajos.paths import centros_trabajos
-from .v4.cit_dias_inhabiles.paths import cit_dias_inhabiles
 from .v4.distritos.paths import distritos
 from .v4.domicilios.paths import domicilios
 from .v4.edictos.paths import edictos
@@ -45,9 +39,6 @@ from .v4.redam.paths import redam
 from .v4.repsvm_agresores.paths import repsvm_agresores
 from .v4.roles.paths import roles
 from .v4.sentencias.paths import sentencias
-from .v4.siga_bitacoras.paths import siga_bitacoras
-from .v4.siga_grabaciones.paths import siga_grabaciones
-from .v4.siga_salas.paths import siga_salas
 from .v4.tesis_jurisprudencias.paths import tesis_jurisprudencias
 from .v4.ubicaciones_expedientes.paths import ubicaciones_expedientes
 from .v4.usuarios.paths import usuarios
@@ -77,17 +68,10 @@ def create_app() -> FastAPI:
 
     # Rutas
     app.include_router(abogados)
-    app.include_router(arc_documentos)
-    app.include_router(arc_juzgados_extintos)
-    app.include_router(arc_remesas)
-    app.include_router(arc_remesas_documentos)
-    app.include_router(arc_solicitudes)
     app.include_router(audiencias)
     app.include_router(autoridades)
     app.include_router(bitacoras)
-    app.include_router(boletines)
     app.include_router(centros_trabajos)
-    app.include_router(cit_dias_inhabiles)
     app.include_router(distritos)
     app.include_router(domicilios)
     app.include_router(edictos)
@@ -114,9 +98,6 @@ def create_app() -> FastAPI:
     app.include_router(repsvm_agresores)
     app.include_router(roles)
     app.include_router(sentencias)
-    app.include_router(siga_bitacoras)
-    app.include_router(siga_grabaciones)
-    app.include_router(siga_salas)
     app.include_router(tesis_jurisprudencias)
     app.include_router(usuarios)
     app.include_router(usuarios_roles)

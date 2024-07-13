@@ -1,10 +1,11 @@
 """
 Tesis Jurisprudencias, modelos
 """
-from collections import OrderedDict
 
-from sqlalchemy import Column, Date, DateTime, Enum, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import relationship
+from datetime import date, datetime
+
+from sqlalchemy import Enum, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -13,59 +14,53 @@ from lib.universal_mixin import UniversalMixin
 class TesisJurisprudencia(Base, UniversalMixin):
     """TesisJurisprudencia"""
 
-    TIPOS = OrderedDict(
-        [
-            ("POR CONTRADICCION", "Por contradicción"),
-            ("REITERACION", "reiteración"),
-            ("REVALIDACION", "revalidación"),
-            ("DECLARACION", "declaración"),
-        ]
-    )
+    TIPOS = {
+        "POR CONTRADICCION": "Por contradicción",
+        "REITERACION": "reiteración",
+        "REVALIDACION": "revalidación",
+        "DECLARACION": "declaración",
+    }
 
-    ESTADOS = OrderedDict(
-        [
-            ("ACTIVAR", "ACTIVAR"),
-            ("INTERRUMPIR", "Interrumpir"),
-            ("MODIFICAR", "Modificar"),
-        ]
-    )
+    ESTADOS = {
+        "ACTIVAR": "ACTIVAR",
+        "INTERRUMPIR": "Interrumpir",
+        "MODIFICAR": "Modificar",
+    }
 
-    CLASES = OrderedDict(
-        [
-            ("TESIS", "Tesis"),
-            ("JURISPRUDENCIA", "Jurisprudencia"),
-        ]
-    )
+    CLASES = {
+        "TESIS": "Tesis",
+        "JURISPRUDENCIA": "Jurisprudencia",
+    }
 
     # Nombre de la tabla
     __tablename__ = "tesis_jurisprudencias"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="tesis_jurisprudencias")
-    epoca_id = Column(Integer, ForeignKey("epocas.id"), index=True, nullable=False)
-    epoca = relationship("Epoca", back_populates="tesis_jurisprudencias")
-    materia_id = Column(Integer, ForeignKey("materias.id"), index=True, nullable=False)
-    materia = relationship("Materia", back_populates="tesis_jurisprudencias")
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="tesis_jurisprudencias")
+    epoca_id: Mapped[int] = mapped_column(ForeignKey("epocas.id"))
+    epoca: Mapped["Epoca"] = relationship(back_populates="tesis_jurisprudencias")
+    materia_id: Mapped[int] = mapped_column(ForeignKey("materias.id"))
+    materia: Mapped["Materia"] = relationship(back_populates="tesis_jurisprudencias")
 
     # Columnas
-    titulo = Column(String(256), nullable=False)
-    subtitulo = Column(String(256), nullable=False)
-    tipo = Column(Enum(*TIPOS, name="tipos", native_enum=False), index=True, nullable=False)
-    estado = Column(Enum(*ESTADOS, name="estados", native_enum=False), index=True, nullable=False)
-    clave_control = Column(String(24), nullable=False)
-    clase = Column(Enum(*CLASES, name="clases", native_enum=False), index=True, nullable=False)
-    rubro = Column(String(256), nullable=False)
-    texto = Column(Text(), nullable=False)
-    precedentes = Column(Text(), nullable=False)
-    votacion = Column(String(256), nullable=False)
-    votos_particulares = Column(String(256), nullable=False)
-    aprobacion_fecha = Column(Date(), nullable=False)
-    publicacion_tiempo = Column(DateTime(), nullable=False)
-    aplicacion_tiempo = Column(DateTime(), nullable=False)
+    titulo: Mapped[str] = mapped_column(String(256))
+    subtitulo: Mapped[str] = mapped_column(String(256))
+    tipo: Mapped[str] = mapped_column(Enum(*TIPOS, name="tipos", native_enum=False), index=True)
+    estado: Mapped[str] = mapped_column(Enum(*ESTADOS, name="estados", native_enum=False), index=True)
+    clave_control: Mapped[str] = mapped_column(String(24))
+    clase: Mapped[str] = mapped_column(Enum(*CLASES, name="clases", native_enum=False), index=True)
+    rubro: Mapped[str] = mapped_column(String(256))
+    texto: Mapped[str] = mapped_column(String(256))
+    precedentes: Mapped[str] = mapped_column(String(256))
+    votacion: Mapped[str] = mapped_column(String(256))
+    votos_particulares: Mapped[str] = mapped_column(String(256))
+    aprobacion_fecha: Mapped[date]
+    publicacion_tiempo: Mapped[datetime]
+    aplicacion_tiempo: Mapped[datetime]
 
     @property
     def distrito_id(self):

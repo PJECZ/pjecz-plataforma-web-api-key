@@ -1,8 +1,11 @@
 """
 Listas de Acuerdos, modelos
 """
-from sqlalchemy import Column, Date, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from datetime import date
+
+from sqlalchemy import Date, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,17 +18,17 @@ class ListaDeAcuerdo(Base, UniversalMixin):
     __tablename__ = "listas_de_acuerdos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="listas_de_acuerdos")
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="listas_de_acuerdos")
 
     # Columnas
-    fecha = Column(Date, index=True, nullable=False)
-    descripcion = Column(String(256), nullable=False)
-    archivo = Column(String(256))
-    url = Column(String(512))
+    fecha: Mapped[date] = mapped_column(Date(), index=True)
+    descripcion: Mapped[str] = mapped_column(String(256))
+    archivo: Mapped[str] = mapped_column(String(256))
+    url: Mapped[str] = mapped_column(String(512))
 
     @property
     def descargar_url(self):

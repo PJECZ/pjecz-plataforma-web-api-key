@@ -1,8 +1,11 @@
 """
 Edictos, modelos
 """
-from sqlalchemy import Column, Date, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from datetime import date
+
+from sqlalchemy import Date, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,19 +18,19 @@ class Edicto(Base, UniversalMixin):
     __tablename__ = "edictos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="edictos")
+    # Clave foránea
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="edictos")
 
     # Columnas
-    fecha = Column(Date, index=True, nullable=False)
-    descripcion = Column(String(256), nullable=False)
-    expediente = Column(String(16))
-    numero_publicacion = Column(String(16))
-    archivo = Column(String(256))
-    url = Column(String(512))
+    fecha: Mapped[date] = mapped_column(Date(), index=True)
+    descripcion: Mapped[str] = mapped_column(String(256))
+    expediente: Mapped[str] = mapped_column(String(16))
+    numero_publicacion: Mapped[str] = mapped_column(String(16))
+    archivo: Mapped[str] = mapped_column(String(256), default="", server_default="")
+    url: Mapped[str] = mapped_column(String(512), default="", server_default="")
 
     @property
     def descargar_url(self):

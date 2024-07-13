@@ -1,7 +1,11 @@
 """
 Abogados, modelos
 """
-from sqlalchemy import Column, Date, Integer, String
+
+from datetime import date
+
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -14,13 +18,13 @@ class Abogado(Base, UniversalMixin):
     __tablename__ = "abogados"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Columnas
-    fecha = Column(Date, index=True, nullable=False)
-    numero = Column(String(24), nullable=False)
-    libro = Column(String(24), nullable=False)
-    nombre = Column(String(256), nullable=False)
+    fecha: Mapped[date]
+    numero: Mapped[str] = mapped_column(String(24))
+    libro: Mapped[str] = mapped_column(String(24))
+    nombre: Mapped[str] = mapped_column(String(256))
 
     def __repr__(self):
         """Representación"""

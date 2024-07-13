@@ -1,8 +1,11 @@
 """
 Inventarios Modelos, modelos
 """
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,17 +18,17 @@ class InvModelo(Base, UniversalMixin):
     __tablename__ = "inv_modelos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Clave foránea
-    inv_marca_id = Column(Integer, ForeignKey("inv_marcas.id"), index=True, nullable=False)
-    inv_marca = relationship("InvMarca", back_populates="inv_modelos")
+    inv_marca_id: Mapped[int] = mapped_column(ForeignKey("inv_marcas.id"))
+    inv_marca: Mapped["InvMarca"] = relationship(back_populates="inv_modelos")
 
     # Columnas
-    descripcion = Column(String(256), nullable=False)
+    descripcion: Mapped[str] = mapped_column(String(256))
 
     # Hijos
-    inv_equipos = relationship("InvEquipo", back_populates="inv_modelo")
+    inv_equipos: Mapped[List["InvEquipo"]] = relationship("InvEquipo", back_populates="inv_modelo", lazy="dynamic")
 
     @property
     def inv_marca_nombre(self):
