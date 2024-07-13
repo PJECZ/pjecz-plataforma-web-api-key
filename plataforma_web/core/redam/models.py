@@ -1,8 +1,11 @@
 """
 REDAM (Registro Estatal de Deudores Alimentarios Morosos), modelos
 """
-from sqlalchemy import Column, Date, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from datetime import date
+
+from sqlalchemy import Date, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,17 +18,17 @@ class Redam(Base, UniversalMixin):
     __tablename__ = "redam"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="redam")
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="redam")
 
     # Columnas
-    nombre = Column(String(256), nullable=False)
-    expediente = Column(String(256), index=True, nullable=False)
-    fecha = Column(Date, index=True, nullable=False)
-    observaciones = Column(String(1024), nullable=False)
+    nombre: Mapped[str] = mapped_column(String(256))
+    expediente: Mapped[str] = mapped_column(String(256), index=True)
+    fecha: Mapped[date] = mapped_column(Date(), index=True)
+    observaciones: Mapped[str] = mapped_column(String(1024))
 
     @property
     def distrito_id(self):

@@ -1,8 +1,11 @@
 """
 Epocas, modelos
 """
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,13 +18,13 @@ class Epoca(Base, UniversalMixin):
     __tablename__ = "epocas"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Columnas
-    nombre = Column(String(256), unique=True, nullable=False)
+    nombre: Mapped[str] = mapped_column(String(256), unique=True)
 
     # Hijos
-    tesis_jurisprudencias = relationship("TesisJurisprudencia", back_populates="epoca")
+    tesis_jurisprudencias: Mapped[List["TesisJurisprudencia"]] = relationship("TesisJurisprudencia", back_populates="epoca")
 
     def __repr__(self):
         """Representación"""

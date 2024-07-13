@@ -2,6 +2,7 @@
 .DS_Store
 .~lock.*
 
+*.code-workspace
 *.csv
 *.py[cod]
 *.log
@@ -14,5 +15,6 @@ poetry.lock
 __pycache__/
 *.egg-info/
 
+/.idea/
 /.venv/
 /venv/

@@ -1,8 +1,11 @@
 """
 Inventarios Categorias, modelos
 """
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,13 +18,15 @@ class InvCategoria(Base, UniversalMixin):
     __tablename__ = "inv_categorias"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Columnas
-    nombre = Column(String(256), unique=True, nullable=False)
+    nombre: Mapped[str] = mapped_column(String(256), unique=True)
 
     # Hijos
-    inv_componentes = relationship("InvComponente", back_populates="inv_categoria")
+    inv_componentes: Mapped[List["InvComponente"]] = relationship(
+        "InvComponente", back_populates="inv_categoria", lazy="dynamic"
+    )
 
     def __repr__(self):
         """Representación"""

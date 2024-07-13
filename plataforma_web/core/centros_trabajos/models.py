@@ -1,8 +1,11 @@
 """
 Centros de Trabajo, modelos
 """
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+
+from typing import List
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -15,21 +18,21 @@ class CentroTrabajo(Base, UniversalMixin):
     __tablename__ = "centros_trabajos"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    distrito_id = Column(Integer, ForeignKey("distritos.id"), index=True, nullable=False)
-    distrito = relationship("Distrito", back_populates="centros_trabajos")
-    domicilio_id = Column(Integer, ForeignKey("domicilios.id"), index=True, nullable=False)
-    domicilio = relationship("Domicilio", back_populates="centros_trabajos")
+    distrito_id: Mapped[int] = mapped_column(ForeignKey("distritos.id"))
+    distrito: Mapped["Distrito"] = relationship(back_populates="centros_trabajos")
+    domicilio_id: Mapped[int] = mapped_column(ForeignKey("domicilios.id"))
+    domicilio: Mapped["Domicilio"] = relationship(back_populates="centros_trabajos")
 
     # Columnas
-    clave = Column(String(16), unique=True, nullable=False)
-    nombre = Column(String(256), nullable=False)
-    telefono = Column(String(48), nullable=False)
+    clave: Mapped[str] = mapped_column(String(16), unique=True)
+    nombre: Mapped[str] = mapped_column(String(256))
+    telefono: Mapped[str] = mapped_column(String(48))
 
     # Hijos
-    funcionarios = relationship("Funcionario", back_populates="centro_trabajo")
+    funcionarios: Mapped[List["Funcionario"]] = relationship("Funcionario", back_populates="centro_trabajo")
 
     @property
     def distrito_clave(self):

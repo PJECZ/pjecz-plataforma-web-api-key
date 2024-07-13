@@ -1,10 +1,9 @@
 """
 Ubicaciones de Expedientes, modelos
 """
-from collections import OrderedDict
 
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Enum, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -13,32 +12,26 @@ from lib.universal_mixin import UniversalMixin
 class UbicacionExpediente(Base, UniversalMixin):
     """UbicacionExpediente"""
 
-    UBICACIONES = OrderedDict(
-        [
-            ("NO DEFINIDO", "No Definido"),
-            ("ARCHIVO", "Archivo"),
-            ("JUZGADO", "Juzgado"),
-            ("REMESA", "Remesa"),
-        ]
-    )
+    UBICACIONES = {
+        "NO DEFINIDO": "No Definido",
+        "ARCHIVO": "Archivo",
+        "JUZGADO": "Juzgado",
+        "REMESA": "Remesa",
+    }
 
     # Nombre de la tabla
     __tablename__ = "ubicaciones_expedientes"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="ubicaciones_expedientes")
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="ubicaciones_expedientes")
 
     # Columnas
-    expediente = Column(String(256), nullable=False)
-    ubicacion = Column(
-        Enum(*UBICACIONES, name="ubicaciones_opciones", native_enum=False),
-        index=True,
-        nullable=False,
-    )
+    expediente: Mapped[str] = mapped_column(String(256))
+    ubicacion: Mapped[str] = mapped_column(Enum(*UBICACIONES, name="ubicaciones_opciones", native_enum=False), index=True)
 
     @property
     def distrito_id(self):

@@ -2,70 +2,60 @@
 Usuarios, modelos
 """
 
-from collections import OrderedDict
+from datetime import datetime
+from typing import List, Optional
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Enum, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
-
-from ..permisos.models import Permiso
+from plataforma_web.core.permisos.models import Permiso
 
 
 class Usuario(Base, UniversalMixin):
     """Usuario"""
 
-    WORKSPACES = OrderedDict(
-        [
-            ("BUSINESS STARTED", "Business Started"),
-            ("BUSINESS STANDARD", "Business Standard"),
-            ("COAHUILA", "Coahuila"),
-            ("EXTERNO", "Externo"),
-        ]
-    )
+    WORKSPACES = {
+        "BUSINESS STARTED": "Business Started",
+        "BUSINESS STANDARD": "Business Standard",
+        "COAHUILA": "Coahuila",
+        "EXTERNO": "Externo",
+    }
 
     # Nombre de la tabla
     __tablename__ = "usuarios"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    autoridad_id = Column(Integer, ForeignKey("autoridades.id"), index=True, nullable=False)
-    autoridad = relationship("Autoridad", back_populates="usuarios")
-    oficina_id = Column(Integer, ForeignKey("oficinas.id"), index=True, nullable=False)
-    oficina = relationship("Oficina", back_populates="usuarios")
+    autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
+    autoridad: Mapped["Autoridad"] = relationship(back_populates="usuarios")
+    oficina_id: Mapped[int] = mapped_column(ForeignKey("oficinas.id"))
+    oficina: Mapped["Oficina"] = relationship(back_populates="usuarios")
 
     # Columnas
-    email = Column(String(256), nullable=False, unique=True, index=True)
-    email_personal = Column(String(256), nullable=False, default="", server_default="")
-    nombres = Column(String(256), nullable=False, default="", server_default="")
-    apellido_paterno = Column(String(256), nullable=False, default="", server_default="")
-    apellido_materno = Column(String(256))
-    curp = Column(String(18))
-    puesto = Column(String(256))
-    telefono = Column(String(48), nullable=False, default="", server_default="")
-    telefono_celular = Column(String(48), nullable=False, default="", server_default="")
-    extension = Column(String(24), nullable=False, default="", server_default="")
-    workspace = Column(
-        Enum(*WORKSPACES, name="tipos_workspaces", native_enum=False),
-        index=True,
-        nullable=False,
-    )
-
-    # Columnas que no deben ser expuestas
-    api_key = Column(String(128), nullable=False)
-    api_key_expiracion = Column(DateTime(), nullable=False)
-    contrasena = Column(String(256), nullable=False)
+    email: Mapped[str] = mapped_column(String(256), unique=True, index=True)
+    email_personal: Mapped[str] = mapped_column(String(256))
+    nombres: Mapped[str] = mapped_column(String(256))
+    apellido_paterno: Mapped[str] = mapped_column(String(256))
+    apellido_materno: Mapped[str] = mapped_column(String(256))
+    curp: Mapped[str] = mapped_column(String(18))
+    puesto: Mapped[str] = mapped_column(String(256))
+    telefono: Mapped[str] = mapped_column(String(48))
+    telefono_celular: Mapped[str] = mapped_column(String(48))
+    extension: Mapped[str] = mapped_column(String(24))
+    workspace: Mapped[str] = mapped_column(Enum(*WORKSPACES, name="usuarios_workspaces", native_enum=False))
+    api_key: Mapped[Optional[str]] = mapped_column(String(128))
+    api_key_expiracion: Mapped[Optional[datetime]]
+    contrasena: Mapped[Optional[str]] = mapped_column(String(256))
 
     # Hijos
-    arc_solicitudes_asignadas = relationship("ArcSolicitud", back_populates="usuario_asignado")
-    arc_remesas_asignadas = relationship("ArcRemesa", back_populates="usuario_asignado")
-    bitacoras = relationship("Bitacora", back_populates="usuario")
-    entradas_salidas = relationship("EntradaSalida", back_populates="usuario")
-    inv_custodias = relationship("InvCustodia", back_populates="usuario")
-    usuarios_roles = relationship("UsuarioRol", back_populates="usuario")
+    bitacoras: Mapped[List["Bitacora"]] = relationship("Bitacora", back_populates="usuario")
+    entradas_salidas: Mapped[List["EntradaSalida"]] = relationship("EntradaSalida", back_populates="usuario")
+    inv_custodias: Mapped[List["InvCustodia"]] = relationship("InvCustodia", back_populates="usuario")
+    usuarios_roles: Mapped[List["UsuarioRol"]] = relationship("UsuarioRol", back_populates="usuario")
 
     # Propiedades
     permisos_consultados = {}

@@ -1,10 +1,11 @@
 """
 REPSVM Agresores, modelos
 """
-from collections import OrderedDict
 
-from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import relationship
+from typing import Optional
+
+from sqlalchemy import Enum, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -13,45 +14,41 @@ from lib.universal_mixin import UniversalMixin
 class RepsvmAgresor(Base, UniversalMixin):
     """RepsvmAgresor"""
 
-    TIPOS_JUZGADOS = OrderedDict(
-        [
-            ("ND", "No Definido"),
-            ("JUZGADO ESPECIALIZADO EN VIOLENCIA CONTRA LAS MUJERES", "Juzgado Especializado en Violencia contra las Mujeres"),
-            ("JUZGADO ESPECIALIZADO EN VIOLENCIA FAMILIAR", "Juzgado Especializado en Violencia Familiar"),
-            ("JUZGADO DE PRIMERA INSTANCIA EN MATERIA PENAL", "Juzgado de Primera Instancia en Materia Penal"),
-        ]
-    )
+    TIPOS_JUZGADOS = {
+        "ND": "No Definido",
+        "JUZGADO ESPECIALIZADO EN VIOLENCIA CONTRA LAS MUJERES": "Juzgado Especializado en Violencia contra las Mujeres",
+        "JUZGADO ESPECIALIZADO EN VIOLENCIA FAMILIAR": "Juzgado Especializado en Violencia Familiar",
+        "JUZGADO DE PRIMERA INSTANCIA EN MATERIA PENAL": "Juzgado de Primera Instancia en Materia Penal",
+    }
 
-    TIPOS_SENTENCIAS = OrderedDict(
-        [
-            ("ND", "No Definido"),
-            ("PROCEDIMIENTO ABREVIADO", "Procedimiento Abreviado"),
-            ("JUICIO ORAL", "Juicio Oral"),
-        ]
-    )
+    TIPOS_SENTENCIAS = {
+        "ND": "No Definido",
+        "PROCEDIMIENTO ABREVIADO": "Procedimiento Abreviado",
+        "JUICIO ORAL": "Juicio Oral",
+    }
 
     # Nombre de la tabla
     __tablename__ = "repsvm_agresores"
 
     # Clave primaria
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     # Claves foráneas
-    distrito_id = Column(Integer, ForeignKey("distritos.id"), index=True, nullable=False)
-    distrito = relationship("Distrito", back_populates="repsvm_agresores")
+    distrito_id: Mapped[int] = mapped_column(ForeignKey("distritos.id"))
+    distrito: Mapped["Distrito"] = relationship(back_populates="repsvm_agresores")
 
     # Columnas
-    consecutivo = Column(Integer(), nullable=False)
-    delito_generico = Column(String(256), nullable=False)
-    delito_especifico = Column(String(1024), nullable=False)
-    es_publico = Column(Boolean(), default=False, nullable=False)
-    nombre = Column(String(256), nullable=False)
-    numero_causa = Column(String(256), nullable=False)
-    pena_impuesta = Column(String(256), nullable=False)
-    observaciones = Column(Text(), nullable=True)
-    sentencia_url = Column(String(512), nullable=True)
-    tipo_juzgado = Column(Enum(*TIPOS_JUZGADOS, name="tipos_juzgados", native_enum=False), index=True, nullable=False)
-    tipo_sentencia = Column(Enum(*TIPOS_SENTENCIAS, name="tipos_juzgados", native_enum=False), index=True, nullable=False)
+    consecutivo: Mapped[int]
+    delito_generico: Mapped[str] = mapped_column(String(256))
+    delito_especifico: Mapped[str] = mapped_column(String(1024))
+    es_publico: Mapped[bool] = mapped_column(default=False)
+    nombre: Mapped[str] = mapped_column(String(256))
+    numero_causa: Mapped[str] = mapped_column(String(256))
+    pena_impuesta: Mapped[str] = mapped_column(String(256))
+    observaciones: Mapped[Optional[str]] = mapped_column(String(1024))
+    sentencia_url: Mapped[Optional[str]] = mapped_column(String(512))
+    tipo_juzgado: Mapped[str] = mapped_column(Enum(*TIPOS_JUZGADOS, name="tipos_juzgados", native_enum=False), index=True)
+    tipo_sentencia: Mapped[str] = mapped_column(Enum(*TIPOS_SENTENCIAS, name="tipos_juzgados", native_enum=False), index=True)
 
     @property
     def distrito_clave(self):
