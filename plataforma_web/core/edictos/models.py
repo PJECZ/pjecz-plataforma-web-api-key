@@ -32,6 +32,10 @@ class Edicto(Base, UniversalMixin):
     archivo: Mapped[str] = mapped_column(String(256), default="", server_default="")
     url: Mapped[str] = mapped_column(String(512), default="", server_default="")
 
+    # Columnas nuevas
+    acuse_num: Mapped[int] = mapped_column(default=0)
+    edicto_id_original: Mapped[int] = mapped_column(default=0)
+
     @property
     def descargar_url(self):
         """URL para descargar el archivo desde el sitio web"""

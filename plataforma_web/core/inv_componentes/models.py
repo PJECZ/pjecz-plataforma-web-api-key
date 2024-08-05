@@ -35,15 +35,19 @@ class InvComponente(Base, UniversalMixin):
 
     # Claves foráneas
     inv_categoria_id: Mapped[int] = mapped_column(ForeignKey("inv_categorias.id"))
-    inv_categoria: Mapped["InvCategoria"] = relationship(back_populates="inv_componentes")
+    inv_categoria: Mapped["InvCategoria"] = relationship(
+        back_populates="inv_componentes"
+    )
     inv_equipo_id: Mapped[int] = mapped_column(ForeignKey("inv_equipos.id"))
     inv_equipo: Mapped["InvEquipo"] = relationship(back_populates="inv_componentes")
 
     # Columnas
     descripcion: Mapped[str] = mapped_column(String(256))
     cantidad: Mapped[int]
-    generacion: Mapped[str] = mapped_column(Enum(*GENERACIONES, name="generacion", native_enum=False), index=True)
-    vesion: Mapped[str] = mapped_column(String(256))
+    generacion: Mapped[str] = mapped_column(
+        Enum(*GENERACIONES, name="generacion", native_enum=False), index=True
+    )
+    version: Mapped[str] = mapped_column(String(256))
 
     @property
     def inv_categoria_nombre(self):
