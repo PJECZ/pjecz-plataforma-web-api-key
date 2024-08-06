@@ -1,20 +1,22 @@
+.bashrc
 .directory
+.env
 .DS_Store
 .~lock.*
 
 *.code-workspace
 *.csv
-*.py[cod]
 *.log
+*.py[cod]
 *.sql
-
-.bashrc
-.env
-poetry.lock
+*.sqlite
+*.pdf
+*.xlsx
 
 __pycache__/
 *.egg-info/
 
+/poetry.lock
 /.idea/
 /.venv/
 /venv/
