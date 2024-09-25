@@ -1,6 +1,7 @@
 """
 Unit tests for sentencias category
 """
+
 import unittest
 
 import requests

@@ -44,6 +44,7 @@ Y en el archivo app.yaml agregue las siguientes variables de entorno
 - PROJECT_ID: justicia-digital-gob-mx
 - SERVICE_PREFIX: pjecz_plataforma_web_api_key
 """
+
 import os
 from functools import lru_cache
 

@@ -1,6 +1,7 @@
 """
 Unit tests for inventarios category
 """
+
 import unittest
 
 import requests

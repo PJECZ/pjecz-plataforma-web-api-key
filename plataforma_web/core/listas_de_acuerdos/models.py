@@ -20,7 +20,7 @@ class ListaDeAcuerdo(Base, UniversalMixin):
     # Clave primaria
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Claves foráneas
+    # Clave foránea
     autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
     autoridad: Mapped["Autoridad"] = relationship(back_populates="listas_de_acuerdos")
 
@@ -29,13 +29,6 @@ class ListaDeAcuerdo(Base, UniversalMixin):
     descripcion: Mapped[str] = mapped_column(String(256))
     archivo: Mapped[str] = mapped_column(String(256))
     url: Mapped[str] = mapped_column(String(512))
-
-    @property
-    def descargar_url(self):
-        """URL para descargar el archivo desde el sitio web"""
-        if self.id:
-            return f"https://www.pjecz.gob.mx/consultas/listas-de-acuerdos/descargar/?id={self.id}"
-        return ""
 
     @property
     def distrito_id(self):

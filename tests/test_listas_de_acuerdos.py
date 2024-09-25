@@ -1,6 +1,7 @@
 """
 Unit tests for listas de acuerdos category
 """
+
 import unittest
 
 import requests

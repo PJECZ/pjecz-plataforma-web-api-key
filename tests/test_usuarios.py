@@ -1,6 +1,7 @@
 """
 Unit tests for usuarios category
 """
+
 import unittest
 
 import requests

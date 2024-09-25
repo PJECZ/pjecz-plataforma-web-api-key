@@ -1,6 +1,7 @@
 """
 Listas de Acuerdos v3, esquemas de pydantic
 """
+
 from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict

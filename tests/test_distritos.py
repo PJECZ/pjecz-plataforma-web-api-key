@@ -1,6 +1,7 @@
 """
 Unit tests for distritos category
 """
+
 import unittest
 
 import requests

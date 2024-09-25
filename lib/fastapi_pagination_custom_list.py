@@ -44,6 +44,7 @@ Usage:
         return paginate(query)
 
 """
+
 from math import ceil
 from typing import Any, Generic, Optional, Sequence, TypeVar
 

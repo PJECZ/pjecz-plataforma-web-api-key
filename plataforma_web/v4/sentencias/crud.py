@@ -1,6 +1,7 @@
 """
 Sentencias v3, CRUD (create, read, update, and delete)
 """
+
 from datetime import date, datetime
 from typing import Any, List
 
@@ -128,7 +129,10 @@ def update_sentencia(database: Session, sentencia_id: int, sentencia_in: Sentenc
         sentencia.autoridad_id = autoridad.id
 
     # Validad materia_tipo_juicio, si se especificó y es diferente
-    if sentencia_in.materia_tipo_juicio_id is not None and sentencia_in.materia_tipo_juicio_id != sentencia.materia_tipo_juicio_id:
+    if (
+        sentencia_in.materia_tipo_juicio_id is not None
+        and sentencia_in.materia_tipo_juicio_id != sentencia.materia_tipo_juicio_id
+    ):
         materia_tipo_juicio = get_materia_tipo_juicio(database, sentencia_in.materia_tipo_juicio_id)
         sentencia.materia_tipo_juicio_id = materia_tipo_juicio.id
 

@@ -1,6 +1,7 @@
 """
 Glosas v3, rutas (paths)
 """
+
 from datetime import date
 from typing import Annotated
 

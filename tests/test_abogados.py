@@ -1,6 +1,7 @@
 """
 Unit tests for abogados category
 """
+
 import unittest
 
 import requests

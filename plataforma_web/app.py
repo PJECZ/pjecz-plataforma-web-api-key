@@ -1,48 +1,37 @@
 """
-PJECZ Plataforma Web API Key
+PJECZ Plataforma Web API key
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
-
-from .v4.abogados.paths import abogados
-from .v4.audiencias.paths import audiencias
-from .v4.autoridades.paths import autoridades
-from .v4.bitacoras.paths import bitacoras
-from .v4.centros_trabajos.paths import centros_trabajos
-from .v4.distritos.paths import distritos
-from .v4.domicilios.paths import domicilios
-from .v4.edictos.paths import edictos
-from .v4.entradas_salidas.paths import entradas_salidas
-from .v4.epocas.paths import epocas
-from .v4.funcionarios.paths import funcionarios
-from .v4.glosas.paths import glosas
-from .v4.inv_categorias.paths import inv_categorias
-from .v4.inv_componentes.paths import inv_componentes
-from .v4.inv_custodias.paths import inv_custodias
-from .v4.inv_equipos.paths import inv_equipos
-from .v4.inv_marcas.paths import inv_marcas
-from .v4.inv_modelos.paths import inv_modelos
-from .v4.inv_redes.paths import inv_redes
-from .v4.listas_de_acuerdos.paths import listas_de_acuerdos
-from .v4.materias.paths import materias
-from .v4.materias_tipos_juicios.paths import materias_tipos_juicios
-from .v4.modulos.paths import modulos
-from .v4.oficinas.paths import oficinas
-from .v4.peritos.paths import peritos
-from .v4.peritos_tipos.paths import peritos_tipos
-from .v4.permisos.paths import permisos
-from .v4.redam.paths import redam
-from .v4.repsvm_agresores.paths import repsvm_agresores
-from .v4.roles.paths import roles
-from .v4.sentencias.paths import sentencias
-from .v4.tesis_jurisprudencias.paths import tesis_jurisprudencias
-from .v4.ubicaciones_expedientes.paths import ubicaciones_expedientes
-from .v4.usuarios.paths import usuarios
-from .v4.usuarios_roles.paths import usuarios_roles
+from plataforma_web.v4.abogados.paths import abogados
+from plataforma_web.v4.audiencias.paths import audiencias
+from plataforma_web.v4.autoridades.paths import autoridades
+from plataforma_web.v4.distritos.paths import distritos
+from plataforma_web.v4.domicilios.paths import domicilios
+from plataforma_web.v4.edictos.paths import edictos
+from plataforma_web.v4.epocas.paths import epocas
+from plataforma_web.v4.glosas.paths import glosas
+from plataforma_web.v4.listas_de_acuerdos.paths import listas_de_acuerdos
+from plataforma_web.v4.materias.paths import materias
+from plataforma_web.v4.materias_tipos_juicios.paths import materias_tipos_juicios
+from plataforma_web.v4.modulos.paths import modulos
+from plataforma_web.v4.oficinas.paths import oficinas
+from plataforma_web.v4.peritos.paths import peritos
+from plataforma_web.v4.peritos_tipos.paths import peritos_tipos
+from plataforma_web.v4.permisos.paths import permisos
+from plataforma_web.v4.redam.paths import redam
+from plataforma_web.v4.repsvm_agresores.paths import repsvm_agresores
+from plataforma_web.v4.roles.paths import roles
+from plataforma_web.v4.sentencias.paths import sentencias
+from plataforma_web.v4.tesis_jurisprudencias.paths import tesis_jurisprudencias
+from plataforma_web.v4.ubicaciones_expedientes.paths import ubicaciones_expedientes
+from plataforma_web.v4.usuarios.paths import usuarios
+from plataforma_web.v4.usuarios_roles.paths import usuarios_roles
 
 
 def create_app() -> FastAPI:
@@ -51,7 +40,7 @@ def create_app() -> FastAPI:
     # FastAPI
     app = FastAPI(
         title="PJECZ Plataforma Web API Key",
-        description="API con autentificación para realizar operaciones con la base de datos de Plataforma Web.",
+        description="API con autentificación para consultar las bases de datos.",
         docs_url="/docs",
         redoc_url=None,
     )
@@ -62,7 +51,7 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.origins.split(","),
         allow_credentials=False,
-        allow_methods=["*"],
+        allow_methods=["GET"],
         allow_headers=["*"],
     )
 
@@ -70,22 +59,11 @@ def create_app() -> FastAPI:
     app.include_router(abogados)
     app.include_router(audiencias)
     app.include_router(autoridades)
-    app.include_router(bitacoras)
-    app.include_router(centros_trabajos)
     app.include_router(distritos)
     app.include_router(domicilios)
     app.include_router(edictos)
-    app.include_router(entradas_salidas)
     app.include_router(epocas)
-    app.include_router(funcionarios)
     app.include_router(glosas)
-    app.include_router(inv_categorias)
-    app.include_router(inv_componentes)
-    app.include_router(inv_custodias)
-    app.include_router(inv_equipos)
-    app.include_router(inv_marcas)
-    app.include_router(inv_modelos)
-    app.include_router(inv_redes)
     app.include_router(listas_de_acuerdos)
     app.include_router(materias)
     app.include_router(materias_tipos_juicios)
@@ -110,7 +88,12 @@ def create_app() -> FastAPI:
     @app.get("/")
     async def root():
         """Mensaje de Bienvenida"""
-        return {"message": "API con autentificación para realizar operaciones con la base de datos de Plataforma Web."}
+        return {"message": "API con autentificación para consultar las bases de datos."}
+
+    @app.get("/robots.txt", response_class=PlainTextResponse)
+    async def robots():
+        """robots.txt to disallow all agents"""
+        return """User-agent: *\nDisallow: /"""
 
     # Entregar
     return app

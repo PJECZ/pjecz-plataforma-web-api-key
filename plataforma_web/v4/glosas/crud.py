@@ -1,6 +1,7 @@
 """
 Glosas v3, CRUD (create, read, update, and delete)
 """
+
 from datetime import date, datetime
 from typing import Any, List
 

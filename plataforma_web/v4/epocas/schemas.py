@@ -1,6 +1,7 @@
 """
 Epocas v3, esquemas de pydantic
 """
+
 from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut

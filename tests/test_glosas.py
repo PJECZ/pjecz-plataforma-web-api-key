@@ -1,6 +1,7 @@
 """
 Unit tests for glosas category
 """
+
 import unittest
 
 import requests

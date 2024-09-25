@@ -1,6 +1,7 @@
 """
 Unit tests for edictos category
 """
+
 import unittest
 
 import requests

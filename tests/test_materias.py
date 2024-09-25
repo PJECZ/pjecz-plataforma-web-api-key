@@ -1,6 +1,7 @@
 """
 Unit tests for materias category
 """
+
 import unittest
 
 import requests

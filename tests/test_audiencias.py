@@ -1,6 +1,7 @@
 """
 Unit tests for audiencias category
 """
+
 import unittest
 
 import requests

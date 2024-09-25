@@ -40,13 +40,6 @@ class Sentencia(Base, UniversalMixin):
     url: Mapped[str] = mapped_column(String(512), default="", server_default="")
 
     @property
-    def descargar_url(self):
-        """URL para descargar el archivo desde el sitio web"""
-        if self.id:
-            return f"https://www.pjecz.gob.mx/consultas/sentencias/descargar/?id={self.id}"
-        return ""
-
-    @property
     def distrito_id(self):
         """Distrito ID"""
         return self.autoridad.distrito_id

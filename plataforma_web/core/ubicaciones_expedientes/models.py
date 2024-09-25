@@ -25,7 +25,7 @@ class UbicacionExpediente(Base, UniversalMixin):
     # Clave primaria
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Claves foráneas
+    # Clave foránea
     autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
     autoridad: Mapped["Autoridad"] = relationship(back_populates="ubicaciones_expedientes")
 

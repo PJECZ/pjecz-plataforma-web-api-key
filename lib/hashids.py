@@ -1,6 +1,7 @@
 """
 Cifrado y descrifado de ID por medio de Hashids
 """
+
 import re
 from typing import Any
 

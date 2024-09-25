@@ -1,6 +1,7 @@
 """
 Unit tests for oficinas category
 """
+
 import unittest
 
 import requests

@@ -1,6 +1,7 @@
 """
 Unit tests for funcionarios category
 """
+
 import unittest
 
 import requests

@@ -1,6 +1,7 @@
 """
 Ubicaciones de Expedientes v3, esquemas de pydantic
 """
+
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict

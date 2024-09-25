@@ -1,6 +1,7 @@
 """
 Unit tests for peritos category
 """
+
 import unittest
 
 import requests

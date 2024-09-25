@@ -1,6 +1,7 @@
 """
 Usuarios-Roles v3, rutas (paths)
 """
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status

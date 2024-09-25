@@ -1,6 +1,7 @@
 """
 Unit tests for autoridades category
 """
+
 import unittest
 
 import requests

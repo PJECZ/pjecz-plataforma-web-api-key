@@ -1,6 +1,7 @@
 """
 Abogados v3, esquemas de pydantic
 """
+
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict
