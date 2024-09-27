@@ -2,28 +2,24 @@
 Distritos v3, esquemas de pydantic
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class DistritoListOut(BaseModel):
+class ItemDistritoOut(BaseModel):
     """Esquema para entregar distritos en listado"""
 
-    id: int | None = None
-    clave: str | None = None
-    nombre_corto: str | None = None
+    id: int = Field(None)
+    clave: str = Field(None)
+    nombre_corto: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class DistritoOut(DistritoListOut):
-    """Esquema para entregar distritos en paginado"""
-
-    nombre: str | None = None
-    es_distrito_judicial: bool | None = None
-    es_distrito: bool | None = None
-    es_jurisdiccional: bool | None = None
-
-
-class OneDistritoOut(DistritoOut, OneBaseOut):
+class OneDistritoOut(ItemDistritoOut, OneBaseOut):
     """Esquema para entregar un distrito"""
+
+    nombre: str = Field(None)
+    es_distrito_judicial: bool = Field(None)
+    es_distrito: bool = Field(None)
+    es_jurisdiccional: bool = Field(None)

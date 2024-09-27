@@ -1,0 +1,15 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@apiKey = {{$dotenv API_KEY}}
+
+### Modulos
+GET {{baseUrl}}/modulos
+X-Api-Key: {{apiKey}}
+
+### Modulo con id 27 que es el de USUARIOS
+GET {{baseUrl}}/modulos/27
+X-Api-Key: {{apiKey}}
+
+### Modulo con id 999999 que no existe
+GET {{baseUrl}}/modulos/999999
+X-Api-Key: {{apiKey}}

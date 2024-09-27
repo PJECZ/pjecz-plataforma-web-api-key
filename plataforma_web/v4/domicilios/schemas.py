@@ -2,35 +2,31 @@
 Domicilios v3, esquemas de pydantic
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class DomicilioListOut(BaseModel):
+class ItemDomicilioOut(BaseModel):
     """Esquema para entregar domicilios"""
 
-    id: int | None = None
-    edificio: str | None = None
+    id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    edificio: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class DomicilioOut(DomicilioListOut):
-    """Esquema para entregar domicilios"""
-
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    estado: str | None = None
-    municipio: str | None = None
-    calle: str | None = None
-    num_ext: str | None = None
-    num_int: str | None = None
-    colonia: str | None = None
-    cp: int | None = None
-    completo: str | None = None
-
-
-class OneDomicilioOut(DomicilioOut, OneBaseOut):
+class OneDomicilioOut(ItemDomicilioOut, OneBaseOut):
     """Esquema para entregar un domicilio"""
+
+    distrito_id: int = Field(None)
+    distrito_nombre: str = Field(None)
+    estado: str = Field(None)
+    municipio: str = Field(None)
+    calle: str = Field(None)
+    num_ext: str = Field(None)
+    num_int: str = Field(None)
+    colonia: str = Field(None)
+    cp: int = Field(None)
+    completo: str = Field(None)

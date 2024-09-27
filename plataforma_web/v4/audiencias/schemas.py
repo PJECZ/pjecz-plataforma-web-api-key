@@ -4,44 +4,40 @@ Audiencias v3, esquemas de pydantic
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class AudienciaIn(BaseModel):
-    """Esquema para recibir un audiencia"""
-
-    autoridad_id: int | None = None
-    tiempo: datetime | None = None
-    tipo_audiencia: str | None = None
-    expediente: str | None = None
-    actores: str | None = None
-    demandados: str | None = None
-    sala: str | None = None
-    caracter: str | None = None
-    causa_penal: str | None = None
-    delitos: str | None = None
-    toca: str | None = None
-    expediente_origen: str | None = None
-    imputados: str | None = None
-    origen: str | None = None
-
-
-class AudienciaOut(AudienciaIn):
+class ItemAudienciaOut(BaseModel):
     """Esquema para entregar audiencias"""
 
-    id: int | None = None
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    autoridad_clave: str | None = None
-    autoridad_descripcion: str | None = None
-    autoridad_descripcion_corta: str | None = None
-    creado: datetime | None = None
+    id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    autoridad_clave: str = Field(None)
+    autoridad_descripcion_corta: str = Field(None)
+    tiempo: datetime = Field(None)
+    tipo_audiencia: str = Field(None)
+    expediente: str = Field(None)
+    actores: str = Field(None)
+    demandados: str = Field(None)
+    sala: str = Field(None)
+    caracter: str = Field(None)
+    causa_penal: str = Field(None)
+    delitos: str = Field(None)
+    toca: str = Field(None)
+    expediente_origen: str = Field(None)
+    imputados: str = Field(None)
+    origen: str = Field(None)
+    creado: datetime = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OneAudienciaOut(AudienciaOut, OneBaseOut):
-    """Esquema para entregar un audiencia"""
+class OneAudienciaOut(ItemAudienciaOut, OneBaseOut):
+    """Esquema para entregar una audiencia"""
+
+    distrito_id: int = Field(None)
+    distrito_nombre: str = Field(None)
+    autoridad_id: int = Field(None)
+    autoridad_descripcion: str = Field(None)

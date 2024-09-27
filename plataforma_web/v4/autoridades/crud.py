@@ -8,10 +8,9 @@ from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_clave
-
-from ...core.autoridades.models import Autoridad
-from ..distritos.crud import get_distrito, get_distrito_with_clave
-from ..materias.crud import get_materia, get_materia_with_clave
+from plataforma_web.core.autoridades.models import Autoridad
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.v4.materias.crud import get_materia, get_materia_with_clave
 
 
 def get_autoridades(
@@ -27,7 +26,7 @@ def get_autoridades(
     materia_id: int = None,
     materia_clave: str = None,
 ) -> Any:
-    """Consultar los autoridades activos"""
+    """Consultar las autoridades"""
     consulta = database.query(Autoridad)
     if distrito_id is not None:
         distrito = get_distrito(database, distrito_id)
@@ -57,7 +56,7 @@ def get_autoridades(
 
 
 def get_autoridad(database: Session, autoridad_id: int) -> Autoridad:
-    """Consultar un autoridad por su id"""
+    """Consultar una autoridad por su id"""
     autoridad = database.query(Autoridad).get(autoridad_id)
     if autoridad is None:
         raise MyNotExistsError("No existe ese autoridad")

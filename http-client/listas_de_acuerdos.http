@@ -1,0 +1,36 @@
+
+### Listas de Acuerdos
+GET {{baseUrl}}/listas_de_acuerdos
+X-Api-Key: {{apiKey}}
+
+### Listas de Acuerdos de la autoridad 37
+GET {{baseUrl}}/listas_de_acuerdos
+    ?autoridad_id=37
+X-Api-Key: {{apiKey}}
+
+### Listas de Acuerdos del SLT-J2-CIV
+GET {{baseUrl}}/listas_de_acuerdos
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{apiKey}}
+
+### Listas de Acuerdos del SLT-J2-CIV del 2021
+GET {{baseUrl}}/listas_de_acuerdos
+    ?autoridad_clave=SLT-J2-CIV
+    &anio=2021
+X-Api-Key: {{apiKey}}
+
+### Listas de Acuerdos del SLT-J2-CIV del 2021-04-26
+GET {{baseUrl}}/listas_de_acuerdos
+    ?autoridad_clave=SLT-J2-CIV
+    &fecha=2021-04-26
+X-Api-Key: {{apiKey}}
+
+### Listas de Acuerdos del Distrito de Monclova DMC del 2021-04-26
+GET {{baseUrl}}/listas_de_acuerdos
+    ?distrito_clave=DMNC
+    &fecha=2021-04-26
+X-Api-Key: {{apiKey}}
+
+### Lista de Acuerdos con id 114261
+GET {{baseUrl}}/listas_de_acuerdos/114261
+X-Api-Key: {{apiKey}}

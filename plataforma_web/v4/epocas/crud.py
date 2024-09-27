@@ -7,12 +7,11 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.epocas.models import Epoca
+from plataforma_web.core.epocas.models import Epoca
 
 
 def get_epocas(database: Session) -> Any:
-    """Consultar las epocas activas"""
+    """Consultar las epocas"""
     return database.query(Epoca).filter_by(estatus="A").order_by(Epoca.nombre)
 
 

@@ -1,0 +1,35 @@
+
+### Edictos
+GET {{baseUrl}}/edictos
+X-Api-Key: {{apiKey}}
+
+### Edictos de la autoridad 37
+GET {{baseUrl}}/edictos
+    ?autoridad_id=37
+X-Api-Key: {{apiKey}}
+
+### Edictos del SLT-J2-CIV
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{apiKey}}
+
+### Edictos del SLT-J2-CIV del 2021
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+    &anio=2021
+X-Api-Key: {{apiKey}}
+
+### Edictos del SLT-J2-CIV del 2021-04-26
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-J2-CIV
+    &fecha=2021-04-26
+X-Api-Key: {{apiKey}}
+
+### Edictos del distrito DMNC
+GET {{baseUrl}}/edictos
+    ?distrito_clave=DMNC
+X-Api-Key: {{apiKey}}
+
+### Detalle del edicto con id 64081
+GET {{baseUrl}}/edictos/64081
+X-Api-Key: {{apiKey}}

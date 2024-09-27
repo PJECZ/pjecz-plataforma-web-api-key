@@ -8,11 +8,10 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.audiencias.models import Audiencia
-from ...core.autoridades.models import Autoridad
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
-from ..distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.core.audiencias.models import Audiencia
+from plataforma_web.core.autoridades.models import Autoridad
+from plataforma_web.v4.autoridades.crud import get_autoridad, get_autoridad_with_clave
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_audiencias(
@@ -29,7 +28,7 @@ def get_audiencias(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ) -> Any:
-    """Consultar las audiencias activas"""
+    """Consultar las audiencias"""
     consulta = database.query(Audiencia)
     if autoridad_id is not None:
         autoridad = get_autoridad(database, autoridad_id)
@@ -78,64 +77,4 @@ def get_audiencia(database: Session, audiencia_id: int) -> Audiencia:
         raise MyNotExistsError("No existe esa audiencia")
     if audiencia.estatus != "A":
         raise MyIsDeletedError("No es activa ese audiencia, está eliminada")
-    return audiencia
-
-
-def create_audiencia(database: Session, audiencia: Audiencia) -> Audiencia:
-    """Crear una audiencia"""
-
-    # Validar autoridad
-    get_autoridad(database, audiencia.autoridad_id)
-
-    # Guardar
-    database.add(audiencia)
-    database.commit()
-    database.refresh(audiencia)
-
-    # Entregar
-    return audiencia
-
-
-def update_audiencia(database: Session, audiencia_id: int, audiencia_in: Audiencia) -> Audiencia:
-    """Modificar una audiencia"""
-
-    # Consultar audiencia
-    audiencia = get_audiencia(database, audiencia_id)
-
-    # Validar autoridad, si se especificó y se cambió
-    if audiencia_in.autoridad_id is not None and audiencia.autoridad_id != audiencia_in.autoridad_id:
-        autoridad = get_autoridad(database, audiencia_in.autoridad_id)
-        audiencia.autoridad_id = autoridad.autoridad_id
-
-    # Actualizar las columnas
-    audiencia.tiempo = audiencia_in.tiempo
-    audiencia.tipo_audiencia = audiencia_in.tipo_audiencia
-    audiencia.expediente = audiencia_in.expediente
-    audiencia.actores = audiencia_in.actores
-    audiencia.demandados = audiencia_in.demandados
-    audiencia.sala = audiencia_in.sala
-    audiencia.caracter = audiencia_in.caracter
-    audiencia.causa_penal = audiencia_in.causa_penal
-    audiencia.delitos = audiencia_in.delitos
-    audiencia.toca = audiencia_in.toca
-    audiencia.expediente_origen = audiencia_in.expediente_origen
-    audiencia.imputados = audiencia_in.imputados
-    audiencia.origen = audiencia_in.origen
-
-    # Guardar
-    database.add(audiencia)
-    database.commit()
-    database.refresh(audiencia)
-
-    # Entregar
-    return audiencia
-
-
-def delete_audiencia(database: Session, audiencia_id: int) -> Audiencia:
-    """Borrar una audiencia"""
-    audiencia = get_audiencia(database, audiencia_id)
-    audiencia.estatus = "B"
-    database.add(audiencia)
-    database.commit()
-    database.refresh(audiencia)
     return audiencia

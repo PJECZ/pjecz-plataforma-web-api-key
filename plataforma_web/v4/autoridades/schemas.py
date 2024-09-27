@@ -2,44 +2,40 @@
 Autoridades v3, esquemas de pydantic
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class AutoridadListOut(BaseModel):
-    """Esquema para entregar autoridades como listado"""
+class ItemAutoridadOut(BaseModel):
+    """Esquema para entregar autoridades"""
 
-    id: int | None = None
-    clave: str | None = None
-    descripcion_corta: str | None = None
+    id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    clave: str = Field(None)
+    descripcion_corta: str = Field(None)
+    materia_clave: str = Field(None)
+    materia_nombre: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class AutoridadOut(AutoridadListOut):
-    """Esquema para entregar autoridades como paginado"""
+class OneAutoridadOut(ItemAutoridadOut, OneBaseOut):
+    """Esquema para entregar una autoridad"""
 
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    materia_id: int | None = None
-    materia_clave: str | None = None
-    materia_nombre: str | None = None
-    descripcion: str | None = None
-    es_cemasc: bool | None = None
-    es_defensoria: bool | None = None
-    es_extinto: bool | None = None
-    es_jurisdiccional: bool | None = None
-    es_notaria: bool | None = None
-    es_organo_especializado: bool | None = None
-    organo_jurisdiccional: str | None = None
-    directorio_edictos: str | None = None
-    directorio_glosas: str | None = None
-    directorio_listas_de_acuerdos: str | None = None
-    directorio_sentencias: str | None = None
-    audiencia_categoria: str | None = None
-
-
-class OneAutoridadOut(AutoridadOut, OneBaseOut):
-    """Esquema para entregar un autoridad"""
+    distrito_id: int = Field(None)
+    distrito_nombre: str = Field(None)
+    materia_id: int = Field(None)
+    descripcion: str = Field(None)
+    es_cemasc: bool = Field(None)
+    es_defensoria: bool = Field(None)
+    es_extinto: bool = Field(None)
+    es_jurisdiccional: bool = Field(None)
+    es_notaria: bool = Field(None)
+    es_organo_especializado: bool = Field(None)
+    organo_jurisdiccional: str = Field(None)
+    directorio_edictos: str = Field(None)
+    directorio_glosas: str = Field(None)
+    directorio_listas_de_acuerdos: str = Field(None)
+    directorio_sentencias: str = Field(None)
+    audiencia_categoria: str = Field(None)

@@ -52,9 +52,6 @@ class Usuario(Base, UniversalMixin):
     contrasena: Mapped[Optional[str]] = mapped_column(String(256))
 
     # Hijos
-    bitacoras: Mapped[List["Bitacora"]] = relationship("Bitacora", back_populates="usuario")
-    entradas_salidas: Mapped[List["EntradaSalida"]] = relationship("EntradaSalida", back_populates="usuario")
-    inv_custodias: Mapped[List["InvCustodia"]] = relationship("InvCustodia", back_populates="usuario")
     usuarios_roles: Mapped[List["UsuarioRol"]] = relationship("UsuarioRol", back_populates="usuario")
 
     # Propiedades

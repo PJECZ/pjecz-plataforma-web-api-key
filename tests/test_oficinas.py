@@ -14,20 +14,30 @@ class TestOficinas(unittest.TestCase):
 
     def test_get_domicilios(self):
         """Test GET method for domicilios"""
-        response = requests.get(
-            f"{config['api_base_url']}/domicilios",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/domicilios",
+                headers={"X-Api-Key": config["api_key"]},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
 
     def test_get_oficinas(self):
         """Test GET method for oficinas"""
-        response = requests.get(
-            f"{config['api_base_url']}/oficinas",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/oficinas",
+                headers={"X-Api-Key": config["api_key"]},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
 
 

@@ -12,16 +12,16 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
+from ..usuarios.authentications import AuthenticatedUser, get_current_active_user
 from .crud import get_usuario_rol, get_usuarios_roles
-from .schemas import OneUsuarioRolOut, UsuarioRolOut
+from .schemas import ItemUsuarioRolOut, OneUsuarioRolOut
 
 usuarios_roles = APIRouter(prefix="/v4/usuarios_roles", tags=["usuarios"])
 
 
-@usuarios_roles.get("", response_model=CustomPage[UsuarioRolOut])
+@usuarios_roles.get("", response_model=CustomPage[ItemUsuarioRolOut])
 async def paginado_usuarios_roles(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     rol_id: int = None,
     rol_nombre: str = None,
@@ -46,7 +46,7 @@ async def paginado_usuarios_roles(
 
 @usuarios_roles.get("/{usuario_rol_id}", response_model=OneUsuarioRolOut)
 async def detalle_usuario_rol(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     usuario_rol_id: int,
 ):

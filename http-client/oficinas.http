@@ -1,0 +1,19 @@
+
+### Oficinas
+GET {{baseUrl}}/oficinas
+X-Api-Key: {{apiKey}}
+
+### Oficinas en MERCANTILES
+GET {{baseUrl}}/oficinas
+    ?domicilio_id=18
+X-Api-Key: {{apiKey}}
+
+### Oficinas en Saltillo
+GET {{baseUrl}}/oficinas
+    ?distrito_clave=DSLT
+    &size=50
+X-Api-Key: {{apiKey}}
+
+### Oficinas con clave DSAL04-DINFO
+GET {{baseUrl}}/oficinas/DSAL04-DINFO
+X-Api-Key: {{apiKey}}

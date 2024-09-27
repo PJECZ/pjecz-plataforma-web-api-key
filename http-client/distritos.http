@@ -1,0 +1,28 @@
+
+### Distritos
+GET {{baseUrl}}/distritos
+X-Api-Key: {{apiKey}}
+
+### Distritos es_distrito_judicial
+GET {{baseUrl}}/distritos
+    ?es_distrito_judicial=true
+X-Api-Key: {{apiKey}}
+
+### Distritos es_distrito
+GET {{baseUrl}}/distritos
+    ?es_distrito=true
+X-Api-Key: {{apiKey}}
+
+### Distritos es_jurisdiccional
+GET {{baseUrl}}/distritos
+    ?es_jurisdiccional=true
+X-Api-Key: {{apiKey}}
+
+### Distritos NO es_jurisdiccional
+GET {{baseUrl}}/distritos
+    ?es_jurisdiccional=false
+X-Api-Key: {{apiKey}}
+
+### Distrito Torreon
+GET {{baseUrl}}/distritos/dtrc
+X-Api-Key: {{apiKey}}

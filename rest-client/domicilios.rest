@@ -1,0 +1,12 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@apiKey = {{$dotenv API_KEY}}
+
+### Domicilios
+GET {{baseUrl}}/domicilios
+    ?offset=10
+X-Api-Key: {{apiKey}}
+
+### Domicilio con id 18 MERCANTILES
+GET {{baseUrl}}/domicilios/18
+X-Api-Key: {{apiKey}}

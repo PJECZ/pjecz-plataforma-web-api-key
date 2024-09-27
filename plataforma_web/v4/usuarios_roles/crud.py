@@ -7,10 +7,9 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.usuarios_roles.models import UsuarioRol
-from ..roles.crud import get_rol
-from ..usuarios.crud import get_usuario, get_usuario_with_email
+from plataforma_web.core.usuarios_roles.models import UsuarioRol
+from plataforma_web.v4.roles.crud import get_rol, get_rol_with_nombre
+from plataforma_web.v4.usuarios.crud import get_usuario, get_usuario_with_email
 
 
 def get_usuarios_roles(
@@ -24,16 +23,16 @@ def get_usuarios_roles(
     consulta = database.query(UsuarioRol)
     if rol_id is not None:
         rol = get_rol(database, rol_id)
-        consulta = consulta.filter(rol == rol)
+        consulta = consulta.filter_by(rol_id=rol.id)
     elif rol_nombre is not None:
-        rol = (database, rol_nombre)
-        consulta = consulta.filter(rol == rol)
+        rol = get_rol_with_nombre(database, rol_nombre)
+        consulta = consulta.filter_by(rol_id=rol.id)
     if usuario_id is not None:
         usuario = get_usuario(database, usuario_id)
-        consulta = consulta.filter(usuario == usuario)
+        consulta = consulta.filter_by(usuario_id=usuario.id)
     elif usuario_email is not None:
         usuario = get_usuario_with_email(database, usuario_email)
-        consulta = consulta.filter(usuario == usuario)
+        consulta = consulta.filter_by(usuario_id=usuario.id)
     return consulta.filter_by(estatus="A").order_by(UsuarioRol.id.desc())
 
 

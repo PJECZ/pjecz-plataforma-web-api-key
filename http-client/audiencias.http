@@ -1,0 +1,36 @@
+
+### Audiencias
+GET {{baseUrl}}/audiencias
+X-Api-Key: {{apiKey}}
+
+### Audiencias de la autoridad 37
+GET {{baseUrl}}/audiencias
+    ?autoridad_id=37
+X-Api-Key: {{apiKey}}
+
+### Audiencias de la autoridad MNC-J2-CIV
+GET {{baseUrl}}/audiencias
+    ?autoridad_clave=MNC-J2-CIV
+X-Api-Key: {{apiKey}}
+
+### Audiencias de la autoridad MNC-J2-CIV del anio 2021
+GET {{baseUrl}}/audiencias
+    ?autoridad_clave=MNC-J2-CIV
+    &anio=2021
+X-Api-Key: {{apiKey}}
+
+### Audiencias de la autoridad MNC-J2-CIV de 2021-04-26
+GET {{baseUrl}}/audiencias
+    ?autoridad_clave=MNC-J2-CIV
+    &fecha=2021-04-26
+X-Api-Key: {{apiKey}}
+
+### Audiencias del Distrito de Monclova
+GET {{baseUrl}}/audiencias
+    ?distrito_clave=DMNC
+    &fecha=2021-04-26
+X-Api-Key: {{apiKey}}
+
+### Detalle de la audiencia con id 171970
+GET {{baseUrl}}/audiencias/171970
+X-Api-Key: {{apiKey}}

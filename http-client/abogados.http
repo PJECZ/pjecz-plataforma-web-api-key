@@ -1,0 +1,36 @@
+
+### Abogados
+GET {{baseUrl}}/abogados
+X-Api-Key: {{apiKey}}
+
+### Abogados con nombre Garza
+GET {{baseUrl}}/abogados
+    ?nombre=Garza
+X-Api-Key: {{apiKey}}
+
+### Abogados con nombre EsteNombreNoExiste
+GET {{baseUrl}}/abogados
+    ?nombre=EsteNombreNoExiste
+X-Api-Key: {{apiKey}}
+
+### Abogados con nombre Garza registrados desde 2020
+GET {{baseUrl}}/abogados
+    ?nombre=Garza
+    &anio_desde=2020
+X-Api-Key: {{apiKey}}
+
+### Abogados registrados entre 2020 y 2021
+GET {{baseUrl}}/abogados
+    ?anio_desde=2020
+    &anio_hasta=2021
+X-Api-Key: {{apiKey}}
+
+### Abogados registrados entre 1800 y 1899
+GET {{baseUrl}}/abogados
+    ?anio_desde=1800
+    &anio_hasta=1899
+X-Api-Key: {{apiKey}}
+
+### Detalle del abogado con id 13586
+GET {{baseUrl}}/abogados/13586
+X-Api-Key: {{apiKey}}

@@ -8,12 +8,11 @@ from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_string
-
-from ...core.modulos.models import Modulo
+from plataforma_web.core.modulos.models import Modulo
 
 
 def get_modulos(database: Session) -> Any:
-    """Consultar los modulos activos"""
+    """Consultar los modulos"""
     return database.query(Modulo).filter_by(estatus="A").order_by(Modulo.nombre)
 
 

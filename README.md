@@ -1,6 +1,6 @@
 # pjecz-plataforma-web-api-key
 
-API con autentificación para realizar operaciones con la base de datos de Plataforma Web. Hecho con FastAPI.
+API con autentificación para consultar las bases de datos.
 
 ## Mejores practicas
 
@@ -10,7 +10,7 @@ Usa las recomendaciones de [I've been abusing HTTP Status Codes in my APIs for y
 
 Status code: **200**
 
-Body que entrega un _paginado_ de items
+Respuesta como _paginado_ de items
 
 ```json
 {
@@ -29,7 +29,7 @@ Body que entrega un _paginado_ de items
 }
 ```
 
-Body que entrega un item
+Respuesta de un _item_
 
 ```json
 {
@@ -48,8 +48,10 @@ Body
 
 ```json
 {
-  "success": false,
-  "message": "No employee found for ID 100"
+  "success": true,
+  "message": "No existe ese abogado",
+  "id": null,
+  ...
 }
 ```
 
@@ -76,8 +78,6 @@ poetry config virtualenvs.in-project
 
 ## Configuracion
 
-**Para produccion** se toman los secretos desde **Google Cloud** con _secret manager_
-
 **Para desarrollo** hay que crear un archivo para las variables de entorno `.env`
 
 ```ini
@@ -92,17 +92,15 @@ DB_PASS=XXXXXXXXXXXXXXXX
 ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
 
 # Google Cloud Storage buckets
-GCP_BUCKET=pjecz-consultas
-GCP_BUCKET_EDICTOS=pjecz-consultas-edictos
-GCP_BUCKET_GLOSAS=pjecz-consultas-glosas
-GCP_BUCKET_LISTAS_DE_ACUERDOS=pjecz-consultas-listas-de-acuerdos
-GCP_BUCKET_SENTENCIAS=pjecz-consultas-version-publica-sentencias
+CLOUD_STORAGE_DEPOSITO=pjecz-desarrollo
+CLOUD_STORAGE_DEPOSITO_EDICTOS=pjecz-desarrollo
+CLOUD_STORAGE_DEPOSITO_GLOSAS=pjecz-desarrollo
+CLOUD_STORAGE_DEPOSITO_LISTAS_DE_ACUERDOS=pjecz-desarrollo
+CLOUD_STORAGE_DEPOSITO_SENTENCIAS=pjecz-desarrollo
+CLOUD_STORAGE_DEPOSITO_USUARIOS=pjecz-desarrollo
 
 # Salt sirve para cifrar el ID con HashID
 SALT=XXXXXXXXXXXXXXXX
-
-# Huso horario
-TZ=America/Mexico_City
 ```
 
 Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
@@ -115,9 +113,9 @@ fi
 
 if command -v figlet &> /dev/null
 then
-    figlet Plataforma Web API Key
+    figlet Plataforma Web API key
 else
-    echo "== Plataforma Web API Key"
+    echo "== Plataforma Web API key"
 fi
 echo
 
@@ -125,19 +123,14 @@ if [ -f .env ]
 then
     echo "-- Variables de entorno"
     export $(grep -v '^#' .env | xargs)
+    # source .env && export $(sed '/^#/d' .env | cut -d= -f1)
     echo "   DB_HOST: ${DB_HOST}"
     echo "   DB_PORT: ${DB_PORT}"
     echo "   DB_NAME: ${DB_NAME}"
     echo "   DB_USER: ${DB_USER}"
     echo "   DB_PASS: ${DB_PASS}"
-    echo "   GCP_BUCKET: ${GCP_BUCKET}"
-    echo "   GCP_BUCKET_EDICTOS: ${GCP_BUCKET_EDICTOS}"
-    echo "   GCP_BUCKET_GLOSAS: ${GCP_BUCKET_GLOSAS}"
-    echo "   GCP_BUCKET_LISTAS_DE_ACUERDOS: ${GCP_BUCKET_LISTAS_DE_ACUERDOS}"
-    echo "   GCP_BUCKET_SENTENCIAS: ${GCP_BUCKET_SENTENCIAS}"
     echo "   ORIGINS: ${ORIGINS}"
     echo "   SALT: ${SALT}"
-    echo "   TZ: ${TZ}"
     echo
     export PGHOST=$DB_HOST
     export PGPORT=$DB_PORT
@@ -154,8 +147,12 @@ then
     export PYTHONPATH=$(pwd)
     echo "   PYTHONPATH: ${PYTHONPATH}"
     echo
-    alias arrancar="uvicorn --factory --host=127.0.0.1 --port 8002 --reload plataforma_web.app:create_app"
-    echo "-- Ejecutar FastAPI 127.0.0.1:8002"
+    echo "-- Poetry"
+    export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+    echo "   $(poetry --version)"
+    echo
+    echo "-- FastAPI 127.0.0.1:8000"
+    alias arrancar="uvicorn --factory --host=127.0.0.1 --port 8000 --reload plataforma_web.app:create_app"
     echo "   arrancar"
     echo
 fi
@@ -204,6 +201,7 @@ python3.11 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install wheel
+pip install poetry
 poetry install
 ```
 
@@ -225,9 +223,7 @@ python3 -m unittest discover tests
 
 ## Contenedores
 
-Esta incluido el archivo `Dockerfile` para construir la imagen con **podman**. Va a usar el puerto **8000**.
-
-Construir la imagen
+Construir la imagen con el comando **podman**
 
 ```bash
 podman build -t pjecz_plataforma_web_api_key .
@@ -238,29 +234,31 @@ Escribir el archivo `.env` con las variables de entorno
 ```ini
 DB_HOST=NNN.NNN.NNN.NNN
 DB_PORT=5432
-DB_NAME=pjecz_plataforma_web
-DB_USER=adminpjeczplataformaweb
+DB_NAME=XXXXXXXXXXXXXXXX
+DB_USER=XXXXXXXXXXXXXXXX
 DB_PASS=XXXXXXXXXXXXXXXX
 ORIGINS=*
 SALT=XXXXXXXXXXXXXXXX
 ```
 
-Arrancar el contenedor donde el puerto 8000 del contenedor se dirige al puerto **7002** local
+Arrancar el contenedor donde el puerto 8000 del contenedor se dirige al puerto **8002** local
 
 ```bash
 podman run --rm \
     --name pjecz_plataforma_web_api_key \
-    -p 7002:8000 \
+    -p 8002:8000 \
     --env-file .env \
     pjecz_plataforma_web_api_key
 ```
+
+Presionar CTRL-C para terminar la prueba anterior.
 
 Arrancar el contenedor y dejar corriendo en el fondo
 
 ```bash
 podman run -d \
     --name pjecz_plataforma_web_api_key \
-    -p 7002:8000 \
+    -p 8002:8000 \
     --env-file .env \
     pjecz_plataforma_web_api_key
 ```

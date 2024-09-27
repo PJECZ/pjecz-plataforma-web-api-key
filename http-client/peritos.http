@@ -1,0 +1,34 @@
+
+### Peritos
+GET {{baseUrl}}/peritos
+X-Api-Key: {{apiKey}}
+
+### Peritos con tipo CRIMINOLOGIA 14
+GET {{baseUrl}}/peritos
+    ?perito_tipo_id=14
+X-Api-Key: {{apiKey}}
+
+### Peritos con nombre Luis
+GET {{baseUrl}}/peritos
+    ?nombre=Luis
+X-Api-Key: {{apiKey}}
+
+### Peritos con nombre EsteNombreNoExiste
+GET {{baseUrl}}/peritos
+    ?nombre=EsteNombreNoExiste
+X-Api-Key: {{apiKey}}
+
+### Peritos del Distrito de Saltillo DSLT
+GET {{baseUrl}}/peritos
+    ?distrito_clave=DSLT
+X-Api-Key: {{apiKey}}
+
+### Peritos del Distrito de Saltillo DSLT con nombre Luis
+GET {{baseUrl}}/peritos
+    ?distrito_clave=DSLT
+    &nombre=Luis
+X-Api-Key: {{apiKey}}
+
+### Perito con id 474
+GET {{baseUrl}}/peritos/474
+X-Api-Key: {{apiKey}}

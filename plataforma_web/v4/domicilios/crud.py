@@ -7,9 +7,8 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.domicilios.models import Domicilio
-from ..distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.core.domicilios.models import Domicilio
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_domicilios(
@@ -17,7 +16,7 @@ def get_domicilios(
     distrito_id: int = None,
     distrito_clave: str = None,
 ) -> Any:
-    """Consultar los domicilios activos"""
+    """Consultar los domicilios"""
     consulta = database.query(Domicilio)
     if distrito_id is not None:
         distrito = get_distrito(database, distrito_id)

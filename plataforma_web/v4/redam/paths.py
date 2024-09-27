@@ -10,18 +10,17 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import get_redam, get_redams
-from .schemas import OneRedamOut, RedamOut
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.redam.crud import get_redam, get_redams
+from plataforma_web.v4.redam.schemas import ItemRedamOut, OneRedamOut
+from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 redam = APIRouter(prefix="/v4/redam", tags=["redam"])
 
 
-@redam.get("", response_model=CustomPage[RedamOut])
+@redam.get("", response_model=CustomPage[ItemRedamOut])
 async def paginado_redams(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -50,7 +49,7 @@ async def paginado_redams(
 
 @redam.get("/{redam_id}", response_model=OneRedamOut)
 async def detalle_redam(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     redam_id: int,
 ):

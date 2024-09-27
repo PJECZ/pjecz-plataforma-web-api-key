@@ -2,22 +2,18 @@
 Epocas v3, esquemas de pydantic
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class EpocaListOut(BaseModel):
+class ItemEpocaOut(BaseModel):
     """Esquema para entregar epocas"""
 
-    id: int | None = None
-    nombre: str | None = None
+    id: int = Field(None)
+    nombre: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class EpocaOut(EpocaListOut):
-    """Esquema para entregar epocas"""
-
-
-class OneEpocaOut(EpocaOut, OneBaseOut):
+class OneEpocaOut(ItemEpocaOut, OneBaseOut):
     """Esquema para entregar una epoca"""

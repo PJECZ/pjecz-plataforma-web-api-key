@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_clave
-
-from ...core.distritos.models import Distrito
+from plataforma_web.core.distritos.models import Distrito
 
 
 def get_distritos(
@@ -18,7 +17,7 @@ def get_distritos(
     es_distrito: bool = None,
     es_jurisdiccional: bool = None,
 ) -> Any:
-    """Consultar los distritos activos"""
+    """Consultar los distritos"""
     consulta = database.query(Distrito)
     if es_distrito_judicial is not None:
         consulta = consulta.filter_by(es_distrito_judicial=es_distrito_judicial)

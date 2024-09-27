@@ -7,9 +7,8 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.materias_tipos_juicios.models import MateriaTipoJuicio
-from ..materias.crud import get_materia, get_materia_with_clave
+from plataforma_web.core.materias_tipos_juicios.models import MateriaTipoJuicio
+from plataforma_web.v4.materias.crud import get_materia, get_materia_with_clave
 
 
 def get_materias_tipos_juicios(
@@ -17,7 +16,7 @@ def get_materias_tipos_juicios(
     materia_id: int = None,
     materia_clave: str = None,
 ) -> Any:
-    """Consultar los materias-tipos de juicios activos"""
+    """Consultar los materias-tipos de juicios"""
     consulta = database.query(MateriaTipoJuicio)
     if materia_id is not None:
         materia = get_materia(database, materia_id)

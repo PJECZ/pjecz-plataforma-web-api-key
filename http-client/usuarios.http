@@ -1,0 +1,17 @@
+
+### Usuarios
+GET {{baseUrl}}/usuarios
+X-Api-Key: {{apiKey}}
+
+### Usuarios con email gmail.com
+GET {{baseUrl}}/usuarios
+    ?email=gmail.com
+X-Api-Key: {{apiKey}}
+
+### Usuario slt.mercantil.2do@pjecz.gob.mx
+GET {{baseUrl}}/usuarios/slt.mercantil.2do@pjecz.gob.mx
+X-Api-Key: {{apiKey}}
+
+### Usuario no.existe.999999@pjecz.gob.mx
+GET {{baseUrl}}/usuarios/no.existe.999999@pjecz.gob.mx
+X-Api-Key: {{apiKey}}

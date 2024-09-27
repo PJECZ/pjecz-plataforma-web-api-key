@@ -10,18 +10,17 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import get_usuario_with_email, get_usuarios
-from .schemas import OneUsuarioOut, UsuarioOut
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
+from plataforma_web.v4.usuarios.crud import get_usuario_with_email, get_usuarios
+from plataforma_web.v4.usuarios.schemas import ItemUsuarioOut, OneUsuarioOut
 
 usuarios = APIRouter(prefix="/v4/usuarios", tags=["usuarios"])
 
 
-@usuarios.get("", response_model=CustomPage[UsuarioOut])
+@usuarios.get("", response_model=CustomPage[ItemUsuarioOut])
 async def paginado_usuarios(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     apellido_paterno: str = None,
     apellido_materno: str = None,
@@ -56,7 +55,7 @@ async def paginado_usuarios(
 
 @usuarios.get("/{email}", response_model=OneUsuarioOut)
 async def detalle_usuario(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     email: str,
 ):
