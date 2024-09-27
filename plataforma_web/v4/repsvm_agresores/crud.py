@@ -1,15 +1,15 @@
 """
 REPSVM Agresores v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_string
-
-from ...core.repsvm_agresores.models import RepsvmAgresor
-from ..distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.core.repsvm_agresores.models import RepsvmAgresor
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_repsvm_agresores(
@@ -18,7 +18,7 @@ def get_repsvm_agresores(
     distrito_clave: str = None,
     nombre: str = None,
 ) -> Any:
-    """Consultar los agresores activos"""
+    """Consultar los agresores"""
     consulta = database.query(RepsvmAgresor)
     if distrito_id is not None:
         distrito = get_distrito(database, distrito_id)

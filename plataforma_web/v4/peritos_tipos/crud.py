@@ -1,17 +1,17 @@
 """
 Peritos - Tipos v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.peritos_tipos.models import PeritoTipo
+from plataforma_web.core.peritos_tipos.models import PeritoTipo
 
 
 def get_peritos_tipos(database: Session) -> Any:
-    """Consultar los tipos de peritos activos"""
+    """Consultar los tipos de peritos"""
     return database.query(PeritoTipo).filter_by(estatus="A").order_by(PeritoTipo.nombre)
 
 

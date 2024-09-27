@@ -1,6 +1,7 @@
 """
 Unit tests for repsvm category
 """
+
 import unittest
 
 import requests

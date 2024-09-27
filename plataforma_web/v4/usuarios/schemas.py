@@ -4,45 +4,23 @@ Usuarios v3, esquemas de pydantic
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class UsuarioOut(BaseModel):
+class ItemUsuarioOut(BaseModel):
     """Esquema para entregar usuarios"""
 
-    id: int | None = None
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    autoridad_id: int | None = None
-    autoridad_clave: str | None = None
-    autoridad_descripcion: str | None = None
-    autoridad_descripcion_corta: str | None = None
-    autoridad_directorio_edictos: str | None = None
-    oficina_id: int | None = None
-    oficina_clave: str | None = None
-    email: str | None = None
-    email_personal: str | None = None
-    nombres: str | None = None
-    apellido_paterno: str | None = None
-    apellido_materno: str | None = None
-    curp: str | None = None
-    puesto: str | None = None
-    telefono: str | None = None
-    telefono_celular: str | None = None
-    extension: str | None = None
-    workspace: str | None = None
+    id: int = Field(None)
+    email: str = Field(None)
+    nombres: str = Field(None)
+    apellido_paterno: str = Field(None)
+    apellido_materno: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OneUsuarioOut(UsuarioOut, OneBaseOut):
-    """Esquema para entregar un usuario"""
-
-
-class UsuarioInDB(UsuarioOut):
+class AuthenticatedUser(ItemUsuarioOut):
     """Usuario en base de datos"""
 
     username: str
@@ -51,3 +29,26 @@ class UsuarioInDB(UsuarioOut):
     disabled: bool
     api_key: str
     api_key_expiracion: datetime
+
+
+class OneUsuarioOut(ItemUsuarioOut, OneBaseOut):
+    """Esquema para entregar un usuario"""
+
+    distrito_id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    autoridad_id: int = Field(None)
+    autoridad_clave: str = Field(None)
+    autoridad_descripcion: str = Field(None)
+    autoridad_descripcion_corta: str = Field(None)
+    autoridad_directorio_edictos: str = Field(None)
+    oficina_id: int = Field(None)
+    oficina_clave: str = Field(None)
+    email_personal: str = Field(None)
+    curp: str = Field(None)
+    puesto: str = Field(None)
+    telefono: str = Field(None)
+    telefono_celular: str = Field(None)
+    extension: str = Field(None)
+    workspace: str = Field(None)

@@ -1,0 +1,30 @@
+
+### Sentencias
+GET {{baseUrl}}/sentencias
+X-Api-Key: {{apiKey}}
+
+### Sentencias de la autoridad 37
+GET {{baseUrl}}/sentencias
+    ?autoridad_id=37
+X-Api-Key: {{apiKey}}
+
+### Sentencias del SLT-J2-CIV
+GET {{baseUrl}}/sentencias
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{apiKey}}
+
+### Sentencias del SLT-J2-CIV expedientes del 2019
+GET {{baseUrl}}/sentencias
+    ?autoridad_clave=SLT-J2-CIV
+    &expediente_anio=2019
+X-Api-Key: {{apiKey}}
+
+### Sentencias del SLT-J2-CIV del 2021-05-31
+GET {{baseUrl}}/sentencias
+    ?autoridad_clave=SLT-J2-CIV
+    &fecha=2021-05-31
+X-Api-Key: {{apiKey}}
+
+### Sentencia con id 21388
+GET {{baseUrl}}/sentencias/21388
+X-Api-Key: {{apiKey}}

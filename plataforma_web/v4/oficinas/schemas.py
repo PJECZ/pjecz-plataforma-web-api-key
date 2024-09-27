@@ -1,33 +1,30 @@
 """
 Oficinas v3, esquemas de pydantic
 """
-from pydantic import BaseModel, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class OficinaListOut(BaseModel):
+class ItemOficinaOut(BaseModel):
     """Esquema para entregar oficinas"""
 
-    id: int | None = None
-    clave: str | None = None
-    descripcion_corta: str | None = None
+    id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    domicilio_edificio: str = Field(None)
+    clave: str = Field(None)
+    descripcion_corta: str = Field(None)
+    es_jurisdiccional: bool = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OficinaOut(OficinaListOut):
-    """Esquema para entregar oficinas"""
+class OneOficinaOut(ItemOficinaOut, OneBaseOut):
+    """Esquema para entregar una oficina"""
 
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    domicilio_id: int | None = None
-    domicilio_completo: str | None = None
-    domicilio_edificio: str | None = None
-    descripcion: str | None = None
-    es_jurisdiccional: bool | None = None
-
-
-class OneOficinaOut(OficinaOut, OneBaseOut):
-    """Esquema para entregar un oficina"""
+    distrito_id: int = Field(None)
+    distrito_nombre: str = Field(None)
+    domicilio_id: int = Field(None)
+    domicilio_completo: str = Field(None)
+    descripcion: str = Field(None)

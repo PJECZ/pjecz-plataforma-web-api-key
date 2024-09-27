@@ -1,16 +1,16 @@
 """
 Peritos v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_string
-
-from ...core.peritos.models import Perito
-from ..distritos.crud import get_distrito, get_distrito_with_clave
-from ..peritos_tipos.crud import get_perito_tipo
+from plataforma_web.core.peritos.models import Perito
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.v4.peritos_tipos.crud import get_perito_tipo
 
 
 def get_peritos(
@@ -20,7 +20,7 @@ def get_peritos(
     nombre: str = None,
     perito_tipo_id: int = None,
 ) -> Any:
-    """Consultar los peritos activos"""
+    """Consultar los peritos"""
     consulta = database.query(Perito)
     if distrito_id is not None:
         distrito = get_distrito(database, distrito_id)

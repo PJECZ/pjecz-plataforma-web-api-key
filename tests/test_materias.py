@@ -1,6 +1,7 @@
 """
 Unit tests for materias category
 """
+
 import unittest
 
 import requests
@@ -13,20 +14,16 @@ class TestMaterias(unittest.TestCase):
 
     def test_get_materias(self):
         """Test GET method for materias"""
-        response = requests.get(
-            f"{config['api_base_url']}/materias",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_materias_tipos_juicios(self):
-        """Test GET method for materias_tipos_juicios"""
-        response = requests.get(
-            f"{config['api_base_url']}/materias_tipos_juicios",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/materias",
+                headers={"X-Api-Key": config["api_key"]},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
 
 

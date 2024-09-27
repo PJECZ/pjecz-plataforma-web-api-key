@@ -1,18 +1,18 @@
 """
 Roles v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_string
-
-from ...core.roles.models import Rol
+from plataforma_web.core.roles.models import Rol
 
 
 def get_roles(database: Session) -> Any:
-    """Consultar los roles activos"""
+    """Consultar los roles"""
     return database.query(Rol).filter_by(estatus="A").order_by(Rol.nombre)
 
 

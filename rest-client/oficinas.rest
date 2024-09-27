@@ -2,23 +2,21 @@
 @baseUrl = {{root}}/v4
 @api_key = {{$dotenv API_KEY}}
 
-### Bienvenida
-GET {{root}}
-
-### Domicilios
-GET {{baseUrl}}/domicilios
-    ?offset=10
-X-Api-Key: {{api_key}}
-
-### Domicilio con id 18 MERCANTILES
-GET {{baseUrl}}/domicilios/18
-X-Api-Key: {{api_key}}
-
 ### Oficinas
 GET {{baseUrl}}/oficinas
-X-Api-Key: {{api_key}}
+X-Api-Key: {{apiKey}}
 
 ### Oficinas en MERCANTILES
 GET {{baseUrl}}/oficinas
     ?domicilio_id=18
-X-Api-Key: {{api_key}}
+X-Api-Key: {{apiKey}}
+
+### Oficinas en Saltillo
+GET {{baseUrl}}/oficinas
+    ?distrito_clave=DSLT
+    &page=5
+X-Api-Key: {{apiKey}}
+
+### Oficinas con clave DSAL04-DINFO
+GET {{baseUrl}}/oficinas/DSAL04-DINFO
+X-Api-Key: {{apiKey}}

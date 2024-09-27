@@ -1,0 +1,28 @@
+
+### Tesis Jurisprudencias
+GET {{baseUrl}}/tesis_jurisprudencias
+X-Api-Key: {{apiKey}}
+
+### Tesis Jurisprudencia con id 1
+GET {{baseUrl}}/tesis_jurisprudencias/1
+X-Api-Key: {{apiKey}}
+
+### Tesis Jurisprudencias de la autoridad con clave TRC-SR
+GET {{baseUrl}}/tesis_jurisprudencias
+    ?autoridad_clave=TRC-SR
+X-Api-Key: {{apiKey}}
+
+### Tesis Jurisprudencias de la epoca con id 1
+GET {{baseUrl}}/tesis_jurisprudencias
+    ?epoca_id=1
+X-Api-Key: {{apiKey}}
+
+### Tesis Jurisprudencias de la materia con id 2
+GET {{baseUrl}}/tesis_jurisprudencias
+    ?materia_id=2
+X-Api-Key: {{apiKey}}
+
+### Tesis Jurisprudencias de la materia con clave FAM
+GET {{baseUrl}}/tesis_jurisprudencias
+    ?materia_clave=FAM
+X-Api-Key: {{apiKey}}

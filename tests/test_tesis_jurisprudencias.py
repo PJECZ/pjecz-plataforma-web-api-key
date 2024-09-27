@@ -1,6 +1,7 @@
 """
 Unit tests for tesis_jurisprudencias category
 """
+
 import unittest
 
 import requests

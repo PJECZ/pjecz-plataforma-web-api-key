@@ -1,0 +1,19 @@
+
+### REPSVM Agresores
+GET {{baseUrl}}/repsvm_agresores
+X-Api-Key: {{apiKey}}
+
+### REPSVM Agresores con nombre Luis
+GET {{baseUrl}}/repsvm_agresores
+    ?nombre=Luis
+X-Api-Key: {{apiKey}}
+
+### REPSVM Agresores con un nombre que no existe
+GET {{baseUrl}}/repsvm_agresores
+    ?nombre=EsteNombreNOExiste
+X-Api-Key: {{apiKey}}
+
+### REPSVM Agresores del distrito DRGR
+GET {{baseUrl}}/repsvm_agresores
+    ?distrito_clave=DRGR
+X-Api-Key: {{apiKey}}

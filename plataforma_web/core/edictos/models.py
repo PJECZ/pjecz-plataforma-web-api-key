@@ -20,7 +20,7 @@ class Edicto(Base, UniversalMixin):
     # Clave primaria
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Clave foránea
+    # Claves foráneas
     autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
     autoridad: Mapped["Autoridad"] = relationship(back_populates="edictos")
 
@@ -35,13 +35,6 @@ class Edicto(Base, UniversalMixin):
     # Columnas nuevas
     acuse_num: Mapped[int] = mapped_column(default=0)
     edicto_id_original: Mapped[int] = mapped_column(default=0)
-
-    @property
-    def descargar_url(self):
-        """URL para descargar el archivo desde el sitio web"""
-        if self.id:
-            return f"https://www.pjecz.gob.mx/consultas/edictos/descargar/?id={self.id}"
-        return ""
 
     @property
     def distrito_id(self):

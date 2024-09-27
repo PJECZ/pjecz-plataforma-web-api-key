@@ -1,6 +1,7 @@
 """
 Tesis Jurisprudencias v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -25,7 +26,7 @@ def get_tesis_jurisprudencias(
     materia_id: int = None,
     materia_clave: str = None,
 ) -> Any:
-    """Consultar los tesis jurisprudencias activos"""
+    """Consultar los tesis jurisprudencias"""
     consulta = database.query(TesisJurisprudencia)
     if autoridad_id is not None:
         autoridad = get_autoridad(database, autoridad_id)

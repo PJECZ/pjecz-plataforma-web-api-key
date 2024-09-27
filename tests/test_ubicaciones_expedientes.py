@@ -1,6 +1,7 @@
 """
 Unit tests for ubicaciones de expedientes category
 """
+
 import unittest
 
 import requests

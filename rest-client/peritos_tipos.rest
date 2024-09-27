@@ -1,0 +1,11 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@apiKey = {{$dotenv API_KEY}}
+
+### Tipos de Peritos
+GET {{baseUrl}}/peritos_tipos
+X-Api-Key: {{apiKey}}
+
+### Tipo de Perito CRIMINOLOGIA
+GET {{baseUrl}}/peritos_tipos/14
+X-Api-Key: {{apiKey}}

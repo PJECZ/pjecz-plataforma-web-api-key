@@ -1,16 +1,16 @@
 """
 Oficinas v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_clave
-
-from ...core.oficinas.models import Oficina
-from ..distritos.crud import get_distrito, get_distrito_with_clave
-from ..domicilios.crud import get_domicilio
+from plataforma_web.core.oficinas.models import Oficina
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.v4.domicilios.crud import get_domicilio
 
 
 def get_oficinas(
@@ -20,7 +20,7 @@ def get_oficinas(
     domicilio_id: int = None,
     es_jurisdiccional: bool = None,
 ) -> Any:
-    """Consultar las oficinas activas"""
+    """Consultar las oficinas"""
     consulta = database.query(Oficina)
     if distrito_id is not None:
         distrito = get_distrito(database, distrito_id)

@@ -1,48 +1,44 @@
 """
 Sentencias v3, esquemas de pydantic
 """
+
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class SentenciaIn(BaseModel):
-    """Esquema para recibir una sentencia"""
-
-    autoridad_id: int | None = None
-    materia_tipo_juicio_id: int | None = None
-    sentencia: str | None = None
-    sentencia_fecha: date | None = None
-    expediente: str | None = None
-    fecha: date | None = None
-    descripcion: str | None = None
-    es_perspectiva_genero: bool | None = None
-    archivo: str | None = None
-    url: str | None = None
-    descargar_url: str | None = None
-
-
-class SentenciaOut(SentenciaIn):
+class ItemSentenciaOut(BaseModel):
     """Esquema para entregar sentencias"""
 
-    id: int | None = None
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    autoridad_clave: str | None = None
-    autoridad_descripcion: str | None = None
-    autoridad_descripcion_corta: str | None = None
-    expediente_anio: int | None = None
-    expediente_num: int | None = None
-    materia_id: int | None = None
-    materia_nombre: str | None = None
-    materia_tipo_juicio_descripcion: str | None = None
-    creado: datetime | None = None
+    id: int = Field(None)
+    autoridad_clave: str = Field(None)
+    autoridad_descripcion_corta: str = Field(None)
+    materia_nombre: str = Field(None)
+    materia_tipo_juicio_descripcion: str = Field(None)
+    sentencia: str = Field(None)
+    sentencia_fecha: date = Field(None)
+    expediente: str = Field(None)
+    fecha: date = Field(None)
+    descripcion: str = Field(None)
+    es_perspectiva_genero: bool = Field(None)
+    creado: datetime = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OneSentenciaOut(SentenciaOut, OneBaseOut):
+class OneSentenciaOut(ItemSentenciaOut, OneBaseOut):
     """Esquema para entregar una sentencia"""
+
+    distrito_id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    autoridad_id: int = Field(None)
+    autoridad_descripcion: str = Field(None)
+    materia_id: int = Field(None)
+    materia_tipo_juicio_id: int = Field(None)
+    expediente_anio: int = Field(None)
+    expediente_num: int = Field(None)
+    archivo: str = Field(None)
+    url: str = Field(None)

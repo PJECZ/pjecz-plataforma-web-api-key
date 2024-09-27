@@ -3,6 +3,8 @@
 .env
 .DS_Store
 .~lock.*
+http-client.private.env.json
+poetry.lock
 
 *.code-workspace
 *.csv
@@ -16,7 +18,6 @@
 __pycache__/
 *.egg-info/
 
-/poetry.lock
 /.idea/
 /.venv/
 /venv/

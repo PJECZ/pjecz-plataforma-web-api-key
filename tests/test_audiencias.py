@@ -1,6 +1,7 @@
 """
 Unit tests for audiencias category
 """
+
 import unittest
 
 import requests
@@ -13,21 +14,31 @@ class TestAudiencias(unittest.TestCase):
 
     def test_get_audiencias(self):
         """Test GET method for audiencias"""
-        response = requests.get(
-            f"{config['api_base_url']}/audiencias",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/audiencias",
+                headers={"X-Api-Key": config["api_key"]},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
 
     def test_get_audiencias_by_autoridad_id_35(self):
         """Test GET method for audiencias by autoridad_id 35"""
-        response = requests.get(
-            f"{config['api_base_url']}/audiencias",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_id": 35},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/audiencias",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_id": 35},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)

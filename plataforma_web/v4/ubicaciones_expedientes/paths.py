@@ -1,6 +1,7 @@
 """
 Ubicaciones de Expedientes v3, rutas (paths)
 """
+
 from datetime import date
 from typing import Annotated
 
@@ -10,25 +11,17 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-
-from ...core.permisos.models import Permiso
-from ...core.ubicaciones_expedientes.models import UbicacionExpediente
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import (
-    create_ubicacion_expediente,
-    delete_ubicacion_expediente,
-    get_ubicacion_expediente,
-    get_ubicaciones_expedientes,
-    update_ubicacion_expediente,
-)
-from .schemas import OneUbicacionExpedienteOut, UbicacionExpedienteIn, UbicacionExpedienteOut
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.ubicaciones_expedientes.crud import get_ubicacion_expediente, get_ubicaciones_expedientes
+from plataforma_web.v4.ubicaciones_expedientes.schemas import ItemUbicacionExpedienteOut, OneUbicacionExpedienteOut
+from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 ubicaciones_expedientes = APIRouter(prefix="/v4/ubicaciones_expedientes", tags=["ubicaciones de expedientes"])
 
 
-@ubicaciones_expedientes.get("", response_model=CustomPage[UbicacionExpedienteOut])
+@ubicaciones_expedientes.get("", response_model=CustomPage[ItemUbicacionExpedienteOut])
 async def paginado_ubicaciones_expedientes(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -57,7 +50,7 @@ async def paginado_ubicaciones_expedientes(
 
 @ubicaciones_expedientes.get("/{ubicacion_expediente_id}", response_model=OneUbicacionExpedienteOut)
 async def detalle_ubicacion_expediente(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     ubicacion_expediente_id: int,
 ):
@@ -69,62 +62,3 @@ async def detalle_ubicacion_expediente(
     except MyAnyError as error:
         return OneUbicacionExpedienteOut(success=False, message=str(error))
     return OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)
-
-
-@ubicaciones_expedientes.post("", response_model=OneUbicacionExpedienteOut)
-async def crear_ubicacion_expediente(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    ubicacion_expediente_in: UbicacionExpedienteIn,
-):
-    """Crear una ubicacion de expediente"""
-    if current_user.permissions.get("UBICACIONES EXPEDIENTES", 0) < Permiso.CREAR:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        ubicacion_expediente = create_ubicacion_expediente(
-            database, UbicacionExpediente(**ubicacion_expediente_in.model_dump())
-        )
-    except MyAnyError as error:
-        return OneUbicacionExpedienteOut(success=False, message=str(error))
-    respuesta = OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)
-    respuesta.message = "Ubicacion de expediente creada correctamente"
-    return respuesta
-
-
-@ubicaciones_expedientes.put("/{ubicacion_expediente_id}", response_model=OneUbicacionExpedienteOut)
-async def modificar_ubicacion_expediente(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    ubicacion_expediente_id: int,
-    ubicacion_expediente_in: UbicacionExpedienteIn,
-):
-    """Modificar una ubicacion de expediente"""
-    if current_user.permissions.get("UBICACIONES EXPEDIENTES", 0) < Permiso.MODIFICAR:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        ubicacion_expediente = update_ubicacion_expediente(
-            database, ubicacion_expediente_id, UbicacionExpediente(**ubicacion_expediente_in.model_dump())
-        )
-    except MyAnyError as error:
-        return OneUbicacionExpedienteOut(success=False, message=str(error))
-    respuesta = OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)
-    respuesta.message = "Ubicacion expediente modificada correctamente"
-    return respuesta
-
-
-@ubicaciones_expedientes.delete("/{ubicacion_expediente_id}", response_model=OneUbicacionExpedienteOut)
-async def borrar_ubicacion_expediente(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    ubicacion_expediente_id: int,
-):
-    """Borrar una ubicacion de expediente"""
-    if current_user.permissions.get("UBICACIONES EXPEDIENTES", 0) < Permiso.BORRAR:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        ubicacion_expediente = delete_ubicacion_expediente(database, ubicacion_expediente_id)
-    except MyAnyError as error:
-        return OneUbicacionExpedienteOut(success=False, message=str(error))
-    respuesta = OneUbicacionExpedienteOut.model_validate(ubicacion_expediente)
-    respuesta.message = "Ubicacion expediente borrada correctamente"
-    return respuesta

@@ -1,6 +1,7 @@
 """
 Unit tests for edictos category
 """
+
 import unittest
 
 import requests
@@ -13,21 +14,31 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos(self):
         """Test GET method for edictos"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
 
     def test_get_edictos_by_autoridad_id_37(self):
         """Test GET method for edictos by autoridad_id 37"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_id": 37},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_id": 37},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
@@ -36,12 +47,17 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos_by_autoridad_id_37_by_fechas(self):
         """Test GET method for edictos by autoridad_id 37 fecha_desde 2020-01-01 and fecha_hasta 2020-01-31"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_id": 37, "fecha_desde": "2020-01-01", "fecha_hasta": "2020-01-31"},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_id": 37, "fecha_desde": "2020-01-01", "fecha_hasta": "2020-01-31"},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
@@ -52,12 +68,17 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos_by_autoridad_id_35_and_expediente(self):
         """Test GET method for edictos by autoridad_id 35 and expediente 1774/2019"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_id": 35, "expediente": "1774/2019"},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_id": 35, "expediente": "1774/2019"},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
@@ -67,12 +88,17 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos_by_autoridad_clave_stl_j2_civ(self):
         """Test GET method for edictos by autoridad_clave SLT-J2-CIV"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_clave": "SLT-J2-CIV"},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_clave": "SLT-J2-CIV"},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
@@ -81,12 +107,17 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos_by_autoridad_clave_stl_j2_civ_by_fechas(self):
         """Test GET method for edictos by autoridad_clave SLT-J2-CIV fecha_desde 2020-01-01 and fecha_hasta 2020-01-31"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_clave": "SLT-J2-CIV", "fecha_desde": "2020-01-01", "fecha_hasta": "2020-01-31"},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_clave": "SLT-J2-CIV", "fecha_desde": "2020-01-01", "fecha_hasta": "2020-01-31"},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)
@@ -97,12 +128,17 @@ class TestEdictos(unittest.TestCase):
 
     def test_get_edictos_by_autoridad_clave_stl_j1_fam_and_expediente(self):
         """Test GET method for edictos by autoridad_clave SLT-J1-FAM and expediente 1774/2019"""
-        response = requests.get(
-            f"{config['api_base_url']}/edictos",
-            headers={"X-Api-Key": config["api_key"]},
-            params={"autoridad_clave": "SLT-J1-FAM", "expediente": "1774/2019"},
-            timeout=config["timeout"],
-        )
+        try:
+            response = requests.get(
+                f"{config['api_base_url']}/edictos",
+                headers={"X-Api-Key": config["api_key"]},
+                params={"autoridad_clave": "SLT-J1-FAM", "expediente": "1774/2019"},
+                timeout=config["timeout"],
+            )
+        except requests.exceptions.ConnectionError as error:
+            self.fail(f"Connection error: {error}")
+        except requests.exceptions.Timeout as error:
+            self.fail(f"Timeout error: {error}")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["success"], True)

@@ -1,17 +1,17 @@
 """
 Listas de Acuerdos v3, CRUD (create, read, update, and delete)
 """
+
 from datetime import date, datetime
 from typing import Any, List
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.autoridades.models import Autoridad
-from ...core.listas_de_acuerdos.models import ListaDeAcuerdo
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
-from ..distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.core.autoridades.models import Autoridad
+from plataforma_web.core.listas_de_acuerdos.models import ListaDeAcuerdo
+from plataforma_web.v4.autoridades.crud import get_autoridad, get_autoridad_with_clave
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_listas_de_acuerdos(
@@ -28,7 +28,7 @@ def get_listas_de_acuerdos(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ) -> Any:
-    """Consultar los listas de acuerdos activos"""
+    """Consultar las listas de acuerdos"""
     consulta = database.query(ListaDeAcuerdo)
     if autoridad_id is not None:
         autoridad = get_autoridad(database, autoridad_id)
@@ -77,90 +77,3 @@ def get_lista_de_acuerdo(
     if lista_de_acuerdo.estatus != "A":
         raise MyIsDeletedError("No es activo ese lista de acuerdo, está eliminado")
     return lista_de_acuerdo
-
-
-def create_lista_de_acuerdo(
-    database: Session,
-    lista_de_acuerdo: ListaDeAcuerdo,
-) -> ListaDeAcuerdo:
-    """Crear una lista de acuerdos"""
-
-    # Validar autoridad
-    get_autoridad(database, lista_de_acuerdo.autoridad_id)
-
-    # Guardar
-    database.add(lista_de_acuerdo)
-    database.commit()
-    database.refresh(lista_de_acuerdo)
-
-    # Entregar
-    return lista_de_acuerdo
-
-
-def update_lista_de_acuerdo(
-    database: Session,
-    lista_de_acuerdo_id: int,
-    lista_de_acuerdo_in: ListaDeAcuerdo,
-) -> ListaDeAcuerdo:
-    """Modificar una lista de acuerdos"""
-
-    # Consultar lista de acuerdos
-    lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
-
-    # Validar autoridad, si se especificó y se cambió
-    if lista_de_acuerdo_in.autoridad_id is not None and lista_de_acuerdo.autoridad_id != lista_de_acuerdo_in.autoridad_id:
-        autoridad = get_autoridad(database, lista_de_acuerdo_in.autoridad_id)
-        lista_de_acuerdo.autoridad_id = autoridad.autoridad_id
-
-    # Actualizar las columnas
-    lista_de_acuerdo.fecha = lista_de_acuerdo_in.fecha
-    lista_de_acuerdo.descripcion = lista_de_acuerdo_in.descripcion
-    lista_de_acuerdo.archivo = lista_de_acuerdo_in.archivo
-    lista_de_acuerdo.url = lista_de_acuerdo_in.url
-
-    # Guardar
-    database.add(lista_de_acuerdo)
-    database.commit()
-    database.refresh(lista_de_acuerdo)
-
-    # Entregar
-    return lista_de_acuerdo
-
-
-def delete_lista_de_acuerdo(
-    database: Session,
-    lista_de_acuerdo_id: int,
-) -> ListaDeAcuerdo:
-    """Borrar una lista de acuerdos"""
-    lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
-    lista_de_acuerdo.estatus = "B"
-    database.add(lista_de_acuerdo)
-    database.commit()
-    database.refresh(lista_de_acuerdo)
-    return lista_de_acuerdo
-
-
-def elaborate_daily_report_listas_de_acuerdos(
-    database: Session,
-    creado: date,
-) -> List[ListaDeAcuerdo]:
-    """Elaborar reporte diario de listas de acuerdos"""
-    resultados = []
-    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_listas_de_acuerdos(database=database, autoridad_id=autoridad.id, creado=creado).all()
-        if existentes:
-            resultados.extend(existentes)
-        else:
-            resultados.append(
-                ListaDeAcuerdo(
-                    id=0,
-                    autoridad_id=autoridad.id,
-                    autoridad=autoridad,
-                    fecha=creado,
-                    descripcion="No se publicó",
-                    archivo="",
-                    url="",
-                    creado=datetime(year=creado.year, month=creado.month, day=creado.day, hour=0, minute=0, second=0),
-                )
-            )
-    return resultados

@@ -1,6 +1,7 @@
 """
 Unit tests for usuarios category
 """
+
 import unittest
 
 import requests
@@ -10,34 +11,6 @@ from tests.load_env import config
 
 class TestUsuarios(unittest.TestCase):
     """Tests for usuarios category"""
-
-    def test_get_bitacoras(self):
-        """Test GET method for bitacoras"""
-        response = requests.get(
-            f"{config['api_base_url']}/bitacoras",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_bitacoras_with_modulo_nombre(self):
-        """Test GET method for bitacoras with modulo_nombre USUARIOS"""
-        response = requests.get(
-            f"{config['api_base_url']}/bitacoras",
-            params={"modulo_nombre": "USUARIOS"},
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_entradas_salidas(self):
-        """Test GET method for entradas_salidas"""
-        response = requests.get(
-            f"{config['api_base_url']}/entradas_salidas",
-            headers={"X-Api-Key": config["api_key"]},
-            timeout=config["timeout"],
-        )
-        self.assertEqual(response.status_code, 200)
 
     def test_get_modulos(self):
         """Test GET method for modulos"""

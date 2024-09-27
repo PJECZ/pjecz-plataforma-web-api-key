@@ -1,0 +1,15 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@apiKey = {{$dotenv API_KEY}}
+
+### Roles
+GET {{baseUrl}}/roles
+X-Api-Key: {{apiKey}}
+
+### Rol con id 1 que es el ADMINISTRADOR
+GET {{baseUrl}}/roles/1
+X-Api-Key: {{apiKey}}
+
+### Rol con id 999999 que no existe
+GET {{baseUrl}}/roles/999999
+X-Api-Key: {{apiKey}}

@@ -1,15 +1,15 @@
 """
 Permisos v3, CRUD (create, read, update, and delete)
 """
+
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.permisos.models import Permiso
-from ..modulos.crud import get_modulo, get_modulo_with_nombre
-from ..roles.crud import get_rol, get_rol_with_nombre
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.modulos.crud import get_modulo, get_modulo_with_nombre
+from plataforma_web.v4.roles.crud import get_rol, get_rol_with_nombre
 
 
 def get_permisos(
@@ -19,7 +19,7 @@ def get_permisos(
     rol_id: int = None,
     rol_nombre: str = None,
 ) -> Any:
-    """Consultar los permisos activos"""
+    """Consultar los permisos"""
     consulta = database.query(Permiso)
     if modulo_id is not None:
         modulo = get_modulo(database, modulo_id)

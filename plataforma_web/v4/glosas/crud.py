@@ -1,18 +1,18 @@
 """
 Glosas v3, CRUD (create, read, update, and delete)
 """
+
 from datetime import date, datetime
-from typing import Any, List
+from typing import Any
 
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
 from lib.safe_string import safe_expediente
-
-from ...core.autoridades.models import Autoridad
-from ...core.glosas.models import Glosa
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave, get_autoridades
-from ..distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.core.autoridades.models import Autoridad
+from plataforma_web.core.glosas.models import Glosa
+from plataforma_web.v4.autoridades.crud import get_autoridad, get_autoridad_with_clave
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_glosas(
@@ -30,7 +30,7 @@ def get_glosas(
     fecha_desde: date = None,
     fecha_hasta: date = None,
 ) -> Any:
-    """Consultar los glosas activas"""
+    """Consultar las glosas"""
     consulta = database.query(Glosa)
     if autoridad_id is not None:
         autoridad = get_autoridad(database, autoridad_id)
@@ -82,69 +82,3 @@ def get_glosa(database: Session, glosa_id: int) -> Glosa:
     if glosa.estatus != "A":
         raise MyIsDeletedError("No es activo ese glosa, está eliminado")
     return glosa
-
-
-def create_glosa(database: Session, glosa: Glosa) -> Glosa:
-    """Crear un nuevo glosa"""
-
-    # Validar autoridad
-    get_autoridad(database, glosa.autoridad_id)
-
-    # Guardar
-    database.add(glosa)
-    database.commit()
-    database.refresh(glosa)
-
-    # Entregar
-    return glosa
-
-
-def update_glosa(database: Session, glosa_id: int, glosa_in: Glosa) -> Glosa:
-    """Modificar un glosa"""
-
-    # Consultar glosa
-    glosa = get_glosa(database, glosa_id)
-
-    # Validar autoridad, si se especificó y se cambió
-    if glosa_in.autoridad_id is not None and glosa.autoridad_id != glosa_in.autoridad_id:
-        autoridad = get_autoridad(database, glosa_in.autoridad_id)
-        glosa.autoridad_id = autoridad.autoridad_id
-
-    # Actualizar las columnas
-    glosa.fecha = glosa_in.fecha
-    glosa.tipo_juicio = glosa_in.tipo_juicio
-    glosa.descripcion = glosa_in.descripcion
-    glosa.expediente = glosa_in.expediente
-    glosa.archivo = glosa_in.archivo
-    glosa.url = glosa_in.url
-
-    # Guardar
-    database.add(glosa)
-    database.commit()
-    database.refresh(glosa)
-
-    # Entregar
-    return glosa
-
-
-def delete_glosa(database: Session, glosa_id: int) -> Glosa:
-    """Borrar un glosa"""
-    glosa = get_glosa(database, glosa_id)
-    glosa.estatus = "B"
-    database.add(glosa)
-    database.commit()
-    database.refresh(glosa)
-    return glosa
-
-
-def elaborate_daily_report_glosas(
-    database: Session,
-    creado: date,
-) -> List[Glosa]:
-    """Elaborar reporte diario de edictos"""
-    resultados = []
-    for autoridad in get_autoridades(database=database, es_jurisdiccional=True, es_notaria=False).all():
-        existentes = get_glosas(database=database, autoridad_id=autoridad.id, creado=creado).all()
-        if existentes:
-            resultados.extend(existentes)
-    return resultados

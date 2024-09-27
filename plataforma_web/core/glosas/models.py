@@ -34,7 +34,7 @@ class Glosa(Base, UniversalMixin):
     # Clave primaria
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Claves foráneas
+    # Clave foránea
     autoridad_id: Mapped[int] = mapped_column(ForeignKey("autoridades.id"))
     autoridad: Mapped["Autoridad"] = relationship(back_populates="glosas")
 
@@ -45,13 +45,6 @@ class Glosa(Base, UniversalMixin):
     expediente: Mapped[str] = mapped_column(String(16))
     archivo: Mapped[str] = mapped_column(String(256), default="", server_default="")
     url: Mapped[str] = mapped_column(String(512), default="", server_default="")
-
-    @property
-    def descargar_url(self):
-        """URL para descargar el archivo desde el sitio web"""
-        if self.id:
-            return f"https://www.pjecz.gob.mx/consultas/glosas/descargar/?id={self.id}"
-        return ""
 
     @property
     def distrito_id(self):

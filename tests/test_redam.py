@@ -1,6 +1,7 @@
 """
 Unit tests for redam category
 """
+
 import unittest
 
 import requests

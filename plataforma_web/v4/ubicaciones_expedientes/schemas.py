@@ -1,35 +1,32 @@
 """
 Ubicaciones de Expedientes v3, esquemas de pydantic
 """
+
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class UbicacionExpedienteIn(BaseModel):
-    """Esquema para recibir una ubicacion de expediente"""
-
-    autoridad_id: int | None = None
-    expediente: str | None = None
-    ubicacion: str | None = None
-
-
-class UbicacionExpedienteOut(UbicacionExpedienteIn):
+class ItemUbicacionExpedienteOut(BaseModel):
     """Esquema para entregar ubicaciones de expedientes"""
 
-    id: int | None = None
-    distrito_id: int | None = None
-    distrito_clave: str | None = None
-    distrito_nombre: str | None = None
-    distrito_nombre_corto: str | None = None
-    autoridad_clave: str | None = None
-    autoridad_descripcion: str | None = None
-    autoridad_descripcion_corta: str | None = None
-    creado: datetime | None = None
+    id: int = Field(None)
+    distrito_clave: str = Field(None)
+    distrito_nombre_corto: str = Field(None)
+    autoridad_clave: str = Field(None)
+    autoridad_descripcion_corta: str = Field(None)
+    expediente: str = Field(None)
+    ubicacion: str = Field(None)
+    creado: datetime = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OneUbicacionExpedienteOut(UbicacionExpedienteOut, OneBaseOut):
+class OneUbicacionExpedienteOut(ItemUbicacionExpedienteOut, OneBaseOut):
     """Esquema para entregar una ubicacion de expediente"""
+
+    distrito_id: int = Field(None)
+    distrito_nombre: str = Field(None)
+    autoridad_id: int = Field(None)
+    autoridad_descripcion: str = Field(None)

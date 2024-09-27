@@ -37,7 +37,6 @@ class Domicilio(Base, UniversalMixin):
     numeracion_telefonica: Mapped[str] = mapped_column(String(256))
 
     # Hijos
-    centros_trabajos: Mapped[List["CentroTrabajo"]] = relationship("CentroTrabajo", back_populates="domicilio")
     oficinas: Mapped[List["Oficina"]] = relationship("Oficina", back_populates="domicilio")
 
     @property

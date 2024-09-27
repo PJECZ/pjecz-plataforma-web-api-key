@@ -30,7 +30,6 @@ class Distrito(Base, UniversalMixin):
 
     # Hijos
     autoridades: Mapped[List["Autoridad"]] = relationship("Autoridad", back_populates="distrito")
-    centros_trabajos: Mapped[List["CentroTrabajo"]] = relationship("CentroTrabajo", back_populates="distrito")
     domicilios: Mapped[List["Domicilio"]] = relationship("Domicilio", back_populates="distrito")
     peritos: Mapped[List["Perito"]] = relationship("Perito", back_populates="distrito")
     oficinas: Mapped[List["Oficina"]] = relationship("Oficina", back_populates="distrito")

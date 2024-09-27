@@ -1,48 +1,7 @@
 """
 FastAPI Pagination Custom Page
-
-Provides a custom pagination class to be used with FastAPI 0.100.0, Pydantic 2.0.2 and SQLAlchemy.
-
-Example of the output JSON:
-
-    {
-      "success": true,
-      "message": "Success",
-      "total": 116135,
-      "items": [
-        { ... },
-        { ... },
-        ...
-      ],
-      "limit": 10,
-      "offset": 0
-    }
-
-Usage:
-
-    from typing import Annotated
-
-    from fastapi import APIRouter, Depends
-    from fastapi_pagination.ext.sqlalchemy import paginate
-
-    from lib.fastapi_pagination_custom_page import CustomPage
-
-    from .crud import get_examples
-    from .schemas import ExampleOut
-
-    examples = APIRouter(prefix="/examples")
-
-    @examples.get("", response_model=CustomPage[ExampleOut])
-    async def list_examples(
-        database: Annotated[Session, Depends(get_db)],
-    ):
-        try:
-            query = get_examples(database=database)
-        except MyAnyError as error:
-            return CustomList(success=False, message=str(error))
-        return paginate(query)
-
 """
+
 from abc import ABC
 from typing import Any, Generic, Optional, Sequence, TypeVar
 

@@ -1,18 +1,19 @@
 """
 Roles v3, esquemas de pydantic
 """
-from pydantic import BaseModel, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class RolOut(BaseModel):
+class ItemRolOut(BaseModel):
     """Esquema para entregar roles"""
 
-    id: int | None = None
-    nombre: str | None = None
+    id: int = Field(None)
+    nombre: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class OneRolOut(RolOut, OneBaseOut):
+class OneRolOut(ItemRolOut, OneBaseOut):
     """Esquema para entregar un rol"""

@@ -1,22 +1,19 @@
 """
 Peritos - Tipos v3, esquemas de pydantic
 """
-from pydantic import BaseModel, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
 
 
-class PeritoTipoListOut(BaseModel):
+class ItemPeritoTipoOut(BaseModel):
     """Esquema para entregar tipos de peritos"""
 
-    id: int | None = None
-    nombre: str | None = None
+    id: int = Field(None)
+    nombre: str = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
-class PeritoTipoOut(PeritoTipoListOut):
-    """Esquema para entregar tipos de peritos"""
-
-
-class OnePeritoTipoOut(PeritoTipoOut, OneBaseOut):
+class OnePeritoTipoOut(ItemPeritoTipoOut, OneBaseOut):
     """Esquema para entregar un tipo de perito"""

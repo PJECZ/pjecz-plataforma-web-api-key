@@ -1,6 +1,7 @@
 """
 REPSVM Agresores v3, rutas (paths)
 """
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -9,18 +10,17 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import get_repsvm_agresor, get_repsvm_agresores
-from .schemas import OneRepsvmAgresorOut, RepsvmAgresorOut
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.repsvm_agresores.crud import get_repsvm_agresor, get_repsvm_agresores
+from plataforma_web.v4.repsvm_agresores.schemas import ItemRevpsmAgresorOut, OneRepsvmAgresorOut
+from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 repsvm_agresores = APIRouter(prefix="/v4/repsvm_agresores", tags=["repsvm agresores"])
 
 
-@repsvm_agresores.get("", response_model=CustomPage[RepsvmAgresorOut])
+@repsvm_agresores.get("", response_model=CustomPage[ItemRevpsmAgresorOut])
 async def paginado_repsvm_agresores(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     distrito_id: int = None,
     distrito_clave: str = None,
@@ -43,7 +43,7 @@ async def paginado_repsvm_agresores(
 
 @repsvm_agresores.get("/{repsvm_agresor_id}", response_model=OneRepsvmAgresorOut)
 async def detalle_repsvm_agresor(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     repsvm_agresor_id: int,
 ):

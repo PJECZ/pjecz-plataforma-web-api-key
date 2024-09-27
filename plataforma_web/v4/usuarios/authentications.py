@@ -1,6 +1,7 @@
 """
 Autentificaciones
 """
+
 import re
 from datetime import datetime
 from typing import Optional
@@ -14,9 +15,8 @@ from unidecode import unidecode
 
 from lib.database import get_db
 from lib.exceptions import MyAuthenticationError
-
-from ...core.usuarios.models import Usuario
-from .schemas import UsuarioInDB
+from plataforma_web.core.usuarios.models import Usuario
+from plataforma_web.v4.usuarios.schemas import AuthenticatedUser
 
 API_KEY_REGEXP = r"^\w+\.\w+\.\w+$"
 X_API_KEY = APIKeyHeader(name="X-Api-Key")
@@ -25,31 +25,16 @@ X_API_KEY = APIKeyHeader(name="X-Api-Key")
 def get_user(
     usuario_id: int,
     database: Session = Depends(get_db),
-) -> Optional[UsuarioInDB]:
+) -> Optional[AuthenticatedUser]:
     """Consultar un usuario por su id"""
     usuario = database.query(Usuario).get(usuario_id)
     if usuario:
-        return UsuarioInDB(
+        return AuthenticatedUser(
             id=usuario.id,
-            distrito_id=usuario.distrito_id,
-            distrito_clave=usuario.distrito_clave,
-            distrito_nombre=usuario.distrito_nombre,
-            distrito_nombre_corto=usuario.distrito_nombre_corto,
-            autoridad_id=usuario.autoridad_id,
-            autoridad_clave=usuario.autoridad_clave,
-            autoridad_descripcion=usuario.autoridad_descripcion,
-            autoridad_descripcion_corta=usuario.autoridad_descripcion_corta,
-            oficina_id=usuario.oficina_id,
-            oficina_clave=usuario.oficina_clave,
             email=usuario.email,
             nombres=usuario.nombres,
             apellido_paterno=usuario.apellido_paterno,
             apellido_materno=usuario.apellido_materno,
-            curp=usuario.curp,
-            puesto=usuario.puesto,
-            telefono=usuario.telefono,
-            extension=usuario.extension,
-            workspace=usuario.workspace,
             username=usuario.email,
             permissions=usuario.permissions,
             hashed_password=usuario.contrasena,
@@ -63,7 +48,7 @@ def get_user(
 def authenticate_user(
     api_key: str,
     database: Session,
-) -> UsuarioInDB:
+) -> AuthenticatedUser:
     """Autentificar un usuario por su api_key"""
 
     # Validar con expresion regular
@@ -107,7 +92,7 @@ def authenticate_user(
 async def get_current_active_user(
     api_key: str = Depends(X_API_KEY),
     database: Session = Depends(get_db),
-) -> UsuarioInDB:
+) -> AuthenticatedUser:
     """Obtener el usuario activo actual"""
 
     # Try-except

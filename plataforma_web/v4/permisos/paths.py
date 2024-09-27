@@ -1,6 +1,7 @@
 """
 Permisos v3, rutas (paths)
 """
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -9,18 +10,17 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-
-from ...core.permisos.models import Permiso
-from ..usuarios.authentications import UsuarioInDB, get_current_active_user
-from .crud import get_permiso, get_permisos
-from .schemas import OnePermisoOut, PermisoOut
+from plataforma_web.core.permisos.models import Permiso
+from plataforma_web.v4.permisos.crud import get_permiso, get_permisos
+from plataforma_web.v4.permisos.schemas import ItemPermisoOut, OnePermisoOut
+from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 permisos = APIRouter(prefix="/v4/permisos", tags=["usuarios"])
 
 
-@permisos.get("", response_model=CustomPage[PermisoOut])
+@permisos.get("", response_model=CustomPage[ItemPermisoOut])
 async def paginado_permisos(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
     modulo_nombre: str = None,
@@ -45,7 +45,7 @@ async def paginado_permisos(
 
 @permisos.get("/{permiso_id}", response_model=OnePermisoOut)
 async def detalle_permiso(
-    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     permiso_id: int,
 ):
