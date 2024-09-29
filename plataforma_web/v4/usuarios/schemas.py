@@ -1,5 +1,5 @@
 """
-Usuarios v3, esquemas de pydantic
+Usuarios v4, esquemas de pydantic
 """
 
 from datetime import datetime

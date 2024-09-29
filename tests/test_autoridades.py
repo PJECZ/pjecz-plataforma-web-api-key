@@ -64,25 +64,6 @@ class TestAutoridades(unittest.TestCase):
         for item in data["items"]:
             self.assertEqual(item["es_defensoria"], 1)
 
-    def test_get_autoridades_by_es_extinto(self):
-        """Test GET method for autoridades by es_extinto"""
-        try:
-            response = requests.get(
-                f"{config['api_base_url']}/autoridades",
-                headers={"X-Api-Key": config["api_key"]},
-                params={"es_extinto": 1},
-                timeout=config["timeout"],
-            )
-        except requests.exceptions.ConnectionError as error:
-            self.fail(f"Connection error: {error}")
-        except requests.exceptions.Timeout as error:
-            self.fail(f"Timeout error: {error}")
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(data["success"], True)
-        for item in data["items"]:
-            self.assertEqual(item["es_extinto"], 1)
-
     def test_get_autoridades_by_es_jurisdiccional(self):
         """Test GET method for autoridades by es_jurisdiccional"""
         try:

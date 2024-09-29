@@ -1,5 +1,5 @@
 """
-Peritos v3, CRUD (create, read, update, and delete)
+Peritos v4, CRUD (create, read, update, and delete)
 """
 
 from typing import Any
@@ -29,7 +29,7 @@ def get_peritos(
         distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.filter_by(distrito_id=distrito.id)
     if nombre is not None:
-        nombre = safe_string(nombre)
+        nombre = safe_string(nombre, save_enie=True)
         if nombre == "":
             raise MyNotValidParamError("El nombre no es válido")
         consulta = consulta.filter(Perito.nombre.contains(nombre))

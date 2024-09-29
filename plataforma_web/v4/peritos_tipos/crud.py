@@ -1,5 +1,5 @@
 """
-Peritos - Tipos v3, CRUD (create, read, update, and delete)
+Tipos de Peritos v4, CRUD (create, read, update, and delete)
 """
 
 from typing import Any

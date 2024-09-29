@@ -1,5 +1,5 @@
 """
-Roles v3, rutas (paths)
+Roles v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -18,21 +18,6 @@ from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_cu
 roles = APIRouter(prefix="/v4/roles", tags=["usuarios"])
 
 
-@roles.get("", response_model=CustomPage[ItemRolOut])
-async def paginado_roles(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-):
-    """Paginado de roles"""
-    if current_user.permissions.get("ROLES", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        resultados = get_roles(database)
-    except MyAnyError as error:
-        return CustomPage(success=False, message=str(error))
-    return paginate(resultados)
-
-
 @roles.get("/{rol_id}", response_model=OneRolOut)
 async def detalle_rol(
     current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
@@ -47,3 +32,18 @@ async def detalle_rol(
     except MyAnyError as error:
         return OneRolOut(success=False, message=str(error))
     return OneRolOut.model_validate(rol)
+
+
+@roles.get("", response_model=CustomPage[ItemRolOut])
+async def paginado_roles(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Paginado de roles"""
+    if current_user.permissions.get("ROLES", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = get_roles(database)
+    except MyAnyError as error:
+        return CustomPage(success=False, message=str(error))
+    return paginate(resultados)

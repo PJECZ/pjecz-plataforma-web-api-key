@@ -1,5 +1,5 @@
 """
-Permisos v3, rutas (paths)
+Permisos v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.permisos.schemas import ItemPermisoOut, OnePermisoOut
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 permisos = APIRouter(prefix="/v4/permisos", tags=["usuarios"])
+
+
+@permisos.get("/{permiso_id}", response_model=OnePermisoOut)
+async def detalle_permiso(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    permiso_id: int,
+):
+    """Detalle de una permisos a partir de su id"""
+    if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        permiso = get_permiso(database, permiso_id)
+    except MyAnyError as error:
+        return OnePermisoOut(success=False, message=str(error))
+    return OnePermisoOut.model_validate(permiso)
 
 
 @permisos.get("", response_model=CustomPage[ItemPermisoOut])
@@ -41,19 +57,3 @@ async def paginado_permisos(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@permisos.get("/{permiso_id}", response_model=OnePermisoOut)
-async def detalle_permiso(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    permiso_id: int,
-):
-    """Detalle de una permisos a partir de su id"""
-    if current_user.permissions.get("PERMISOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        permiso = get_permiso(database, permiso_id)
-    except MyAnyError as error:
-        return OnePermisoOut(success=False, message=str(error))
-    return OnePermisoOut.model_validate(permiso)

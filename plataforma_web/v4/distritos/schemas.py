@@ -1,5 +1,5 @@
 """
-Distritos v3, esquemas de pydantic
+Distritos v4, esquemas de pydantic
 """
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -12,14 +12,13 @@ class ItemDistritoOut(BaseModel):
 
     id: int = Field(None)
     clave: str = Field(None)
+    nombre: str = Field(None)
     nombre_corto: str = Field(None)
+    es_distrito_judicial: bool = Field(None)
+    es_distrito: bool = Field(None)
+    es_jurisdiccional: bool = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
 class OneDistritoOut(ItemDistritoOut, OneBaseOut):
     """Esquema para entregar un distrito"""
-
-    nombre: str = Field(None)
-    es_distrito_judicial: bool = Field(None)
-    es_distrito: bool = Field(None)
-    es_jurisdiccional: bool = Field(None)

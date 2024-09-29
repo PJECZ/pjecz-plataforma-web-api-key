@@ -1,5 +1,5 @@
 """
-Usuarios v3, rutas (paths)
+Usuarios v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.usuarios.crud import get_usuario_with_email, get_usuarios
 from plataforma_web.v4.usuarios.schemas import ItemUsuarioOut, OneUsuarioOut
 
 usuarios = APIRouter(prefix="/v4/usuarios", tags=["usuarios"])
+
+
+@usuarios.get("/{email}", response_model=OneUsuarioOut)
+async def detalle_usuario(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    email: str,
+):
+    """Detalle de una usuarios a partir de su e-mail"""
+    if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        usuario = get_usuario_with_email(database, email)
+    except MyAnyError as error:
+        return OneUsuarioOut(success=False, message=str(error))
+    return OneUsuarioOut.model_validate(usuario)
 
 
 @usuarios.get("", response_model=CustomPage[ItemUsuarioOut])
@@ -51,19 +67,3 @@ async def paginado_usuarios(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@usuarios.get("/{email}", response_model=OneUsuarioOut)
-async def detalle_usuario(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    email: str,
-):
-    """Detalle de una usuarios a partir de su e-mail"""
-    if current_user.permissions.get("USUARIOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        usuario = get_usuario_with_email(database, email)
-    except MyAnyError as error:
-        return OneUsuarioOut(success=False, message=str(error))
-    return OneUsuarioOut.model_validate(usuario)

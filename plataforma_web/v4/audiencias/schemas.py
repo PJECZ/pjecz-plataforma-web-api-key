@@ -1,5 +1,5 @@
 """
-Audiencias v3, esquemas de pydantic
+Audiencias v4, esquemas de pydantic
 """
 
 from datetime import datetime
@@ -15,6 +15,7 @@ class ItemAudienciaOut(BaseModel):
     id: int = Field(None)
     distrito_clave: str = Field(None)
     distrito_nombre_corto: str = Field(None)
+    autoridad_id: int = Field(None)
     autoridad_clave: str = Field(None)
     autoridad_descripcion_corta: str = Field(None)
     tiempo: datetime = Field(None)
@@ -30,7 +31,6 @@ class ItemAudienciaOut(BaseModel):
     expediente_origen: str = Field(None)
     imputados: str = Field(None)
     origen: str = Field(None)
-    creado: datetime = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -39,5 +39,4 @@ class OneAudienciaOut(ItemAudienciaOut, OneBaseOut):
 
     distrito_id: int = Field(None)
     distrito_nombre: str = Field(None)
-    autoridad_id: int = Field(None)
     autoridad_descripcion: str = Field(None)
