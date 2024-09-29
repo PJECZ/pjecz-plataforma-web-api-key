@@ -1,5 +1,5 @@
 """
-Peritos v3, rutas (paths)
+Peritos v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.peritos.schemas import ItemPeritoOut, OnePeritoOut
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 peritos = APIRouter(prefix="/v4/peritos", tags=["peritos"])
+
+
+@peritos.get("/{perito_id}", response_model=OnePeritoOut)
+async def detalle_perito(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    perito_id: int,
+):
+    """Detalle de un perito a partir de su id"""
+    if current_user.permissions.get("PERITOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        perito = get_perito(database, perito_id)
+    except MyAnyError as error:
+        return OnePeritoOut(success=False, message=str(error))
+    return OnePeritoOut.model_validate(perito)
 
 
 @peritos.get("", response_model=CustomPage[ItemPeritoOut])
@@ -41,19 +57,3 @@ async def paginado_peritos(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@peritos.get("/{perito_id}", response_model=OnePeritoOut)
-async def detalle_perito(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    perito_id: int,
-):
-    """Detalle de un perito a partir de su id"""
-    if current_user.permissions.get("PERITOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        perito = get_perito(database, perito_id)
-    except MyAnyError as error:
-        return OnePeritoOut(success=False, message=str(error))
-    return OnePeritoOut.model_validate(perito)

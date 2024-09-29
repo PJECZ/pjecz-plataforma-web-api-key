@@ -1,5 +1,5 @@
 """
-Tesis Jurisprudencias v3, CRUD (create, read, update, and delete)
+Tesis Jurisprudencias v4, CRUD (create, read, update, and delete)
 """
 
 from typing import Any
@@ -7,13 +7,12 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError
-
-from ...core.autoridades.models import Autoridad
-from ...core.tesis_jurisprudencias.models import TesisJurisprudencia
-from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
-from ..distritos.crud import get_distrito, get_distrito_with_clave
-from ..epocas.crud import get_epoca
-from ..materias.crud import get_materia, get_materia_with_clave
+from plataforma_web.core.autoridades.models import Autoridad
+from plataforma_web.core.tesis_jurisprudencias.models import TesisJurisprudencia
+from plataforma_web.v4.autoridades.crud import get_autoridad, get_autoridad_with_clave
+from plataforma_web.v4.distritos.crud import get_distrito, get_distrito_with_clave
+from plataforma_web.v4.epocas.crud import get_epoca
+from plataforma_web.v4.materias.crud import get_materia, get_materia_with_clave
 
 
 def get_tesis_jurisprudencias(
@@ -56,7 +55,7 @@ def get_tesis_jurisprudencia(database: Session, tesis_jurisprudencia_id: int) ->
     """Consultar un tesis jurisprudencia por su id"""
     tesis_jurisprudencia = database.query(TesisJurisprudencia).get(tesis_jurisprudencia_id)
     if tesis_jurisprudencia is None:
-        raise MyNotExistsError("No existe ese tesis jurisprudencia")
+        raise MyNotExistsError("No existe esa tesis jurisprudencia")
     if tesis_jurisprudencia.estatus != "A":
-        raise MyIsDeletedError("No es activo ese tesis jurisprudencia, está eliminado")
+        raise MyIsDeletedError("No es activa esa tesis jurisprudencia, está eliminado")
     return tesis_jurisprudencia

@@ -1,5 +1,5 @@
 """
-Listas de Acuerdos v3, esquemas de pydantic
+Listas de Acuerdos v4, esquemas de pydantic
 """
 
 from datetime import date, datetime
@@ -13,11 +13,11 @@ class ItemListaDeAcuerdoOut(BaseModel):
     """Esquema para entregar listas de acuerdos"""
 
     id: int = Field(None)
+    autoridad_id: int = Field(None)
     autoridad_clave: str = Field(None)
     autoridad_descripcion_corta: str = Field(None)
     fecha: date = Field(None)
     descripcion: str = Field(None)
-    creado: datetime = Field(None)
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -28,7 +28,6 @@ class OneListaDeAcuerdoOut(ItemListaDeAcuerdoOut, OneBaseOut):
     distrito_clave: str = Field(None)
     distrito_nombre: str = Field(None)
     distrito_nombre_corto: str = Field(None)
-    autoridad_id: int = Field(None)
     autoridad_descripcion: str = Field(None)
     archivo: str = Field(None)
     url: str = Field(None)

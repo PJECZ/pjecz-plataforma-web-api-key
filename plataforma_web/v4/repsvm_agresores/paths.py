@@ -1,5 +1,5 @@
 """
-REPSVM Agresores v3, rutas (paths)
+REPSVM Agresores v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.repsvm_agresores.schemas import ItemRevpsmAgresorOut, One
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 repsvm_agresores = APIRouter(prefix="/v4/repsvm_agresores", tags=["repsvm agresores"])
+
+
+@repsvm_agresores.get("/{repsvm_agresor_id}", response_model=OneRepsvmAgresorOut)
+async def detalle_repsvm_agresor(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    repsvm_agresor_id: int,
+):
+    """Detalle de una agresor a partir de su id"""
+    if current_user.permissions.get("REPSVM AGRESORES", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        repsvm_agresor = get_repsvm_agresor(database, repsvm_agresor_id)
+    except MyAnyError as error:
+        return OneRepsvmAgresorOut(success=False, message=str(error))
+    return OneRepsvmAgresorOut.model_validate(repsvm_agresor)
 
 
 @repsvm_agresores.get("", response_model=CustomPage[ItemRevpsmAgresorOut])
@@ -39,19 +55,3 @@ async def paginado_repsvm_agresores(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@repsvm_agresores.get("/{repsvm_agresor_id}", response_model=OneRepsvmAgresorOut)
-async def detalle_repsvm_agresor(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    repsvm_agresor_id: int,
-):
-    """Detalle de una agresor a partir de su id"""
-    if current_user.permissions.get("REPSVM AGRESORES", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        repsvm_agresor = get_repsvm_agresor(database, repsvm_agresor_id)
-    except MyAnyError as error:
-        return OneRepsvmAgresorOut(success=False, message=str(error))
-    return OneRepsvmAgresorOut.model_validate(repsvm_agresor)

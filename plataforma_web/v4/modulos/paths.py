@@ -1,5 +1,5 @@
 """
-Modulos v3, rutas (paths)
+Modulos v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -18,21 +18,6 @@ from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_cu
 modulos = APIRouter(prefix="/v4/modulos", tags=["usuarios"])
 
 
-@modulos.get("", response_model=CustomList[ItemModuloOut])
-async def listado_modulos(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-):
-    """Listado de modulos"""
-    if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        resultados = get_modulos(database)
-    except MyAnyError as error:
-        return CustomList(success=False, message=str(error))
-    return paginate(resultados)
-
-
 @modulos.get("/{modulo_id}", response_model=OneModuloOut)
 async def detalle_modulo(
     current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
@@ -47,3 +32,18 @@ async def detalle_modulo(
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
     return OneModuloOut.model_validate(modulo)
+
+
+@modulos.get("", response_model=CustomList[ItemModuloOut])
+async def listado_modulos(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Listado de modulos"""
+    if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = get_modulos(database)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    return paginate(resultados)

@@ -1,5 +1,5 @@
 """
-Tesis Jurisprudencias v3, rutas (paths)
+Tesis Jurisprudencias v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.tesis_jurisprudencias.schemas import ItemTesisJurispruden
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 tesis_jurisprudencias = APIRouter(prefix="/v4/tesis_jurisprudencias", tags=["tesis jurisprudencias"])
+
+
+@tesis_jurisprudencias.get("/{tesis_jurisprudencia_id}", response_model=OneTesisJurisprudenciaOut)
+async def detalle_tesisjurisprudencia(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    tesis_jurisprudencia_id: int,
+):
+    """Detalle de una tesis jurisprudencia a partir de su id"""
+    if current_user.permissions.get("TESIS JURISPRUDENCIAS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        tesisjurisprudencia = get_tesis_jurisprudencia(database, tesis_jurisprudencia_id)
+    except MyAnyError as error:
+        return OneTesisJurisprudenciaOut(success=False, message=str(error))
+    return OneTesisJurisprudenciaOut.model_validate(tesisjurisprudencia)
 
 
 @tesis_jurisprudencias.get("", response_model=CustomPage[ItemTesisJurisprudenciaOut])
@@ -47,19 +63,3 @@ async def paginado_tesis_jurisprudencias(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@tesis_jurisprudencias.get("/{tesis_jurisprudencia_id}", response_model=OneTesisJurisprudenciaOut)
-async def detalle_tesisjurisprudencia(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    tesis_jurisprudencia_id: int,
-):
-    """Detalle de una tesis jurisprudencia a partir de su id"""
-    if current_user.permissions.get("TESIS JURISPRUDENCIAS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        tesisjurisprudencia = get_tesis_jurisprudencia(database, tesis_jurisprudencia_id)
-    except MyAnyError as error:
-        return OneTesisJurisprudenciaOut(success=False, message=str(error))
-    return OneTesisJurisprudenciaOut.model_validate(tesisjurisprudencia)

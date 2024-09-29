@@ -1,5 +1,5 @@
 """
-Materias v3, rutas (paths)
+Materias v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -18,22 +18,6 @@ from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_cu
 materias = APIRouter(prefix="/v4/materias", tags=["materias"])
 
 
-@materias.get("", response_model=CustomList[ItemMateriaOut])
-async def listado_materias(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    en_sentencias: bool = None,
-):
-    """Listado de materias"""
-    if current_user.permissions.get("MATERIAS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        resultados = get_materias(database, en_sentencias)
-    except MyAnyError as error:
-        return CustomList(success=False, message=str(error))
-    return paginate(resultados)
-
-
 @materias.get("/{materia_clave}", response_model=OneMateriaOut)
 async def detalle_materia(
     current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
@@ -48,3 +32,19 @@ async def detalle_materia(
     except MyAnyError as error:
         return OneMateriaOut(success=False, message=str(error))
     return OneMateriaOut.model_validate(materia)
+
+
+@materias.get("", response_model=CustomList[ItemMateriaOut])
+async def listado_materias(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    en_sentencias: bool = None,
+):
+    """Listado de materias"""
+    if current_user.permissions.get("MATERIAS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = get_materias(database, en_sentencias)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    return paginate(resultados)

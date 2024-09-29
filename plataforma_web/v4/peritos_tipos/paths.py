@@ -1,5 +1,5 @@
 """
-Peritos - Tipos v3, rutas (paths)
+Tipos de Peritos v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -18,21 +18,6 @@ from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_cu
 peritos_tipos = APIRouter(prefix="/v4/peritos_tipos", tags=["peritos"])
 
 
-@peritos_tipos.get("", response_model=CustomList[ItemPeritoTipoOut])
-async def listado_peritos_tipos(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-):
-    """Listado de tipos de peritos"""
-    if current_user.permissions.get("PERITOS TIPOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        resultados = get_peritos_tipos(database)
-    except MyAnyError as error:
-        return CustomList(success=False, message=str(error))
-    return paginate(resultados)
-
-
 @peritos_tipos.get("/{perito_tipo_id}", response_model=OnePeritoTipoOut)
 async def detalle_perito_tipo(
     current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
@@ -47,3 +32,18 @@ async def detalle_perito_tipo(
     except MyAnyError as error:
         return OnePeritoTipoOut(success=False, message=str(error))
     return OnePeritoTipoOut.model_validate(perito_tipo)
+
+
+@peritos_tipos.get("", response_model=CustomList[ItemPeritoTipoOut])
+async def listado_peritos_tipos(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+):
+    """Listado de tipos de peritos"""
+    if current_user.permissions.get("PERITOS TIPOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        resultados = get_peritos_tipos(database)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
+    return paginate(resultados)

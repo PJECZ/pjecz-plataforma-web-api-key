@@ -1,5 +1,5 @@
 """
-Tesis Jurisprudencias v3, esquemas de pydantic
+Tesis Jurisprudencias v4, esquemas de pydantic
 """
 
 from datetime import date, datetime

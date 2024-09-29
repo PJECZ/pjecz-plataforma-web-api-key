@@ -1,5 +1,5 @@
 """
-REDAM (Registro Estatal de Deudores Alimentarios Morosos) v3, rutas (paths)
+REDAM (Registro Estatal de Deudores Alimentarios Morosos) v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.redam.schemas import ItemRedamOut, OneRedamOut
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 redam = APIRouter(prefix="/v4/redam", tags=["redam"])
+
+
+@redam.get("/{redam_id}", response_model=OneRedamOut)
+async def detalle_redam(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    redam_id: int,
+):
+    """Detalle de un Deudor Alimentario Moroso a partir de su id"""
+    if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        deudor = get_redam(database, redam_id)
+    except MyAnyError as error:
+        return OneRedamOut(success=False, message=str(error))
+    return OneRedamOut.model_validate(deudor)
 
 
 @redam.get("", response_model=CustomPage[ItemRedamOut])
@@ -45,19 +61,3 @@ async def paginado_redams(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
-
-
-@redam.get("/{redam_id}", response_model=OneRedamOut)
-async def detalle_redam(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    redam_id: int,
-):
-    """Detalle de un Deudor Alimentario Moroso a partir de su id"""
-    if current_user.permissions.get("REDAMS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        deudor = get_redam(database, redam_id)
-    except MyAnyError as error:
-        return OneRedamOut(success=False, message=str(error))
-    return OneRedamOut.model_validate(deudor)

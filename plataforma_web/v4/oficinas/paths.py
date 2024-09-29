@@ -1,5 +1,5 @@
 """
-Oficinas v3, rutas (paths)
+Oficinas v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.oficinas.schemas import ItemOficinaOut, OneOficinaOut
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 oficinas = APIRouter(prefix="/v4/oficinas", tags=["oficinas"])
+
+
+@oficinas.get("/{oficina_clave}", response_model=OneOficinaOut)
+async def detalle_oficina(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    oficina_clave: str,
+):
+    """Detalle de una oficina a partir de su clave"""
+    if current_user.permissions.get("OFICINAS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        oficina = get_oficina_with_clave(database, oficina_clave)
+    except MyAnyError as error:
+        return OneOficinaOut(success=False, message=str(error))
+    return OneOficinaOut.model_validate(oficina)
 
 
 @oficinas.get("", response_model=CustomList[ItemOficinaOut])
@@ -41,19 +57,3 @@ async def listado_oficinas(
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)
-
-
-@oficinas.get("/{oficina_clave}", response_model=OneOficinaOut)
-async def detalle_oficina(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    oficina_clave: str,
-):
-    """Detalle de una oficina a partir de su clave"""
-    if current_user.permissions.get("OFICINAS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        oficina = get_oficina_with_clave(database, oficina_clave)
-    except MyAnyError as error:
-        return OneOficinaOut(success=False, message=str(error))
-    return OneOficinaOut.model_validate(oficina)

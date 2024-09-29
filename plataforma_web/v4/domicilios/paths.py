@@ -1,5 +1,5 @@
 """
-Domicilios v3, rutas (paths)
+Domicilios v4, rutas (paths)
 """
 
 from typing import Annotated
@@ -16,6 +16,22 @@ from plataforma_web.v4.domicilios.schemas import ItemDomicilioOut, OneDomicilioO
 from plataforma_web.v4.usuarios.authentications import AuthenticatedUser, get_current_active_user
 
 domicilios = APIRouter(prefix="/v4/domicilios", tags=["oficinas"])
+
+
+@domicilios.get("/{domicilio_id}", response_model=OneDomicilioOut)
+async def detalle_domicilio(
+    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
+    database: Annotated[Session, Depends(get_db)],
+    domicilio_id: int,
+):
+    """Detalle de una domicilio a partir de su id"""
+    if current_user.permissions.get("DOMICILIOS", 0) < Permiso.VER:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    try:
+        domicilio = get_domicilio(database, domicilio_id)
+    except MyAnyError as error:
+        return OneDomicilioOut(success=False, message=str(error))
+    return OneDomicilioOut.model_validate(domicilio)
 
 
 @domicilios.get("", response_model=CustomList[ItemDomicilioOut])
@@ -37,19 +53,3 @@ async def listado_domicilios(
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)
-
-
-@domicilios.get("/{domicilio_id}", response_model=OneDomicilioOut)
-async def detalle_domicilio(
-    current_user: Annotated[AuthenticatedUser, Depends(get_current_active_user)],
-    database: Annotated[Session, Depends(get_db)],
-    domicilio_id: int,
-):
-    """Detalle de una domicilio a partir de su id"""
-    if current_user.permissions.get("DOMICILIOS", 0) < Permiso.VER:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    try:
-        domicilio = get_domicilio(database, domicilio_id)
-    except MyAnyError as error:
-        return OneDomicilioOut(success=False, message=str(error))
-    return OneDomicilioOut.model_validate(domicilio)
