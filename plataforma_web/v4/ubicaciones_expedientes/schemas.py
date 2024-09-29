@@ -2,8 +2,6 @@
 Ubicaciones de Expedientes v4, esquemas de pydantic
 """
 
-from datetime import datetime
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from lib.schemas_base import OneBaseOut
