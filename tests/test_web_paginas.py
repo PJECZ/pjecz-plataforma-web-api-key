@@ -1,5 +1,5 @@
 """
-Unit tests for usuarios
+Unit tests for web_paginas
 """
 
 import unittest
@@ -9,14 +9,14 @@ import requests
 from tests.load_env import config
 
 
-class TestUsuarios(unittest.TestCase):
-    """Tests for usuarios category"""
+class TestWebPaginas(unittest.TestCase):
+    """Tests for web_paginas"""
 
-    def test_get_usuarios(self):
-        """Test GET method for usuarios"""
+    def test_get_web_paginas(self):
+        """Test GET method for web_paginas"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios",
+                url=f"{config['api_base_url']}/web_paginas",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -34,17 +34,21 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual("offset" in contenido, True)
         self.assertEqual("items" in contenido, True)
         for item in contenido["items"]:
-            self.assertEqual("id" in item, True)
-            self.assertEqual("email" in item, True)
-            self.assertEqual("nombres" in item, True)
-            self.assertEqual("apellido_paterno" in item, True)
-            self.assertEqual("apellido_materno" in item, True)
+            self.assertEqual("clave" in item, True)
+            self.assertEqual("titulo" in item, True)
+            self.assertEqual("resumen" in item, True)
+            self.assertEqual("ruta" in item, True)
+            self.assertEqual("fecha_modificacion" in item, True)
+            self.assertEqual("responsable" in item, True)
+            self.assertEqual("etiquetas" in item, True)
+            self.assertEqual("vista_previa" in item, True)
+            self.assertEqual("estado" in item, True)
 
-    def test_get_usuario_by_email(self):
-        """Test GET method for usuario by email"""
+    def test_get_web_pagina_by_clave(self):
+        """Test GET method for web_pagina by clave"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios/no.existe@servidor.com",
+                url=f"{config['api_base_url']}/web_paginas/noexiste",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )

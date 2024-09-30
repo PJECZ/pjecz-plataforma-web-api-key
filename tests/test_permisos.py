@@ -1,5 +1,5 @@
 """
-Unit tests for usuarios
+Unit tests for permisos
 """
 
 import unittest
@@ -9,14 +9,14 @@ import requests
 from tests.load_env import config
 
 
-class TestUsuarios(unittest.TestCase):
-    """Tests for usuarios category"""
+class TestPermisos(unittest.TestCase):
+    """Tests for permisos"""
 
-    def test_get_usuarios(self):
-        """Test GET method for usuarios"""
+    def test_get_permisos(self):
+        """Test GET method for permisos"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios",
+                url=f"{config['api_base_url']}/permisos",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -35,16 +35,16 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual("items" in contenido, True)
         for item in contenido["items"]:
             self.assertEqual("id" in item, True)
-            self.assertEqual("email" in item, True)
-            self.assertEqual("nombres" in item, True)
-            self.assertEqual("apellido_paterno" in item, True)
-            self.assertEqual("apellido_materno" in item, True)
+            self.assertEqual("modulo_nombre" in item, True)
+            self.assertEqual("rol_nombre" in item, True)
+            self.assertEqual("nombre" in item, True)
+            self.assertEqual("nivel" in item, True)
 
-    def test_get_usuario_by_email(self):
-        """Test GET method for usuario by email"""
+    def test_get_permiso_by_id(self):
+        """Test GET method for permiso by id"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios/no.existe@servidor.com",
+                url=f"{config['api_base_url']}/permisos/1",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -55,7 +55,7 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         contenido = response.json()
         self.assertEqual("success" in contenido, True)
-        self.assertEqual(contenido["success"], False)
+        self.assertEqual(contenido["success"], True)
 
 
 if __name__ == "__main__":

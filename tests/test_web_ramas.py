@@ -1,5 +1,5 @@
 """
-Unit tests for usuarios
+Unit tests for web_ramas
 """
 
 import unittest
@@ -9,14 +9,14 @@ import requests
 from tests.load_env import config
 
 
-class TestUsuarios(unittest.TestCase):
-    """Tests for usuarios category"""
+class TestWebRamas(unittest.TestCase):
+    """Tests for web_ramas"""
 
-    def test_get_usuarios(self):
-        """Test GET method for usuarios"""
+    def test_get_web_ramas(self):
+        """Test GET method for web_ramas"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios",
+                url=f"{config['api_base_url']}/web_ramas",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -29,22 +29,19 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual("success" in contenido, True)
         self.assertEqual(contenido["success"], True)
         self.assertEqual("message" in contenido, True)
+        self.assertEqual("pages" in contenido, True)
+        self.assertEqual("size" in contenido, True)
         self.assertEqual("total" in contenido, True)
-        self.assertEqual("limit" in contenido, True)
-        self.assertEqual("offset" in contenido, True)
         self.assertEqual("items" in contenido, True)
         for item in contenido["items"]:
-            self.assertEqual("id" in item, True)
-            self.assertEqual("email" in item, True)
-            self.assertEqual("nombres" in item, True)
-            self.assertEqual("apellido_paterno" in item, True)
-            self.assertEqual("apellido_materno" in item, True)
+            self.assertEqual("clave" in item, True)
+            self.assertEqual("nombre" in item, True)
 
-    def test_get_usuario_by_email(self):
-        """Test GET method for usuario by email"""
+    def test_get_web_rama_by_clave(self):
+        """Test GET method for web_pagina by clave"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios/no.existe@servidor.com",
+                url=f"{config['api_base_url']}/web_ramas/noexiste",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )

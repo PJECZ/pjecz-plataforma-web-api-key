@@ -32,6 +32,8 @@ from plataforma_web.v4.tesis_jurisprudencias.paths import tesis_jurisprudencias
 from plataforma_web.v4.ubicaciones_expedientes.paths import ubicaciones_expedientes
 from plataforma_web.v4.usuarios.paths import usuarios
 from plataforma_web.v4.usuarios_roles.paths import usuarios_roles
+from plataforma_web.v4.web_paginas.paths import web_paginas
+from plataforma_web.v4.web_ramas.paths import web_ramas
 
 
 def create_app() -> FastAPI:
@@ -80,6 +82,8 @@ def create_app() -> FastAPI:
     app.include_router(usuarios)
     app.include_router(usuarios_roles)
     app.include_router(ubicaciones_expedientes)
+    app.include_router(web_paginas)
+    app.include_router(web_ramas)
 
     # Paginación
     add_pagination(app)
