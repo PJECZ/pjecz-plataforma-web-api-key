@@ -1,5 +1,5 @@
 """
-Unit tests for usuarios
+Unit tests for peritos_tipos
 """
 
 import unittest
@@ -9,14 +9,14 @@ import requests
 from tests.load_env import config
 
 
-class TestUsuarios(unittest.TestCase):
-    """Tests for usuarios category"""
+class TestPeritosTipos(unittest.TestCase):
+    """Tests for peritos_tipos"""
 
-    def test_get_usuarios(self):
-        """Test GET method for usuarios"""
+    def test_get_peritos_tipos(self):
+        """Test GET method for peritos_tipos"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios",
+                url=f"{config['api_base_url']}/peritos_tipos",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -29,22 +29,19 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual("success" in contenido, True)
         self.assertEqual(contenido["success"], True)
         self.assertEqual("message" in contenido, True)
+        self.assertEqual("pages" in contenido, True)
+        self.assertEqual("size" in contenido, True)
         self.assertEqual("total" in contenido, True)
-        self.assertEqual("limit" in contenido, True)
-        self.assertEqual("offset" in contenido, True)
         self.assertEqual("items" in contenido, True)
         for item in contenido["items"]:
             self.assertEqual("id" in item, True)
-            self.assertEqual("email" in item, True)
-            self.assertEqual("nombres" in item, True)
-            self.assertEqual("apellido_paterno" in item, True)
-            self.assertEqual("apellido_materno" in item, True)
+            self.assertEqual("nombre" in item, True)
 
-    def test_get_usuario_by_email(self):
-        """Test GET method for usuario by email"""
+    def test_get_perito_tipo_by_id(self):
+        """Test GET method for perito_tipo by id"""
         try:
             response = requests.get(
-                url=f"{config['api_base_url']}/usuarios/no.existe@servidor.com",
+                url=f"{config['api_base_url']}/peritos_tipos/1",
                 headers={"X-Api-Key": config["api_key"]},
                 timeout=config["timeout"],
             )
@@ -55,7 +52,7 @@ class TestUsuarios(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         contenido = response.json()
         self.assertEqual("success" in contenido, True)
-        self.assertEqual(contenido["success"], False)
+        self.assertEqual(contenido["success"], True)
 
 
 if __name__ == "__main__":

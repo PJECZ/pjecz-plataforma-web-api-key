@@ -1,0 +1,9 @@
+
+### WebPaginas
+GET {{baseUrl}}/web_paginas
+X-Api-Key: {{apiKey}}
+
+### WebPaginas de la rama OJ
+GET {{baseUrl}}/web_paginas
+    ?web_rama_clave=oj
+X-Api-Key: {{apiKey}}

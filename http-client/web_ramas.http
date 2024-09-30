@@ -1,0 +1,8 @@
+
+### WebRamas
+GET {{baseUrl}}/web_ramas
+X-Api-Key: {{apiKey}}
+
+### WebRama OJ
+GET {{baseUrl}}/web_ramas/oj
+X-Api-Key: {{apiKey}}
